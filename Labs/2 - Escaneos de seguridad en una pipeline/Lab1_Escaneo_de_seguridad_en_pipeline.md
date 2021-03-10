@@ -90,19 +90,19 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
   - Display name: IntegrationService
   - gradle wrapper: src/Backend/IntegrationService/gradlew (puedes escribirlo o buscarlo en el botón "...")
   - Working Directory: src/Backend/IntegrationService (puedes escribirlo o buscarlo en el botón "...")
-  - JUnit Test Results: deselecciona el checkbox de **Publish to Azure Pipelines/TFS**, dado que no ejecutaremos test automaticos en el _Integration Service_.
+  - JUnit Test Results: deselecciona el checkbox de **Publish to Azure Pipelines/TFS**, dado que no ejecutaremos test automáticos en el _Integration Service_.
   
 ![NewPipeGradleTasks1](images/NewPipeGradleTasks1.png)
 
-7 - Selecciona la segunda task de Gradle para introducir los siguiente valores, dejándo los valores por defecto en los campos no mencionados.
+7 - Selecciona la segunda task de Gradle para introducir los siguiente valores, dejando los valores por defecto en los campos no mencionados.
   - Display name: OrderService
   - gradle wrapper: src/Backend/OrderService/gradlew (puedes escribirlo o buscarlo en el botón "...")
   - Working Directory: src/Backend/OrderService (puedes escribirlo o buscarlo en el botón "...")
-  - JUnit Test Results: deselecciona el checkbox de **Publish to Azure Pipelines/TFS**, y pon el valor del campo _Test Results Files_ a \*\*/TEST-\*.xml". Dado que el _Order Service_ tiene tests unitarios en el proyecto, podemos automatizar su ejecución como parte de la compilación, añadiendo **REVIEW this***in a test in the Gradle tasks field.
-  - 
+  - JUnit Test Results: selecciona el checkbox de **Publish to Azure Pipelines/TFS**, y pon el valor del campo _Test Results Files_ a \*\*/TEST-\*.xml". Dado que el _Order Service_ tiene tests unitarios en el proyecto, podemos automatizar su ejecución como parte de la compilación.
+  
 ![NewPipeGradleTasks2](images/NewPipeGradleTasks2.png)
 
-8 - Selecciona la tercera task de Gradle para introducir los siguiente valores, dejándo los valores por defecto en los campos no mencionados.
+8 - Selecciona la tercera task de Gradle para introducir los siguiente valores, dejando los valores por defecto en los campos no mencionados.
   - Display name: Clients
   - gradle wrapper: src/Clients/gradlew (puedes escribirlo o buscarlo en el botón "...")
   - Working Directory: src/Clients (puedes escribirlo o buscarlo en el botón "...")
@@ -125,7 +125,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 ![NewPipeDefineCopyTask1](images/NewPipeDefineCopyTask1.png)
 
-**NOTA:** vamos a copiar los archivos que queramos de la compilación y del repositorio, y dejarlos en un área intermedia en el agente, para publicarlas como artefactos de la propia pipeline y que podremos reusar en la parte de release. Si quieres saber más acerca de las variables que vamos a usar en la pipeline, puedes acceder a este [enlace](https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&viewFallbackFrom=vsts&tabs=yaml)
+**NOTA:** vamos a copiar los archivos que queramos de la compilación y del repositorio, y dejarlos en un área intermedia en el agente (staging), para publicarlas como artefactos de la propia pipeline, y que podremos reusar en la parte de release. Si quieres saber más acerca de las variables que vamos a usar en la pipeline, puedes acceder a este [enlace](https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&viewFallbackFrom=vsts&tabs=yaml)
 
 12 - Selecciona la segunda task de copia y rellena los valores de la misma con los siguientes datos, dejando por defecto el resto de valores no indicados.
   - Source Folder: $(Build.SourcesDirectory)
@@ -143,7 +143,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 ![NewPipeDefinePublishTask1](images/NewPipeDefinePublishTask1.png)
 
-**NOTA:** en estas tareas de publicación, vamos a coger los elementos del área intermedia del agente y los publicaremos como artefactos para luego usarlos en la release. No vamos a crear ni desplegar utilizando la release de este lab, pero si quieres, puedes retener esta build para más adelante jugar con ella.
+**NOTA:** en estas tareas de publicación, vamos a coger los elementos del área intermedia del agente (staging) y los publicaremos como artefactos para luego usarlos en la release. No vamos a crear, ni desplegar utilizando la release de este lab, pero si quieres, puedes retener esta build para más adelante jugar con ella.
 
 14 - Selecciona la segunda tarea de **Publish Artifacts** y rellena los valores de la misma con los siguientes datos, dejando por defecto el resto de valores no indicados.
   - Path to publish: $(build.artifactstagingdirectory)\deploy
@@ -160,13 +160,13 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 ![NewPipeBanner](images/NewPipeBanner.png)
 
-17 - Mira la información de salida y cómo progresa por los diferentes steps, asegurándote de que todos terminas de forma satisfactoria.
+17 - Mira la información de salida y cómo progresa por los diferentes steps, asegurándote de que todos terminan de forma satisfactoria.
 
 ![NewPipeExecutionOutput](images/NewPipeExecutionOutput.png)
 
 ## Tarea 3: Instalar WhiteSource Bolt desde Azure DevOps Marketplace y activarlo.
 
-1 - Volvemos a la pipeline que acabamos de ejecutar y bajo la pestaña de Tasks, y pinchamos en **Agent job 1**. Dentro le damos al _+_ para añadir una nueva task. En este caso, vamos a pinchar en **Marketplace** y buscamos por "_whitesource_", localizamos **WhiteSource Bolt** y pinchamos al botón **Get it free**
+1 - Volvemos a la pipeline que acabamos de ejecutar y bajo la pestaña de Tasks, pinchamos en **Agent job 1**. Dentro le damos al _+_ para añadir una nueva task. En este caso, vamos a pinchar en **Marketplace** y buscamos por "_whitesource_", localizamos **WhiteSource Bolt** y pinchamos al botón **Get it free**
 
 ![WhiteSourceGetFree](images/WhiteSourceGetFree.png)
 
@@ -218,13 +218,13 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 4 - Cuando se complete la build pipeline, pincha en **Pipelines > WhiteSource Bolt** y observa los resultados obtenidos.
 
-5 - Avanza pr el informe para encontrar estos elementos:
+5 - Avanza por el informe para encontrar estos elementos:
   - Vulnerability Score
   - Vulnerable Libraries
   - Severity Distribution
   - Aging Vulnerable Libraries
   - License Risks and Compliance and the associated Risk level: Apache 2.0 is listed with Risk level unknown, and two occurrences of it
-  - Outdated libraries section > there is one item list gradle-REL_1.0-milestone-1, view the version details and what the recommendations are i.e. Consider updating to latest version
+  - Outdated libraries section > there is one item list gradle-REL_1.0-milestone-1, view the version details and what the recommendations are i.e. Consider updating to latest version.
   - Inventory
 
 **NOTE**: ten en cuenta que hay una opción para exportar el informe.

@@ -165,6 +165,30 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 ## Tarea 3: Instalar WhiteSource Bolt desde Azure DevOps Marketplace y activarlo.
 
+1 - Volvemos a la pipeline que acabamos de ejecutar y bajo la pestaña de Tasks, y pinchamos en **Agent job 1**. Dentro le damos al _+_ para añadir una nueva task. En este caso, vamos a pinchar en **Marketplace** y buscamos por "_whitesource_", localizamos **WhiteSource Bolt** y pinchamos al botón **Get it free**
+
+![WhiteSourceGetFree](images/WhiteSourceGetFree.png)
+
+2 - Serás redireccionado a la página de **WhiteSource Bolt** dentro de **Azure DevOps Marketplace**, pinchamos en **Get it free** otra vez.
+
+![WhiteSourceGetFree2](images/WhiteSourceGetFree2.png)
+
+3 - Nos pedirá el nombre de la organización, y escribiremos la nuestra. Después pinchamos en _Install_.
+
+![WhiteSourceGetFreeOrg](images/WhiteSourceGetFreeOrg.png)
+
+4 - Una vez instalado, pinchamos en el botón de **Proceed to organization** para regresar.
+
+![WhiteSourceGetFreeProceedOrg](images/WhiteSourceGetFreeProceedOrg.png)
+
+5 - Ahora dentro de nuestro proyecto de Azure DevOps, tendremos una nueva opción dentro del menú de **Pipelines** para **WhiteSource Bolt**, pinchamos en ella.
+
+![WhiteSourceBoltMenu](images/WhiteSourceBoltMenu.png)
+
+6 - Si te lo pide, introduce tu dirección de email y organización para activar la extensión de WhiteSource Bolt. Puede que no sea necesario introducir tu email dependiendo de tu entorno, y en este caso serás redirigido directamente a la web de _Your are using a FREE version of WhiteSource Bolt_, indicando que está lista para ser integrada en tus pipelines.
+
+![WhiteSourceReady](images/WhiteSourceReady.png)
+
 ## Tarea 4: Añadir WhiteSource Bolt como una _build task_ dentro de nuestra pipeline.
 
 ## Tarea 5: Ejecutar nuestra build pipeline y ver el informe de seguridad resultante de WhiteSource Bolt.

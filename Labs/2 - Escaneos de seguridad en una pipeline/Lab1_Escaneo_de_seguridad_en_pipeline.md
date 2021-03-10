@@ -12,10 +12,11 @@ Azure te permite ejecutar y desplegar todo tipo de scripts y código en producci
 Una de las maneras de atacar de raíz estos problemas, consiste en la utilización de ciertas tasks dentro de las propias pipelines, que nos alerten de cualquier tipo de brecha de seguridad en nuestro código.
 
 ### Objetivos
-Los objetivos de la práctica son 3:
-- Conseguir feedback más rápido gracias a la automatización del proceso.
-- Dar visibilidad a los equipos para que tomen medidas haciendo uso de los eventos y logs generados por las propias pipelines.
-- Detección de defectos y vulnerabilidades lo antes posible.
+- Crear una cuenta de Azure DevOps e introducir nuestro propio código dentro.
+- Crear una build pipeline basada en productos **open source**.
+- Instalar _WhiteSource Bolt_ desde el marketplace de Azure DevOps y activarlo.
+- Añadir _WhiteSource Bolt_ como una tarea dentro de una pipeline.
+- Ejecutar nuestra build pipeline y poder analizar el informe generado por _WhiteSource Bolt_ en relación a defectos o vulnerabilidades de seguridad.
 
 ### Duración
 80 minutos aproximádamente.
@@ -53,7 +54,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
   - Source type:Git
   - Clone URL: https://github.com/Microsoft/PartsUnlimitedMRP.git
 
-![ImportRepoGit](images/modulo2/labs/ImportRepoGit.png)
+![ImportRepoGit](images/ImportRepoGit.png)
 
 8 - Una vez importado, deberáis ser capaces de ver todo el contenido del repositorio que acabamos de importar, desde el submenú _Repos\Files_ en la parte izquierda.
 
@@ -75,7 +76,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
  
 3 - En la parte de **Select a template** baja hasta el final de la lista donde se encuentra la opción **Empty pipeline** y pincha en **Apply**.
 
-![PipelinesBuildsNewPipeTemplateView](images/modulo2/labs/PipelinesBuildsNewPipeTemplateView.png)
+![PipelinesBuildsNewPipeTemplateView](images/PipelinesBuildsNewPipeTemplateView.png)
 
 4 - Dentro de la pestaña **Task**, pincha en _Pipeline_, y en la parte derecha verás que te indica la necesidad de tener seleccionado un _Agent pool_ (o lo que es lo mismo, un grupo de máquinas donde ejecutar el código). Selecciona **Hosted VS2017**
 
@@ -191,4 +192,41 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
 
 ## Tarea 4: Añadir WhiteSource Bolt como una _build task_ dentro de nuestra pipeline.
 
+1 - Regresa a la build pipeline creada en los pasos anteriores, y bajo la tab **Tasks**, vete a la sección **Agent job 1**, pincha en el _+_ para añadir una nueva tarea. En la pestaña de _Utility_, baja hasta encontrar la task **WhiteSource Bolt** y añadela.
+
+![PipesWhiteSourceAdd](images/PipesWhiteSourceAdd.png)
+
+2 - Mueve la task que acabas de añadir para colocarla justo después de la tarea de **Gradle** llamada _Clients_, o lo que es lo mismo, la última tarea de Gradle.
+
+![PipesWhiteSourcePosition](images/PipesWhiteSourcePosition.png)
+
+3 - Acepta los valores por defecto de la tarea de **WhiteSource Bolt** y guarda los cambios de la pipeline.
+
 ## Tarea 5: Ejecutar nuestra build pipeline y ver el informe de seguridad resultante de WhiteSource Bolt.
+
+1 - Inicia una nueva ejecución de la pipeline pinchando en **Queue** y en la nueva ventana pincha **Queue** otra vez.
+
+![PipesWhiteSourceQueue](images/PipesWhiteSourceQueue.png)
+
+2 - En el baner resultante, pincha en el link con el número para ver el resultado de la ejecución.
+
+![PipesWhiteSourceBaner](images/PipesWhiteSourceBaner.png)
+
+3 - Observa el progreso de la ejecución y asegúrate que todos los pasos se completan correctamente.
+
+![PipesWhiteSourceExecution](images/PipesWhiteSourceExecution.png)
+
+4 - Cuando se complete la build pipeline, pincha en **Pipelines > WhiteSource Bolt** y observa los resultados obtenidos.
+
+5 - Avanza pr el informe para encontrar estos elementos:
+  - Vulnerability Score
+  - Vulnerable Libraries
+  - Severity Distribution
+  - Aging Vulnerable Libraries
+  - License Risks and Compliance and the associated Risk level: Apache 2.0 is listed with Risk level unknown, and two occurrences of it
+  - Outdated libraries section > there is one item list gradle-REL_1.0-milestone-1, view the version details and what the recommendations are i.e. Consider updating to latest version
+  - Inventory
+
+**NOTE**: ten en cuenta que hay una opción para exportar el informe.
+
+Enhorabuena!! acabas de crear una build pipeline de código abierto, y le has añadido _WhiteSource Bolt_ a la misma, pudiendo analizar todas las vulnerabilidades en cuestión de seguridad del código.

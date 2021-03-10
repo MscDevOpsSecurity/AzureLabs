@@ -54,7 +54,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
   - Source type:Git
   - Clone URL: https://github.com/Microsoft/PartsUnlimitedMRP.git
 
-![ImportRepoGit](images/modulo2/labs/ImportRepoGit.png)
+![ImportRepoGit](images/ImportRepoGit.png)
 
 8 - Una vez importado, deberáis ser capaces de ver todo el contenido del repositorio que acabamos de importar, desde el submenú _Repos\Files_ en la parte izquierda.
 
@@ -76,7 +76,7 @@ Nuestra primera tarea será la de crear un proyecto de Azure DevOps, para lo cua
  
 3 - En la parte de **Select a template** baja hasta el final de la lista donde se encuentra la opción **Empty pipeline** y pincha en **Apply**.
 
-![PipelinesBuildsNewPipeTemplateView](images/modulo2/labs/PipelinesBuildsNewPipeTemplateView.png)
+![PipelinesBuildsNewPipeTemplateView](images/PipelinesBuildsNewPipeTemplateView.png)
 
 4 - Dentro de la pestaña **Task**, pincha en _Pipeline_, y en la parte derecha verás que te indica la necesidad de tener seleccionado un _Agent pool_ (o lo que es lo mismo, un grupo de máquinas donde ejecutar el código). Selecciona **Hosted VS2017**
 

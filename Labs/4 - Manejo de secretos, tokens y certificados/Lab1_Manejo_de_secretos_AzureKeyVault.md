@@ -82,9 +82,41 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
 
 8 - Como hemos visto, la aplicación funciona, pero con la contraseña de la base de datos totalmente expuesta al público que use la aplicación web. Para solucionar este problema, nace nuestro primer resource dentro de Azure, **Azure KeyVault**.
 
-### Tarea 4: Crear un App Registration en Azure Active Directory (AD)
+### Tarea 4: Crear certificados de seguridad e instalarlos donde se requieran
 
-### Tarea 5: Crear certificados de seguridad e instalarlos donde se requieran
+Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.
+
+1 - Abrimos una consola de WLS ([Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
+
+2 - Ejecutamos el siguiente comando:
+
+```Bash
+openssl req -newkey rsa:2048 -nodes -keyout privateKey.pem -x509 -days 365 -out publicKey.pem
+```
+3 - Ahora nos preguntará una serie de cosas, a las cuales le daremos _Enter_ para dejar los valores por defecto, excepto
+
+### Tarea 5: Crear un App Registration en Azure Active Directory (AD)
+
+Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azure, es decir, vamos a crear una entidad dentro de Azure Active Directory, a la cual concederemos permisos de lectura sobre los secretos de Azure KeyVault, asumiendo que esta entidad posee el certificado creado en la tarea anterior.
+
+1 - Desde el portal de Azure, nos vamos al buscador de arriba y buscamos **Azure Active Directory**. Al pinchar sobre el link, nos llevará al propio AD.
+
+2 - En el menú de la izquierda, pinchamos sobre **App registrations**.
+
+![Azure_AD_AppRegistration](images/Azure_AD_AppRegistration.png)
+
+3 - En el menú superior, pinchamos en **+ New Registration** y nos abrirá una nueva ventana, donde pondremos los siguiente valores, dejando el resto por defecto:
+  - Name: cualquier nombre que queramos, y del cual nos acordemos después.
+ 
+4 - Pinchamos en _Register_ y listo, ya tenemos nuestra entidad registrada.
+
+5 - Antes de salir, vamos a tratar de guardar en algún sitio el _ClientId_, que nos va a hacer falta más adelante.
+
+![Azure_AD_AppRegistration_ClientID.png](images/Azure_AD_AppRegistration_ClientID.png.png)
+
+6 - Ya tenemos creada la entidad dentro de Azure AD, pero ahora necesitamos asignarle el certificado digital del que hablamos al inicio de la tarea. Por ello, sin salirnos de la ventana de la _App Registration_ a la que hemos sido redirigidos al registrarla, en el menú izquierdo, seleccionamos la opción **Certificates & Secrets**.
+
+7 - Ahora veremos un botón llamado _Upload certificate_ que vamos a clicar.
 
 ### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
@@ -124,15 +156,15 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
  
  5 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
  
-   5.1 - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
+   - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
     
-   5.2 - Le indicamos cuál es el nombre del secreto:
+   - Le indicamos cuál es el nombre del secreto:
 
 ```csharp
 var vaultName = root["KeyVault:Vault"];
 ```
 
-   5.3 - La siguiente línea conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
+   - La siguiente línea conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
       - Url en Azure del KeyVault: la obtenemos desde el portal de Azure, dentro de nuestro keyvault resource.
 
 ![AzKeyVault_Uri.png](images/AzKeyVault_Uri.png)

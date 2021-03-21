@@ -255,6 +255,14 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 ![InstallCertificateLocalhost_done](images/InstallCertificateLocalhost_done.png)
 
+7 - Ejecuta ahora la aplicación de C# y automáticamente se lanzará un navegador web, que no es otra cosa que el recurso web esperando peticiones REST. No lo cierres hasta que no termines de jugar con la app.
+
+8 - Abrimos nuestro cliente REST y volvemos a ejecutar los mismos comandos que hicimos al inicio, cuando todavía teníamos la contraseña en texto plano.
+
+9 - El resultado debería ser el mismo, es decir, deberíamos recibir la información de la base de datos Azure CosmosDB, pero ahora teniendo en cuenta que la contraseña se recupera de Azure KeyVault, gracias al certificado que tenemos instalado en nuestra máquina.
+
+10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
+
 ### Tarea 7: Eliminar todos los recursos creados.
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.

@@ -82,7 +82,7 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
 
 8 - Como hemos visto, la aplicación funciona, pero con la contraseña de la base de datos totalmente expuesta al público que use la aplicación web. Para solucionar este problema, nace nuestro primer resource dentro de Azure, **Azure KeyVault**.
 
-### Tarea 4: Crear certificados de seguridad e instalarlos donde se requieran
+### Tarea 4: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
 
 Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.
 
@@ -93,7 +93,20 @@ Necesitamos crear un certificado digital (self-signed en este caso), que más ad
 ```Bash
 openssl req -newkey rsa:2048 -nodes -keyout privateKey.pem -x509 -days 365 -out publicKey.pem
 ```
-3 - Ahora nos preguntará una serie de cosas, a las cuales le daremos _Enter_ para dejar los valores por defecto, excepto
+3 - Ahora nos preguntará una serie de cosas, a las cuales le daremos _Enter_ para dejar los valores por defecto, excepto para **Common Name** al cual le daremos: _MasterDevSecOps_.
+
+4 - Ahora con estas claves, vamos a generar el archivo \*.pfx, el cual es definitivamente el certificado que necesitamos. Para ellos ejecutamos en la misma consola el siguiente comando:
+
+```Bash
+openssl pkcs12 -inkey privateKey.pem -in publicKey -export -out certificate.pfx
+```
+
+5 - A continuación nos pedirá una contraseña, y mucho ojo con lo que ponemos, porque no quedará registro de ella en ningún otro sitio, es decir, necesitamos guardarla o recordarla para más adelante.
+
+![CertificatesAndKeys](images/CertificatesAndKeys.png)
+
+6 - Comprueba que se han generado estos 3 elementos en la carpeta donde ejecutaste los comandos, y con los mismos nombres que le proporcionaste.
+
 
 ### Tarea 5: Crear un App Registration en Azure Active Directory (AD)
 
@@ -112,11 +125,36 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 5 - Antes de salir, vamos a tratar de guardar en algún sitio el _ClientId_, que nos va a hacer falta más adelante.
 
-![Azure_AD_AppRegistration_ClientID.png](images/Azure_AD_AppRegistration_ClientID.png.png)
+![Azure_AD_AppRegistration_ClientID](images/Azure_AD_AppRegistration_ClientID.png)
 
 6 - Ya tenemos creada la entidad dentro de Azure AD, pero ahora necesitamos asignarle el certificado digital del que hablamos al inicio de la tarea. Por ello, sin salirnos de la ventana de la _App Registration_ a la que hemos sido redirigidos al registrarla, en el menú izquierdo, seleccionamos la opción **Certificates & Secrets**.
 
-7 - Ahora veremos un botón llamado _Upload certificate_ que vamos a clicar.
+7 - Ahora veremos un botón llamado _Upload certificate_ que vamos a clicar. Nos pedirá la clave pública de un certificado que podremos indicar desde nuestro equipo. Vamos a seleccionar la clave denominada _publicKey.pem_ que generamos en la tarea anterior y después **Add**. No necesitamos la contraseña aquí, porque esta es la clave que cualquier aplicación utilizará para comunicarse con nosotros (de ahí lo de pública).
+
+![Certificate_Thumbprint](images/Certificate_Thumbprint.png)
+
+8 - Como podemos observar en la imagen anterior, al proporcionar la clave pública, se nos muestra el _thumbprint_ del propio certificado, que vamos a necesitar guardar para incrustarlo en nuestro código de C#. Este thumbprint nos servirá para obtener el certificado instalado en nuestro equipo local que contenga ese mismo thumbprint.
+
+9 - Volvemos a nuestro resource group, y desde ahí al KeyVault.
+
+10 - Dentro del menú izquierdo, pinchamos en **Access policies** y luego al link _+ Add Access Policy_.
+
+  > ℹ️ Lo que vamos a hacer ahora, es darle permisos a esa entidad que acabamos de registrar en AD, para leer de nuestro Azure KeyVault.
+  
+11 - Lo único que vamos a necesitar configurar son los **Secret permissions**. Desmarcaremos todos excepto _Get_ and _List_, lo que corresponde al principio de  [_least privilege_](https://www.cyberark.com/what-is/least-privilege/).
+
+![AzKeyVault_AcessPolicies](images/AzKeyVault_AcessPolicies.png)
+
+12 - Ahora en la parte de **Select principal**, vamos a buscar por el nombre que le dimos a la entidad cuando la registramos anteriormente en Azure AD.
+
+![AzKeyVault_AcessPolicies_Principal](images/AzKeyVault_AcessPolicies_Principal.png)
+
+13 - Clicamos en _Select_ y luego en _Add_. Esto nos llevará de nuevo a la ventana principal del keyVault, donde no tendremos que olvidarnos de clicar en **Save**, o todos nuestros cambios anteriores se perderán, aunque estemos viendo aparecer nuestra nueva entidad en la sección de _APPLICATION_.
+
+![AzKeyVault_AcessPolicies_Principal_registered](images/AzKeyVault_AcessPolicies_Principal_registered.png)
+
+14 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
+
 
 ### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
@@ -129,13 +167,26 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
   - Name: Module4Lab1-CosmosDb--Key
   - Value: pegamos la contraseña que hemos copiado desde nuestro Azure CosmosDB (y pegado en la tarea anterior en el código).
 
-  > ℹ️ Nota: es importante mantener la estructura en el nombre, porque así nos será mucho más fácil recuperarla desde C#. Si nos fijamos detenidamente, los valores corresponden   al nombre de la aplicación de C#, luego viene el nombre de la sección dentro del archivo de configuración, y finalmente el nombre de la propiedad a recuperar.
+  > ℹ️ Nota: es importante mantener la estructura en el nombre, porque así nos será mucho más fácil recuperarla desde C#, ya que utilizaremos un proveedor de credenciales. Si nos fijamos detenidamente, los valores corresponden al nombre de la aplicación de C#, luego viene el nombre de la sección dentro del archivo de configuración, y finalmente el nombre de la propiedad a recuperar.
 
-3 - Para que tenga sentido todo lo que estamos haciendo, es necesario también, que eliminemos la contraseña del código C#. En su lugar podemos poner algo así _<Set-by-Keyvault>_ como se muestra a continuación.
+3 - Para que tenga sentido todo lo que estamos haciendo, es necesario también, que eliminemos la contraseña del código fuente. En su lugar podemos poner algo así _<Set-by-Keyvault>_ como se muestra a continuación.
   
 ![AzKeyVault_RemoveKeyFromCode](images/AzKeyVault_RemoveKeyFromCode.png)
 
-4 - Ahora llega el momento de introducir nuevo código para que nuestra aplicación se conecte automáticamente con Azure al arrancar. Por eso nos vamos al código en el editor, y abrimos el archivo _Program.cs_. Ahora pegamos el siguiente código donde corresponde:
+4 - Antes de empezar con el código, es necesario instalar un paquete NuGet en nuestra aplicación:
+  - Microsoft.Extensions.Configuration.AzureKeyVault
+
+5 - Ahora tendremos que introducir en el archivo de configuracion _appsettings.json_ un nuevo grupo de variables, como se muestra a continuación (no importa si al principio o al final).
+
+```json
+  "KeyVault": {
+    "Vault": "Modulo4Lab1-akv",
+    "ClientId": "cccce832-8950-4f87-a713-5ffa9f37e0fa",
+    "Thumbprint": "601F872ADCEECB4C496891044BB07D6C351EAC5E"
+  }
+```
+
+6 - Ahora llega el momento de introducir nuevo código para que nuestra aplicación se conecte automáticamente con Azure al arrancar. Por eso nos vamos al código en el editor, y abrimos el archivo _Program.cs_. Ahora pegamos el siguiente código donde corresponde:
 
 ```csharp
     public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -154,7 +205,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
                 });
 ```
  
- 5 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
+ 7 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
  
    - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
     
@@ -167,7 +218,7 @@ var vaultName = root["KeyVault:Vault"];
    - La siguiente línea conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
       - Url en Azure del KeyVault: la obtenemos desde el portal de Azure, dentro de nuestro keyvault resource.
 
-![AzKeyVault_Uri.png](images/AzKeyVault_Uri.png)
+![AzKeyVault_Uri](images/AzKeyVault_Uri.png)
 
       - El ClientId: este es el ClientId que hemos copiado al hacer el registro de la WebApp en Azure AD.
       - El certificado self-signed instalado en nuestra computadora, creado en la tarea 4.
@@ -175,16 +226,36 @@ var vaultName = root["KeyVault:Vault"];
 
 > ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-5.0#use-a-key-name-prefix).
 
-6 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
+8 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
 
 Algunos pensaréis: la contraseña no está en texto plano en la configuración, pero ahora tenemos la URL + ClientId + thumbprint, ¿podríamos acceder nosotros también usando esos mismos datos, si encontrásemos la manera de acceder al código? La respuesta es no, porque necesitas tener el certificado instalado en tu propia máquina, y eso no lo tiene cualquiera, solo nosotros.
 
-![CertificadoNoEncontrado.png](images/CertificadoNoEncontrado.png)
+![CertificadoNoEncontrado](images/CertificadoNoEncontrado.png)
 
 
 ### Tarea 6: Comprobemos de nuevo la aplicación
 
-### Tarea 7: Eliminar todos los recursos creados en Azure.
+Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que contenga el código, vamos a necesitar instalar el certificado que creamos.
+
+1 - Vamos a la carpeta donde tenemos el certificado con las claves, y le damos doble clic al archivo _certificate.pfx_.
+
+![InstallCertificateLocalhost](images/InstallCertificateLocalhost.png)
+
+2 - Seleccionamos _Current User_ y le damos a **Next**.
+
+3 - En la siguiente ventana nos indica la ruta desde donde se está cargando el mismo. **Next**.
+
+![InstallCertificateLocalhost_password](images/InstallCertificateLocalhost_password.png)
+
+4 - Ahora nos pedirá la contraseña del certificado. Esta es la contraseña que nos pidió la consola de WSL cuando creamos el certificado con openSSL. La introducimos y le damos a **Next** (dejando el resto de campos por defecto).
+
+5 - Si la contraseña es correcta, en la siguiente ventana solo tendremos que darle a **Next** una vez más.
+
+6 - Clicar **Finish** y ya tendremos instalado nuestro certificado Self-Signed en nuestro pc.
+
+![InstallCertificateLocalhost_done](images/InstallCertificateLocalhost_done.png)
+
+### Tarea 7: Eliminar todos los recursos creados.
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
@@ -198,3 +269,12 @@ az group list --query "[?starts_with(name,'AzureLabsModulo4Lab1')].name" --outpu
 ```bash
 az group list --query "[?starts_with(name,'AzureLabsModulo4Lab1')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
 ```
+
+4 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+  - Tecla "Windows" + "R" para sacar la aplicación de ejecución.
+  - Escribimos el comando **certmgr.exe** y le damos a _OK_.
+  - Dentro de la ventana del gestor de certificados, vamos al menú **Add/Remove Snap-in**, seleccionamos _Certificates_ en la parte izquierda y lo añadimos al listado de la derecha, luego selecciona _My User Account_ y _Finish_.
+  
+![Certificate_localhost_Delete](images/Certificate_localhost_Delete.png)
+
+  - Clic _OK_ y ya veremos el listado de certificados en el árbol -> Console Root/Certificates - Current User/Personal/Certificates

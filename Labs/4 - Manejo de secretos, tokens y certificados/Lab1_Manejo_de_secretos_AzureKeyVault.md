@@ -65,9 +65,11 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
 
 ![AzCosmosDB_PK](images/AzCosmosDB_PK.png)
 
-6 - Ahora sí, vamos a ejecutar nuestra aplicación, la cual será un servicio web que se quedará esperando por peticiones REST (GET, PUT, POST, DELETE..).
+6 - Otra cosa que deberemos cambiar es el valor de la propiedad **Account**, porque es la url que nos ha proporcionado nuestro CosmosDB, que en cada caso puede ser diferente. Simplemente comprueba que coincide con la tuya, de lo contrario reemplazala.
 
-7 - Una vez esté la aplicación corriendo, nos dirigimos al cliente Rest que tengamos en nuestro laptop y vamos a ejecutar la siguiente request:
+7 - Ahora sí, vamos a ejecutar nuestra aplicación, la cual será un servicio web que se quedará esperando por peticiones REST (GET, PUT, POST, DELETE..).
+
+8 - Una vez esté la aplicación corriendo, nos dirigimos al cliente Rest que tengamos en nuestro laptop y vamos a ejecutar la siguiente request:
   - Lo primero que vamos a hacer, para facilitar la ejecución del lab, es quitar la autenticación que nos exije nuestro cliente REST (no es buena práctica hacer esto, y por ello vamos a volver a restaurarlo al finalizar la misma). Seguro que el cliente tiene algún tipo de configuración o settings, que os permiten deshabilitar la validación SSL, hacedlo.
 
 ![Remove_SSL_validation_postman](images/Remove_SSL_validation_postman.png)
@@ -80,7 +82,9 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
 
   - La respuesta tiene que ser casi inmediata, ya que estamos trabajando en localhost. En la sección **Response** del cliente REST, debéis tener algo como lo que se muestra a continuación, que no es otra cosa que el contenido extraído de la base de datos CosmosDB en Azure. Podéis probar a introducir nuevos valores desde el propio portal, volver a ejecutar este comando y ver los resultados, para aseguraros que realmente se extraen de ahí y no hay truco.
 
-8 - Como hemos visto, la aplicación funciona, pero con la contraseña de la base de datos totalmente expuesta al público que use la aplicación web. Para solucionar este problema, nace nuestro primer resource dentro de Azure, **Azure KeyVault**.
+![postman_get_items_localhost_result](images/postman_get_items_localhost_result.png)
+
+9 - Como hemos visto, la aplicación funciona, pero con la contraseña de la base de datos totalmente expuesta al público que use la aplicación web. Para solucionar este problema, nace nuestro primer resource dentro de Azure, **Azure KeyVault**.
 
 ### Tarea 4: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
 

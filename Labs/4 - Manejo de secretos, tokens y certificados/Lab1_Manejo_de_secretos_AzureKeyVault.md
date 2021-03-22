@@ -86,6 +86,11 @@ az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-grou
 
 9 - Como hemos visto, la aplicación funciona, pero con la contraseña de la base de datos totalmente expuesta al público que use la aplicación web. Para solucionar este problema, nace nuestro primer resource dentro de Azure, **Azure KeyVault**.
 
+  > ℹ️ Si por alguna razón obtienes un error al inicial la aplicación relativa a IIS, puede que sea porque tienes el puerto de inicio ocupado por otro recurso del sistema. Para buscar un puerto vacío, prueba la siguiente llamada desde un terminal:
+```bash
+netsh interface ipv4 show excludedportrange protocol=tcp
+```
+
 ### Tarea 4: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
 
 Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.

@@ -20,7 +20,6 @@ El objetivo de esta práctica es entender la responsabilidad que delegamos en Az
 Para poder empezar con la práctica, vamos a necesitar:
 - Azure KeyVault creado en un Azure ResourceGroup (RG).
 - Base de datos CosmosDB creada en el mismo Azure RG.
-- Un Azure App Service creado en el mismo Azure RG.
 - Cliente Rest para su uso desde vuestro pc personal. Puede ser un cliente online, como por ejemplo [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related) de Google Chrome.
 - Visual Code instalado en vuestro pc.
 
@@ -53,7 +52,8 @@ az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file
   
   ![AzureShellWarning](images/AzureShellWarning.png)
   
-  - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 3 recursos que necesitamos: Azure KeyVault, CosmosDb y el App Service (Web App) sin más intervención.
+  - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 2 recursos que necesitamos: Azure KeyVault y la base de datos CosmosDb sin más intervención.
+  
 4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
 
 ### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.

@@ -22,11 +22,9 @@ Para poder empezar con la práctica, vamos a necesitar:
 - Base de datos CosmosDB creada en el mismo Azure RG.
 - Un Azure App Service creado en el mismo Azure RG.
 - Cliente Rest para su uso desde vuestro pc personal. Puede ser un cliente online, como por ejemplo [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related) de Google Chrome.
-- Visual Code instalado en vuestro pc.
+- [Visual Studio Code](https://code.visualstudio.com/download) instalado en vuestro pc.
 
 Para la preparación de este lab, os vamos a proveer de todo lo necesario para que podáis levantar la infraestructura en Azure de forma automática, mediante la ejecución de ARM templates. Esto nos permitirá tener funcionando el Azure KeyVault, CosmosDB y el App Service.
-
-Estos templates los podréis localizar en la carpeta de recursos del módulo 4, en la ruta "AzureLabs/Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/ARM_templates"
 
 La estructura que vamos a crear, responde al siguiente diseño. Puede parecer muy complejo, pero es lo más sencillo que nos vamos a encontrar en el manejo de secretos dentro de Azure.
 

@@ -35,11 +35,20 @@ La estructura que vamos a crear, responde al siguiente diseño. Puede parecer mu
 ### Tarea 1 : Vamos a cargar los ARM templates en vuestra cuenta de Azure.
 1 - Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo).
 2 - Nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
-3 - Creamos un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
-  - Desde el shell del portal de Azure, ejecutamos el siguiente comando.    
+3 - Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
+  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁 Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/ARM_templates/
+  - Desde el shell del portal de Azure, los cargamos mediante el botón _Upload/Download files_ (uno cada vez).
+  - Ahora tendremos los archivos cargados en nuestra raíz del shell de bash, con lo que podemos ejecutar el primer comando para desplegar el ResourceGroup:    
+
 ```sh
-az deployment group create --name AzureLabsModulo4Lab1Deployment --resource-group AzureLabsModulo4Lab1 --template-uri "https://github.com/MscDevOpsSecurity/AzureLabs/blob/6239ab3be061c40e86c2da269feb69455c1cdeac/Recursos/4%20-%20Manejo%20de%20secretos,%20tokens%20y%20certificados/ARM%20templates/placeholder.md" --parameters storageAccountType=Standard_GRS
+az deployment sub create --location westeurope --template-file template-rg.json
 ```
+  - Ahora solo nos queda ejecutar el siguiente comando para crear los demás recursos dentro:
+
+```sh
+az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file template.json
+```
+
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
   
   ![AzureShellWarning](images/AzureShellWarning.png)

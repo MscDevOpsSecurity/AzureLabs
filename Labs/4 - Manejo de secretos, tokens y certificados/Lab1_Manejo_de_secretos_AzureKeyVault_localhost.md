@@ -21,7 +21,7 @@ Para poder empezar con la práctica, vamos a necesitar:
 - Azure KeyVault creado en un Azure ResourceGroup (RG).
 - Base de datos CosmosDB creada en el mismo Azure RG.
 - Cliente Rest para su uso desde vuestro pc personal. Puede ser un cliente online, como por ejemplo [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related) de Google Chrome.
-- Visual Code instalado en vuestro pc.
+- [Visual Studio Code](https://code.visualstudio.com/download) instalado en vuestro pc.
 
 Para la preparación de este lab, os vamos a proveer de todo lo necesario para que podáis levantar la infraestructura en Azure de forma automática, mediante la ejecución de ARM templates. Esto nos permitirá tener funcionando el Azure KeyVault, CosmosDB y el App Service.
 

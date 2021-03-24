@@ -65,7 +65,7 @@ Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la ta
 
 Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish desde nuestro entorno de desarrollo al App Service que hemos creado en Azure.
 
-1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú _View/Command Palette_ y se nos desplegará una barra superior para escribir comandos.
+1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú **View/Command Palette** y se nos desplegará una barra superior para escribir comandos.
 
 ![VSCode_CommandPalette](images/VSCode_CommandPalette.png)
   
@@ -75,7 +75,7 @@ Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish d
 Sign in to Azure Cloud
 ```
 
-3 - De aquí saltaremos a la web de Azure para hacer log in, seleccionamos nuestra cuenta y metemos las credenciales que nos pida. Apartir de aquí, ya estaremos logueados en Azure dentro de VSCode.
+3 - De aquí saltaremos a la web de Azure para hacer log in, seleccionamos nuestra cuenta y metemos las credenciales que nos pida. A partir de aquí, ya estaremos logueados en Azure dentro de VSCode.
 
 ![VSCode_CommandPalette_login](images/VSCode_CommandPalette_login.png)
 
@@ -89,14 +89,26 @@ Sign in to Azure Cloud
 dotnet publish --configuration Release
 ```
 
-6 - Hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\netcoreapp3.1\publish) y seleccionamos _Deploy to Web App.._.
+6 - Hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\netcoreapp3.1\publish) y seleccionamos **Deploy to Web App..**.
 
 ![VSCode_DeployMenu](images/VSCode_DeployMenu.png)
 
-7 - Seleccionamos la WebApp de la lista. Visual Studio Code te preguntará si quieres sobreescribir el contenido existente de la App. 
+7 - Seleccionamos el App Service de la lista(*). 
 
-8 - Clic en Deploy para confirmar.
+![VSCode_Deploy_Choose](images/VSCode_Deploy_Choose.png)
 
+8 - Visual Studio Code te preguntará si quieres sobreescribir el contenido existente de la Web App. Le damos a **Deploy** para indicar una respuesta afirmativa.
+
+![VSCode_Deploy_Warning](images/VSCode_Deploy_Warning.png)
+![VSCode_Deploy_Deploying](images/VSCode_Deploy_Deploying.png)
+
+9 - Al final del proceso veremos una opción como esta, donde podremos lanzar la web directamente.
+
+![VSCode_Deploy_Browse](images/VSCode_Deploy_Browse.png)
+
+Finalmente, cuando la web se lance, el certificado se instalará automáticamente desde Azure en la máquina que despliega, con lo que no tendremos que preocuparnos de los permisos de Azure KeyVault, ya estarán concedidos.
+
+  > ℹ️ (*) Si no somos capaces de ver nuestro AppService en la lista desplegable al hacer el _Deploy to Web App.._ del paso 6, tendremos que reiniciar el terminal de VSCode y ya aparecerá. Suele pasar cuando hacemos log-in con nuestra cuenta de Azure, no encuentra todos los recursos de forma inmediata.
 
 ### Tarea 4: Eliminar todos los recursos creados.
 

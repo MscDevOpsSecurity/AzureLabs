@@ -17,7 +17,7 @@
             "type": "Microsoft.DocumentDB/databaseAccounts",
             "apiVersion": "2020-09-01",
             "name": "[parameters('databaseAccounts_modulo4lab1_cosmosdb_name')]",
-            "location": "West Europe",
+            "location": "Central US",
             "tags": {
                 "defaultExperience": "Core (SQL)",
                 "hidden-cosmos-mmspecial": "",
@@ -41,7 +41,7 @@
                 },
                 "locations": [
                     {
-                        "locationName": "West Europe",
+                        "locationName": "Central US",
                         "provisioningState": "Succeeded",
                         "failoverPriority": 0,
                         "isZoneRedundant": false
@@ -118,7 +118,7 @@
                 "enabledForDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enabledForTemplateDeployment": false,
-                "enableSoftDelete": true
+                "enableSoftDelete": false
             }
         },
         {

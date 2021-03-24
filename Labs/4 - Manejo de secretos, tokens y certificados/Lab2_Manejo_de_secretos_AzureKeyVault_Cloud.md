@@ -65,11 +65,40 @@ Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la ta
 
 Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish desde nuestro entorno de desarrollo al App Service que hemos creado en Azure.
 
-1 - Teniendo el código en Visual Studio Code, vamos a necesitar conectarnos con Azure.
+1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú _View/Command Palette_ y se nos desplegará una barra superior para escribir comandos.
+
+![VSCode_CommandPalette](images/VSCode_CommandPalette.png)
+  
+2 - Escribimos:
+
+```bash
+Sign in to Azure Cloud
+```
+
+3 - De aquí saltaremos a la web de Azure para hacer log in, seleccionamos nuestra cuenta y metemos las credenciales que nos pida. Apartir de aquí, ya estaremos logueados en Azure dentro de VSCode.
+
+![VSCode_CommandPalette_login](images/VSCode_CommandPalette_login.png)
+
+![VSCode_CommandPalette_logged](images/VSCode_CommandPalette_logged.png)
+
+4 - Cerramos la pestaña del navegador y nos volvemos al VSCode.
+
+5 - Abrimos la ventana del terminal y ejecutamos el comando siguiente para compilar el proyecto (si ya estaba compilado no hace falta).
+
+```powershell
+dotnet publish --configuration Release
+```
+
+6 - Hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\netcoreapp3.1\publish) y seleccionamos _Deploy to Web App.._.
+
+![VSCode_DeployMenu](images/VSCode_DeployMenu.png)
+
+7 - Seleccionamos la WebApp de la lista. Visual Studio Code te preguntará si quieres sobreescribir el contenido existente de la App. 
+
+8 - Clic en Deploy para confirmar.
 
 
-
-### Tarea 7: Eliminar todos los recursos creados.
+### Tarea 4: Eliminar todos los recursos creados.
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:

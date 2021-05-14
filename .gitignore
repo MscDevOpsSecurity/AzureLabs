@@ -4,3 +4,5 @@
 
 /.vs
 /Recursos/.vs/slnx.sqlite
+/Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/source/final/obj/Debug/netcoreapp3.1
+/Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/source/final/obj/Release/netcoreapp3.1

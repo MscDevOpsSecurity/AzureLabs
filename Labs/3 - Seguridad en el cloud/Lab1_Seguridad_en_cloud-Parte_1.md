@@ -33,7 +33,8 @@ Esta será la topología de nuestro lab.
 
 ### Instrucciones
 
-#### Initialize your environment
+#### Inicializa tu entorno
+
 1 - Lo primero es loguearte en el [portal de Azure](https://portal.azure.com/) con tu subscripción. Si no cuentas con una subscripción válida, puedes crear una cuenta gratuita en este [enlace](https://azure.microsoft.com/free/).
 
 2 - Abrimos el Azure Cloud Shell desde el portal de Azure haciendo clic en el icono del Shell.
@@ -96,7 +97,7 @@ az sql db create -n $sql_db_name -s $sql_server_name -g $rg -e Basic -c 5 --no-w
 
 > Si os sentís más comodos, podéis poner en la variable _$sql_password_ lo que os guste más, para poder acordaros luego mejor, sino se generará una aleatoria.
 
-#### Create an Azure Container Instance inside of a Virtual Network
+#### Crear un Azure Container Instance dentro de una Red Virtual.
 
 Ahora que ya tenemos todos los componentes necesarios, podemos desplegar el ACI. Vamos a utilizar el cliente de Azure para esto, donde especificaremos el **Fully-Qualified Domain Name** y las credenciales de Azure SQL Database, de manera que el ACI pueda conectarse a ella (volver a ejecutar el comando si obtenéis un error la primera vez).
 

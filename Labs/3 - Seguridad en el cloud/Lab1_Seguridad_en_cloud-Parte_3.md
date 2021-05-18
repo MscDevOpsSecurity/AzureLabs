@@ -22,18 +22,19 @@ Los contenedores del mismo grupo de contenedores compartirán algunas propiedade
 > Nota: el concepto de "_container groups_" es equivalente a los _pods_ en Kubernetes.
 
 ### Objetivos
--
+
+El objetivo de esta parte es utilizar una estructura ya creada (ACI), e introducir seguridad en las peticiones web, de manera que todo el tráfico se redireccione a través de un único puerto (en este caso será el 443) y solo se decodifique el contenido dentro del propio contenedor.
 
 ### Conceptos
 
-- SSL (Secure Socket Layer):
-- Pods:
-- nginx:
-- Self-signed certificate:
+- SSL ([Secure Socket Layer](https://www.websecurity.digicert.com/security-topics/what-is-ssl-tls-https))
+- Pods: son la unidad de computación desplegable más pequeña de Kubernetes. Lee más [aquí](https://kubernetes.io/docs/concepts/workloads/pods/).
+- nginx: Servidor web y proxy. Lee más [aquí](https://www.nginx.com/resources/wiki/).
+- Certificado self-signed: es un certificado firmado por nosotros mismos, que solo tiene validez para entornos de desarrollo. No está validado para entornos de producción.
 
 ### Duración
 
-45 minutos
+35-50 minutos
 
 ### Instrucciones
 
@@ -184,8 +185,10 @@ az container create -g $rg --file $aci_yaml_file
 
 > Nota: si no lo borraste primero en el paso anterior, ejecuta el comando: **az container delete -n $aci_name -g $rg -y**
 
+![Close look at sidecar container](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_Azure_sidecar_pattern_closeLookAt.png)
 
-Si nos vamos a la UI del portal de Azure, podremos ver cómo se ha creado esta configuración en cada contenedor:
+
+Si nos vamos a la UI del portal de Azure, podremos ver cómo se ha creado esta configuración dentro cada contenedor. Para ello nos vamos al _resouce group_ que hemos creado para este lab, y accedemos al recurso llamado **learnaci**. Una vez dentro, en la parte izquierda, pinchamos en el submenú "_Settings/Containers_".
 
 | NGINX container|
 |--|

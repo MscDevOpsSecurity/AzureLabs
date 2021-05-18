@@ -18,13 +18,16 @@ El DNS desempeña un papel fundamental en la funcionalidad requerida, ya que el 
 ![Imagen topologia parte 4](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4.png)
 
 ### Objetivos
-TBD
+
+El objetivo es ser capaz de acceder desde el ACI a la base de datos Azure SQL utilizando su dirección IP privada. De esta manera aseguramos aún más el acceso a la misma, que ya de por sí está protegido por el firewall propio.
 
 ### Conceptos
-TBD
+
+- FQDN (Fully Qualified Domain Name): nombre completo de dominio de un equipo específico (\<nombreVM\>.\<dominio\>.com).
 
 ### Duración
-TBD
+
+30-45 minutos
 
 ### Instrucciones
 
@@ -78,4 +81,31 @@ ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "nslookup ${sql_serv
 
 > Fíjate que la VM dentro de la Red Privada Virtual, debería resolver ya el FQDN para la base de datos Azure SQL contra la dirección IP privada del endpoint privado.
 
-2 - Si eliminaste el ACI en el ejercicio anterior, puedes volver a recrearla utilizando el mismo archivo YAML. Date cuenta que nada ha cambiado para el ACI, dado que sigue accediendo
+2 - Si eliminaste el ACI en el ejercicio anterior, puedes volver a recrearla utilizando el mismo archivo YAML. Date cuenta que nada ha cambiado para el ACI, dado que sigue accediendo a la base de datos usando el FQDN.
+
+```bash
+az container create -g $rg --file $aci_yaml_file
+```
+
+3 - Podemos verificar que ACI esta funcionando y listo para usarse mediante el endpoint `api/healthcheck`. También podemos verificar la resolución de nombre correcta contra la dirección IP privada con el endpoint `api/dns`. Finalmente, podemos comprobar la accesibilidad de la base de datos mediante los endpoints `api/sqlversion` y `api/sqlsrcip`.
+
+```bash
+# Test
+aci_ip=$(az container show -n $aci_name -g $rg --query 'ipAddress.ip' -o tsv) && echo $aci_ip
+ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -ks https://$aci_ip/api/healthcheck"
+ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -ks https://$aci_ip/api/dns?fqdn=${sql_server_name}.database.windows.net"
+ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -ks https://$aci_ip/api/sqlversion"
+ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -ks https://$aci_ip/api/sqlsrcip"
+```
+
+> Nota: Algunos servicios de Azure automáticamente deshabilitan su endpoint público cuando existe otro privado, pero no todos. En el caso de las base de datos Azure SQL, el endpoint público seguirá funcionando incluso después de configurar el privado. Para poder deshabilitar el acceso desde intenet a la base de datos, se necesita incluir más configuración en el propio firewall de Azure SQL.
+
+4 - A través de la salida anterior en el Azure CLI, que la Azure SQL API ahora es capaz de ver que se las llamadas desde el ACI proceden de su dirección IP privada. Dado que el firewall de la base de datos de Azure SQL solo se usa para proteger el endpoint público, es por eso que no hemos tenido que cambiar o añadir ninguna regla al mismo.
+
+![nslookup to Public IP2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4_nslookup2.png)
+
+Ya podemos eliminar el contenedor y proceder a la siguiente parte del lab.
+
+```bash
+az container delete -n $aci_name -g $rg -y
+```

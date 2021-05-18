@@ -26,7 +26,7 @@ Esta será la topología de nuestro lab.
 - ACI: Azure Container Instance.
 - VM: máquina virtual.
 - SKU: pago por uso ( [Stock-keeping-Unit](https://docs.microsoft.com/en-us/azure/search/search-sku-tier))
-- Fqdn (Fully Qualified Domain Name): nombre completo de dominio de un equipo específico (<nombreVM>.<dominio>.com).
+- Fqdn (Fully Qualified Domain Name): nombre completo de dominio de un equipo específico (\<nombreVM\>.\<dominio\>.com).
 
 ### Duración
 20 minutos

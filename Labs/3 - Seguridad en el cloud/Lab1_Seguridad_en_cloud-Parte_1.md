@@ -21,7 +21,7 @@ Esta será la topología de nuestro lab.
 - Desplegar una VM dentro de la red privada virtual para testear nuestra API.
 - Desplegar una base de datos Azure SQL. 
 
-### Objetivos
+### Conceptos
 
 - ACI: Azure Container Instance.
 - VM: máquina virtual.

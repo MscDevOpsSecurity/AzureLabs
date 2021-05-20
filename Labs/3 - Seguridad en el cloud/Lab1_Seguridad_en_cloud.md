@@ -42,4 +42,5 @@ TBD
 #### [5 - (Extra) Desplegar ACIs usando el contenedor de inicialización.](Lab1_Seguridad_en_cloud-Parte_5.md)
 
 ### Ejercicio para casa
-TBD
+
+#### [Test final de práctica](Lab1_Seguridad_en_cloud-Test.md)

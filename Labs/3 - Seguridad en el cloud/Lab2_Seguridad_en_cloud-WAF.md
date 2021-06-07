@@ -103,5 +103,14 @@ En la carpeta de [recursos](../../Recursos/) vais a encontrar un archivo zip lla
 Cuando acabe de desplegar, le podemos dar a _Browse Website_ para ver el resultado. Puede tardar un poco porque tenga que cachear la web primero, pero ya deberíamos ver 'Contoso clinic' abierto en el navegador como nuestra web de uso.
 
 #### 3 - Crear el WAF
+
+Ahora mismo, el dibujo inicial está así:
+
+![WAF Picture2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture_b.jpg)
+
+Vamos a tener que definir todo el sistema de seguridad que da acceso a nuestra web, para lo cual empezaremos por el _Web Application Firewall_.
+
+- Partiendo de la infraestructura que tenemos
+
 #### 4 - Creamos el Azure Front Door asociado al WAF
 #### 5 - Probamos la inyección SQL sobre la web

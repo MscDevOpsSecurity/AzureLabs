@@ -16,6 +16,12 @@ En este lab aprenderemos algunas herramientas de Azure con las cuales podremos a
 
 ### Acrónimos
 
+### Prerrequisitos
+
+- Tener una suscripción de Azure vigente.
+- Tener instalado VS Code.
+- Tener instalado el plug-in de VS Code para Azure App Services.
+
 ### Duración
 TBD
 
@@ -68,6 +74,34 @@ Puede tardar varios minutos en levantarse toda la infraestructura, pero cuando t
 ![WebSQL_DeploymentCompleto](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_deployed.png)
 
 #### 2 - Publicar el contenido web que necesitamos para el laboratorio.
+
+Vamos a comprobar que efecticamente podemos navegar hacia la web que acabamos de desplegar. Para ello, dentro del grupo de recursos, seleccionamos el del App Service. Una vez dentro, en la parte superior vamos a encontrar la **URL** que contendrá la web desplegada. La copiamos y la pegamos en el navegador (o pinchamos sobre la propia url en azul) donde veremos algo así.
+
+![WebSQL_DeploymentCompleto](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_DummyWeb.png)
+
+Esto significa que el desplegado ha funcionado como esperábamos, pero claro, esta no es la web que necesitaremos para poder explotar ciertos agujeros de seguridad. Vamos a necesitar una que esté preparada.
+
+En la carpeta de [recursos](../../Recursos/) vais a encontrar un archivo zip llamado _ContosoClinic.zip_, que contendrá la página web que estamos buscando. 
+
+- Descargamos el archivo zip y lo descomprimimos en local.
+- Abrimos VS Code.
+- Ahora 'Archivo > Abrir carpeta' y mostramos dicha carpeta de nuestro local con la web descomprimida.
+- El siguiente paso será publicar el contenido de la carpeta actual en el App Service que creamos dentro de nuestro grupo de recursos de Azure. Para ello, pinchamos en el icono de Azure de la barra lateral izquieda y se nos mostrarán las suscripciones activas.
+
+![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure.png)
+
+- A continuación, con botón derecho sobre la suscripción, seleccionamos la opción **Deploy to Web App**.
+
+![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure2.png)
+
+- En la parte superior de VS Code, nos pedirá la ruta donde está el contenido web a desplegar. Lo seleccionamos y automáticamente nos preguntará si queremos hacer el despliegue, y confirmamos en **Deploy**.
+
+![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure4_Overwrite.png)
+
+![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure5_Deploy.png)
+
+Cuando acabe de desplegar, le podemos dar a _Browse Website_ para ver el resultado. Puede tardar un poco porque tenga que cachear la web primero, pero ya deberíamos ver 'Contoso clinic' abierto en el navegador como nuestra web de uso.
+
 #### 3 - Crear el WAF
 #### 4 - Creamos el Azure Front Door asociado al WAF
 #### 5 - Probamos la inyección SQL sobre la web

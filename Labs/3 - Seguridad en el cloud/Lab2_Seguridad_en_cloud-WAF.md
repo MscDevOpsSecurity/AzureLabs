@@ -102,15 +102,74 @@ En la carpeta de [recursos](../../Recursos/) vais a encontrar un archivo zip lla
 
 Cuando acabe de desplegar, le podemos dar a _Browse Website_ para ver el resultado. Puede tardar un poco porque tenga que cachear la web primero, pero ya deberíamos ver 'Contoso clinic' abierto en el navegador como nuestra web de uso.
 
-#### 3 - Crear el WAF
+#### 3 - Creamos el Azure Front Door
 
 Ahora mismo, el dibujo inicial está así:
 
-![WAF Picture2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture_b.jpg)
+![WAF Picture2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture_b.png)
 
-Vamos a tener que definir todo el sistema de seguridad que da acceso a nuestra web, para lo cual empezaremos por el _Web Application Firewall_.
+Necesitaremos definir todo el sistema de seguridad que da acceso a nuestra web, para lo cual empezaremos por el AFD. Además, cuando vayamos a crear el WAF, en uno de los pasos nos pedirá que seleccionemos el _frontend host_, que no es otra cosa que esto que vamos a definir a continuación.
 
-- Partiendo de la infraestructura que tenemos
+![AzureFD_create](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor.png)
 
-#### 4 - Creamos el Azure Front Door asociado al WAF
+- Vamos a la barra de búsquedas y escribimos 'front door' y seleccionamos el recurso del mismo nombre. Le damos a **Create**.
+- Una vez dentro del menú _basics_, le damos estos valores a los campos y seleccionamos '> Next: Configuration':
+
+|Propiedad | Valor |
+| --  | -- |
+| Subscription | la nuestra |
+| Resource group | afdoor-rg |
+| Resource group location | Cogerá automáticamente la del resource group |
+
+![FrontDoor_FE](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_diagram.png)
+
+- Aquí vamos a definir nuestro **FrontEnd**, **BackEnd** y las **reglas de enrutado**. 
+  - Hacemos clic sobre el botón para añadir el frontEnd primero.Le damos el valor 'frontenddomainub' al _Host name_ y dejamos el resto de campos como están. Clic Add.  
+  - Lo siguiente es definir el backend. Para ello pinchamos en el botón para añadir uno. Le damos el valor 'backendpoolub' al nombre. A continuación necesitamos indicarle cuál es/son realmente nuestro/s backend/s. Le damos a _+Add a backend_ y lo rellenamos con los valores de la tabla de abajo (los demás por defecto). Podemos añadir tantos backends como queramos, pero en este caso ya es suficiente. Le damos a _Add_ y listo.
+  - Finalmente vamos a definir las reglas de enrutamiento. Hay que darle un nombre, que será 'rulesetub'. Todos los demás valores por defecto.
+  
+|Propiedad | Valor |
+| --  | -- |
+| Backend host type | App service |
+| Subscription | La nuestra |
+| Backend host name | afdoor2-app.azurewebsites.net  |
+| Backend host header | afdoor2-app.azurewebsites.net |
+
+> NOTA: el frontEnd dentro del AFD, no es otra cosa que una dirección url o subdominio al que apuntará nuestra aplicación web, de manera que cuando se hagan peticiones a ella, si no hay ningún problema detectado por el frontdoor, se redirigirá el tráfico a la web real (osea nuestro App Service).
+
+- Ahora ya podemos movernos a _Review + create_, y cuando la validación esté en verde, _Create_ para finalizar.
+
+#### 4 - Creamos el Azure WAF asociado al AFD del paso anterior.
+
+Una vez el front door está levantado, solo nos queda definir el AFD que se asociará a dicho front Door.
+
+- Podemos acceder de dos maneras, bien nos vamos al buscador de arriba o al menu lateral izquierdo y seleccionamos la opción _Create a resource_.
+- Escribimos **Web Application** y seleccionamos la que tiene el nombre completo "Web Application Firewall (WAF)" (no confundir con el recurso 'Azure Web Application Firewall (WAF)'). Le damos a botón crear.
+
+![WAF_create](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_waf_create.png)
+
+- Ahora nos aparecen varios campos para rellenar, a los cuales les daremos los valores siguientes:
+
+|Propiedad | Valor |
+| --  | -- |
+| Policy for | Global Front Door |
+| Subscription | La que tengáis activa |
+| Resource group | afdoor-rg |
+| Policy name | afdoorpolicyub |
+| Policy state | 'True' o seleccionado |
+| Policy mode | Detección |
+
+Si nos fijamos, al seleccionar el _Front Door_, nos aparece un desplegable más llamado **Front Door SKU**, que no es otra cosa que la capa de coste que Azure le mete por medio, para que controlemos el gasto que hacemos con dicho recurso. Lo dejamos con su valor por defecto.
+
+- Le damos a "> Next: Managed Rules". Las revisamos, pero las dejamos como están, no hace falta tocar nada.
+- Le damos a "> Next: Policy settings". En esta ventana, podemos indicar dónde queremos que nos redireccione en caso de que el AFD detecte alguna intrusión. Para hacerlo más simple, nosotros le vamos a pegar en siguiente código en el campo **Block response body**.
+
+```html
+! Alto ¡ Estás intentando una acción maliciosa.
+```
+
+- Le damos a "> Next: Custom rules" y sin cambiar nada, a "> Next: Association". Aquí vamos a indicarle el frontend host al que queremos asociar este _Front Door_. Para ello, le damos donde poner **+ Add frontend host** y se nos abrirá una ventana lateral en la derecha. Si lo hemos configurado bien antes, nos debería aparecer seleccionado por defecto, el _Frontdoor_, con lo que solo deberemos seleccionar el _Frontend host_ de la lista desplegable siguiente. Clic en _Add_.
+
+- Le damos ya directamente a **Review + create** y cuando esté en verde, le damos a _Create_ y esperamos que se despliegue.
+
 #### 5 - Probamos la inyección SQL sobre la web

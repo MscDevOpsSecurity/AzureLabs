@@ -172,4 +172,49 @@ Si nos fijamos, al seleccionar el _Front Door_, nos aparece un desplegable más 
 
 - Le damos ya directamente a **Review + create** y cuando esté en verde, le damos a _Create_ y esperamos que se despliegue.
 
-#### 5 - Probamos la inyección SQL sobre la web
+#### 5 - Desabilitamos acceso a App Service directamente.
+
+Ahora mismo, la única manera en la que los usuarios deben ser capaces de acceder a la web, es mediante el Azure Front Door. Esto implica que tenemos un punto de acceso que bloquear, y ese es la url/ip que nos provee el _App Service_.
+
+- Para bloquear este acceso, vamos a dirigirnos al App Service que tenemos creado dentro del grupo de recursos.
+- Ahora pinchamos en _Networking_.
+
+![BlockAccess](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_blockaccess.png)
+
+- Vamos abajo donde dice _Access restrictions/Configure Access Restrictions_.
+- Crearemos una regla nueva, le damos estos valores y a continuación hacemos clic en _Add Rule_.
+
+|**Propiedad** | **Valor** |
+| --  | -- |
+| Nombre | BloqueoAccesoDirecto |
+| Action | Allow |
+| Priority | 1 |
+| Description | <Algo que tenga sentido> |
+| IP Address Block | dirección IP pública del WAF | 
+  
+- Comprueba que accediendo desde tu navegador a la ip pública del App Service, ya no eres capaz de ver la web. De lo contrario, hemos hecho algún paso mal. 
+
+#### 6 - Probamos la inyección SQL sobre la web
+
+Ahora mismo, solo deberíamos ser capaces de acceder al contenido de la web a través de la url del AFD. 
+
+- Por tanto, vamos a copiar dicha url y la vamos a pegar en el navegador web.
+
+- Cuando se nos abra la web, nos vamos a la pestaña de **Patients**, e introduciremos un par de registros para jugar con ellos.
+
+- Ahora, en la barra de búsqueda vamos a introducir el siguiente texto, el cuál va a simular una inyección SQL en toda regla.
+
+```html
+'ORDER BY SSN --
+```
+
+- Hacemos click en buscar, y si todo está bien configurado, veremos el mensaje previamente definido en el bloque 4.
+
+![ErrorAtaque](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_alert2.png)
+  
+
+### Ejercicios relacionados
+
+Existen varios ejemplos de Microsoft parecidos que podéis intentar por vuestra cuenta, para los cuales ya se os facilita toda la infraestructura:
+- [SQL Inyection Attack](https://github.com/Azure/azure-quickstart-templates/tree/master/demos/SQL-Injection-Attack-Prevention#detect)
+- [Cross Site Scripting Attack](https://github.com/Azure/azure-quickstart-templates/tree/master/demos/SQL-Injection-Attack-Prevention#detect)

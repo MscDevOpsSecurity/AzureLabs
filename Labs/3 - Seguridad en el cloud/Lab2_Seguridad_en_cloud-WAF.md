@@ -177,7 +177,7 @@ Si nos fijamos, al seleccionar el _Front Door_, nos aparece un desplegable más 
 Ahora mismo, la única manera en la que los usuarios deben ser capaces de acceder a la web, es mediante el Azure Front Door. Esto implica que tenemos un punto de acceso que bloquear, y ese es la url/ip que nos provee el _App Service_.
 
 - Para bloquear este acceso, vamos a dirigirnos al App Service que tenemos creado dentro del grupo de recursos.
-- Ahora pinchamos en _Networking_.
+- Ahora en el menú lateral izquierdo, dentro de **Settings**, pinchamos en _Networking_.
 
 ![BlockAccess](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_blockaccess.png)
 
@@ -189,8 +189,8 @@ Ahora mismo, la única manera en la que los usuarios deben ser capaces de accede
 | Nombre | BloqueoAccesoDirecto |
 | Action | Allow |
 | Priority | 1 |
-| Description | <Algo que tenga sentido> |
-| IP Address Block | dirección IP pública del WAF | 
+| Description | \<Algo que tenga sentido>\ |
+| Source/Type | AzureFrontDoor.Backend | 
   
 - Comprueba que accediendo desde tu navegador a la ip pública del App Service, ya no eres capaz de ver la web. De lo contrario, hemos hecho algún paso mal. 
 
@@ -204,13 +204,11 @@ Ahora mismo, solo deberíamos ser capaces de acceder al contenido de la web a tr
 
 - Ahora, en la barra de búsqueda vamos a introducir el siguiente texto, el cuál va a simular una inyección SQL en toda regla.
 
-```html
-'ORDER BY SSN --
-```
+![lab2_module2_webappTestAttack](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappTestAttack.png)
 
 - Hacemos click en buscar, y si todo está bien configurado, veremos el mensaje previamente definido en el bloque 4.
 
-![ErrorAtaque](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_alert2.png)
+![ErrorAtaque](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_alert.png)
   
 
 ### Ejercicios relacionados

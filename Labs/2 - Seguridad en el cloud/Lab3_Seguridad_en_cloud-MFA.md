@@ -183,4 +183,15 @@ En esta tarea, vamos a asignar a cada usuario del AD, una licencia de Azure AD P
 - De vuelta en la pestaña de _Assign license_, pasamos al siguiente paso del asistente llamado "_Next: Assignment options >_". Asegúrate que todas las opciones están habilitadas.
 - Clic en _Review + asssign_ y después **Assign**.
 - Ahora tendremos que cerrar sesión con nuestro usuario y volver a hacer log in para que se puedan aplicar los cambios de licencias sobre el usuario activo.
-> Nota: en este momento, hemos asignados licencias de Azure AD Premium P2 a todos los usuarios que usaremos en este lab. Asegúrate de cerrar y abrir sesión.
+> Nota: en este momento, hemos asignado licencias de Azure AD Premium P2 a todos los usuarios que usaremos en este lab. Asegúrate de cerrar y abrir sesión.
+
+##### Tarea 5: Configurar las settings de Azure MFA.
+
+En esta tarea, configuraremos MFA y lo habilitaremos para el usuarios aaduser1.
+
+- En el portal de Azure, navegamos de nuevo a la ventana del nuevo tenant _AdatumLab500-04_.
+> Nota: asegúrate de estar usando el tenant __AdatumLab500-04_.
+- Desde la pestaña de nuevo tenant, en la sección _Manage_ hacemos clic en **Security**.
+- Ahora, desde la propia pestaña de Security, en la sección de _Manage_, pinchamos en **MFA**. 
+- Dentro de Multi Factor Authentication, veremos un enlace que dice _Additional cloud-based MFA settings_.
+> Nota: esto abrirá una nueva ventana del navegador, mostrando las opciones de MFA.

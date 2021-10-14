@@ -228,3 +228,28 @@ En esta tarea, configuraremos MFA y lo habilitaremos para el usuarios aaduser1.
 > Nota: Asegúrate de estar logueado en el tenant _AdatumLab500-04_ de Azure AD. Puedes utilizar el filtro de **Directory + subscription** para cambiar entre tenants del Azure AD. Asegúrate también de estar logueado con un usuario que pertenezca al role de _Global Administrator_ dentro de Azure AD.
 
 ##### Tarea 6: Validar la configuración de MFA.
+
+En esta tarea vamos a validar la configuración de MFA testeando el registro con el usuario aaduser1.
+
+- Abre una ventana InPrivate del navegador.
+- Abre el portal de Azure y loguéate con el usuario aaduser1.
+> Nota: Para loguearte vas a necesitar proveer el denominado _fully qualified name_ de la cuenta de usuario aaduser1, incluyendo el nombre de dominio de Azure AD tenant DNS, que hemos almacenado previamente en este lab. Este usuario será de la forma aaduser1@<nombre_tenant>.onmicrosoft.com, donde _<nombre_tenant>_ es donde viene el nombre único
+- Cuando nos salga la nueva ventana diciendo **More information required** clic en _Next_.
+> Nota: la sesión del navegador se redirigirá a la página de _Additional security verification_.
+![ImagenMFALogin](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part1_MFALogin.png)
+
+- En la página **Keep your account secure**, selecciona el link de abajo que dice **I want to set up a different method**. Nos saldrá otra ventana encima con varias opciones, de las cuales seleccionaremos la opción **Phone**, y le damos a _Confirm_.
+- De vuelta en la página incial, selecciona el país or región, escribe tu número de teléfono en el campo de _Enter phone number_, asegúrate de que la opción de _Text me a code_ está seleccionada (por defecto lo está) y dale a _Next_.
+- Introduce el código que te ha llegado al teléfono indicado y clic en _Next_.
+
+![ImagenMFASmsOk](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part1_MFASmSOk.png)
+
+- Cuando la validación sea positiva, clic otra vez en _Next_.
+- Ahora nos pedirá descargarnos la aplicación de Microsoft para autenticarnos, pero le daremos de nuevo al enlace **I want to use a different method**, seleccionaremos el _Email_ de la lista desplegable y clic en _Confirm_.
+
+![ImagenMFAApp](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part1_MFAApp.png)
+
+- Escribimos la dirección de correo electrónico que queramos usar y le damos a _Next_. Cuando recibas el email con el código, lo pegamos en la página y le damos a _Done_.
+- Cuando nos salga la nueva ventana, cambiaremos la contraseña. Asegúrate de guardarla.
+- Cierra sesión con el usuario aaduser1 y cierra la ventana privada del navegador.
+> Resultado: Hemos creado un nuevo tenant en Azure AD, configurado usuarios, configurado MFA y testeado la experiencia de MFA para dicho usuario.

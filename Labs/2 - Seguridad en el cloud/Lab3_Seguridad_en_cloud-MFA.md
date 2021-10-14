@@ -360,6 +360,22 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 - En el **Server Manager**, clic en _Local Server_ y luego haz clic en **IE Enhanced Security Configuration**.
 - Dentro de _Internet Explorer Enhanced Security Configuration_, pon las dos opciones a _Off_ y clic en _OK_.
 - Abre Internet Explorer e inicia una sesión InPrivate.
+- En la ventana InPrivate de Internet Explorer, navega al _ToR Browser Project_ en la url: https://www.torproject.org/projects/torbrowser.html.en
+- Descarga e instala la version de Windows del navegador ToR con la configuración por defecto.
+- Cuando termine la instalación, abre el navegador ToR, utiliza la opción **Connect** de la página inicial, y busca el **Application Access Panel** en https://myapps.microsoft.com.
+- Cuando te salga la ventana, intenta loguearte con la cuenta de usuario de aaduser3.
+
+> Nota: Te saldrá el mensaje _Your sign-in was blocked_. Esto es lo que se espera, dado que esta cuenta no está configurada con autenticación multi-factor, la cual se requiere dado al incremento en el riesgo asociado con el uso del navegador ToR.
+
+- Cierra sesión con aaduser3 y vuelve a abrir sesión con aaduser1, el cual si está previamente configurado con MFA.
+
+> Nota: Ahora mismo, te aparecerá el mensaje de **Suspicious activity detected**. De nuevo, esto es lo que esperamos, ya que esta cuenta sí está configurada con MFA. Considerando el incremento en el riesgo de usar el navegador ToR para loguearse, te verás obligado a usar MFA.
+
+- Utiliza la opcion de verificación y especifica si quieres usar el método via mensaje de texto o una llamada.
+- Completa la verificación y asegura que puedes loguearte satisfactoriamente en el **Application Access Panel**.
+- Cierra tu sesión RDP.
+
+> Nota: En este momento, has intentado dos tipos de logueo diferente. A continuación, tendremos que revisar los informes generados en el Azure Identity Protection.
 
 ##### Tarea 5: Revisar los informes de Azure AD Identity Protection.
 

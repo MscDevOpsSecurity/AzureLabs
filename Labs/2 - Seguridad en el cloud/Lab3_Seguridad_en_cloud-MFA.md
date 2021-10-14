@@ -342,7 +342,21 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 > Nota: antes de comenzar con esta tarea, asegúrate que el despliegue que comenzaste en el primer ejercicio se ha completado. Este despliegue incluye una máquina virtual llamada **az500-04-vm1**.
 
 - En el portal de Azure, 
+
 ##### Tarea 5: Revisar los informes de Azure AD Identity Protection.
+
+En esta tarea, revisaremos los informes de Azure AD Identity Protection generados desde logueos en el navegador ToR.
+- De vuelta en el portal de Azure, utiliza el filtro **Directory + subscription** para cambiar al tenant **AdatumLab500-04** dentro del Azure AD.
+- Dentro del tenant, en la sección de _Manage_ vamos a _Security_.
+- Dentro de _Security_, en la sección **Reports**, clic en _Risky users_.
+- Revisa el informe e identifica cualquier entrada referenciando al usuario aaduser3.
+- En la ventana de _Security_, en la sección **Reports**, clic en _Risky sing-ins_.
+- Revisa el informe e identifica cualquier entrada referenciando al usuario aaduser3.
+- Dentro de _Reports_, clic **Risk detections**.
+- Revisa el informe e identifica cualquier entrada referenciando logueos desde una IP anónima generada por el navegador ToR.
+
+> Nota: Puede demorarse entre 10-15 minutos la aparición de los riesgos en los informes.
+> Result: Hemos habilitado Azure AD Identity Protection, configurado _user risk policy_ y _sing-in risk policy_, así como lo hemos validado simulando eventos de riesgo.
 
 #### Clean up resources
 

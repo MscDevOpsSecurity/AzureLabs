@@ -341,11 +341,29 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 
 > Nota: antes de comenzar con esta tarea, asegúrate que el despliegue que comenzaste en el primer ejercicio se ha completado. Este despliegue incluye una máquina virtual llamada **az500-04-vm1**.
 
-- En el portal de Azure, 
+- En el portal de Azure, en el filtro de **Directory + subscription**, selecciona el tenant asociado a la subscripción de Azure en la cual desplegamos la VM llamada **az500-04-vm1**.
+- Desde el portal de Azure, en el campo de texto **Search resources, services, and docs** de arriba, escribe **Virtual machines** y dale a Enter.
+- Dentro de la pestaña de _Virtual  machines_, selecciona la entrada relativa a la VM existente.
+- Una vez en la pestaña de la VM, clic en **Connect** y en el desplegable selecciona _RDP_.
+- Clic en **Download RDP File** y úsalo para conectarte a la VM **az500-04-vm1** via escritorio remoto. Cuando te pida la autenticación, provee los siguientes valores:
+
+|Setting|Value|
+|--|--|
+|User name	|Student|
+|Password	|Pa55w.rd1234|
+
+> Nota: espera a que cargue la sesión remota y el **Server Manager**.
+
+> Nota: Los siguientes pasos se ejecutarán en la sesión remota de la VM **az500-04-vm1**.
+
+- En el **Server Manager**, clic en _Local Server_ y luego haz clic en **IE Enhanced Security Configuration**.
+- Dentro de _Internet Explorer Enhanced Security Configuration_, pon las dos opciones a _Off_ y clic en _OK_.
+- Abre Internet Explorer e inicia una sesión InPrivate.
 
 ##### Tarea 5: Revisar los informes de Azure AD Identity Protection.
 
 En esta tarea, revisaremos los informes de Azure AD Identity Protection generados desde logueos en el navegador ToR.
+
 - De vuelta en el portal de Azure, utiliza el filtro **Directory + subscription** para cambiar al tenant **AdatumLab500-04** dentro del Azure AD.
 - Dentro del tenant, en la sección de _Manage_ vamos a _Security_.
 - Dentro de _Security_, en la sección **Reports**, clic en _Risky users_.
@@ -356,6 +374,7 @@ En esta tarea, revisaremos los informes de Azure AD Identity Protection generado
 - Revisa el informe e identifica cualquier entrada referenciando logueos desde una IP anónima generada por el navegador ToR.
 
 > Nota: Puede demorarse entre 10-15 minutos la aparición de los riesgos en los informes.
+ 
 > Result: Hemos habilitado Azure AD Identity Protection, configurado _user risk policy_ y _sing-in risk policy_, así como lo hemos validado simulando eventos de riesgo.
 
 #### Clean up resources
@@ -363,6 +382,7 @@ En esta tarea, revisaremos los informes de Azure AD Identity Protection generado
 > Necesitamos eliminar todos los recursos de identity protection que ya no usaremos.
 
 Utiliza los siguientes pasos para deshabilitar las políticas de identity protection en el nuevo tenant de Azure AD **AdatumLab500-04**.
+
 - En el portal de Azure, navega a la ventana de dicho tenant.
 - Una vez dentro, en la sección de _Manage_, ve a _Security.
 - Dentro de _Security_, en la sección de _Protect_, ve a _Identity Protection_.

@@ -253,3 +253,55 @@ En esta tarea vamos a validar la configuración de MFA testeando el registro con
 - Cuando nos salga la nueva ventana, cambiaremos la contraseña. Asegúrate de guardarla.
 - Cierra sesión con el usuario aaduser1 y cierra la ventana privada del navegador.
 > Resultado: Hemos creado un nuevo tenant en Azure AD, configurado usuarios, configurado MFA y testeado la experiencia de MFA para dicho usuario.
+
+#### Ejercicio 3 - Implementar las políticas de acceso condicional en Azure.
+
+##### Tarea 1: Configurar la política de acceso condicional.
+
+En esta tarea, revisaremos la configuración de las políticas de acceso condicional, y crearemos una política que requiere MFA cuando nos logueamos en el portal de Azure.
+
+- En el portal de Azure, navega a la pestaña de Azure AD del tenant **AdatumLab500-04**.
+- En la sección de _Manage_ clic en _Security_.
+- Dentro de _Security_, en la sección de _Protection_, clic en **Conditional access**.
+- Ahora le damos a **+ New policy**.
+- En la nueva pestaña, configuramos los siguientes valores.
+  - En el nombre: **AZ500Policy1**
+  - Clic **Users and groups**, incluye dentro de _Select users and groups_ el checkbox de _Users and groups_. Como nos pedirá un usuario, seleccionamos al usuario aaduser2.
+![ImagenMFAApp](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_NewPolicy.png)
+  
+  - Clic ahora en **Cloud apps or actions**, clic en _Select apps_, y en la pestaña que sale a la derecha escribe _Microsoft Azure Management_ y luego dale a _Select_.
+> Nota: Revisa el warning que dice que esta política impacta el acceso al portal de Azure Portal.
+
+![ImagenMFAApp](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_NewPolicy_Apps.png)
+  
+  - Clic en **Conditions**, clic _Sing-in risk_ y en la pestaña que sale, revisa los niveles de riesgo pero no hagas ningún cambio y cierra esa pestaña.
+  - Clic en **Device platforms**, revisa las diferentes plataformas que se pueden incluir (Android, iOS, etc) y haz clic en _Done_.
+  - Clic en **Locations** y revisa las diferentes locations que se muestran sin hacer cambios.
+  - Clic en **Grant** en la sección de _Access control_, y en la pestaña que se abre, selecciona el checkbox de **Require multi-factor authentication** y luego clic en _Select_.
+  - Ahora cambia la opción **Enable policy** a _On_ y luego a _Create_.
+  > Nota: en este punto, ya tenemos una política de acceso condicional, que requiere MFA para loguearte en el portal de Azure.
+
+##### Tarea 2: probar la política de acceso condicional.
+
+En esta tarea, vamos a loguearnos en el portal de Azure con el usuario aaduser2, donde la verificación MFA será obligatoria. También eliminaremos la política creada en el paso anterior antes de continuar con el siguiente ejercicio.
+
+- Abre una ventana del nagegador InPrivate.
+- Ve al portal de Azure y logueate con el usuario aaduser2.
+- Una vez introducidos usuario y contraseña, nos saldrá la ventana de **More information required**, donde le daremos a _Next_.
+> Nota: El navegador nos redirigirá a la página de **Keep your account secure**.
+- Pincha el enlace **I want to set up a different method**, y en la ventana que aparece de **Which method would you like to use?** elige _Phone_ y dale a _Confirm_.
+- De vuelta a la página principal, elige la región y el número de teléfono y dale a _Next_. Asegúrate que la opción **Text me a code** está seleccionada.
+- Ahora introduce el código que has recibido en el teléfono y dale a _Next_.
+
+![ImagenMFAUser2Sms](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_NewPolicy_SmsVerified2.png)
+
+- Asegúrate que todo sale correctamente y que ves una mensaje de **Success!!** como este. Clic en _Done_.
+- Cuando te redirija, cambia la contraseña y guárdala. Asegúrate de que puedes acceder al portal de Azure.
+- Cierra sesión con adduser2 y cierra la ventana InPrivate del navegador.
+> Nota: Acabas de verificar que la nueva política de acceso condicional te obliga a usar MFA cuando el usuario aaduser2 intenta loguearse en el portal de Azure.
+- Navega de nuevo al portal de Azure, a la pestaña de Azure AD del tenant **AdatumLab500-04**.
+- En la sección de _Manage_ selecciona _Security_.
+- Dentro de _Security, en la sección **Protection** clic en _Conditional access_.
+- Dentro de _Conditional access_, pincha en la elípsis a la derecha de la política existente y dale a **Delete**. Cuando te pregunte, elije _Yes_.
+> Note: Resultado: En este ejercicio, hemos implementado una política de acceso condicional, que fuerza el uso de MFA cuando un usuario quiere loguearse en el portal de Azure.
+> Note: Resultado: Ya hemos configurado y probado el acceso condicional de Azure AD.

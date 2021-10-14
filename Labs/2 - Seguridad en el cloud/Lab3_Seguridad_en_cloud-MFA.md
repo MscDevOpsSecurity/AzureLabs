@@ -305,3 +305,58 @@ En esta tarea, vamos a loguearnos en el portal de Azure con el usuario aaduser2,
 - Dentro de _Conditional access_, pincha en la elípsis a la derecha de la política existente y dale a **Delete**. Cuando te pregunte, elije _Yes_.
 > Note: Resultado: En este ejercicio, hemos implementado una política de acceso condicional, que fuerza el uso de MFA cuando un usuario quiere loguearse en el portal de Azure.
 > Note: Resultado: Ya hemos configurado y probado el acceso condicional de Azure AD.
+
+#### Ejercicio 4 - Implementar Azure AD Identity Protection.
+
+##### Tarea 1: Habilitar Azure AD Identity Protection.
+
+En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protection dentro del portal de Azure.
+- Si es necesario, loguéate en el portal de Azure.
+> Nota: Asegúrate de estas logueado en el tenant de Azure AD **AdatumLab500-04**. Puedes utilizar el friltro de **directory + subscription** para cambiar entre tenants. Asegúrate de estar logueado con un rol de _Global Administrator_.
+- En la pestaña de **AdatumLab500-04**, en la sección de _Manage_, nos vamos a _Security_.
+- Dentro de _Security_, en la sección de **Protect**, nos vamos a _Identity protection_.
+- Aquí dentro, revisa las opciones de **Protect**, **Report**, y **Notify**.
+
+##### Tarea 2: Configurar una política de riesgo de usuario.
+
+- Desde la propia ventana de **Identity protection**, en la sección _Protect_, nos vamos a _user risk policy_.
+- Configura el **User risk remediation policy** con los siguiente valores:
+  - Clic en _users_ --> All users 
+     - Dentro de la pestaña _Include_, asegúrate de tener seleccionada la opción **All users**.
+     - Dentro de la pestaña _Exclude_, selecciona tu propio usuario y clic select.
+  - Clic en la parte de _User risk_. Selecciona **Low and above** y después clic _Done_.
+  - Clic en _Access_, y en la pestaña que sale, asegúrate que las opciones **Allow access** y **Require password change** están marcadas y dale a _Done_.
+  - Cambia **Enforce policy** a _On_ y dale a _Save_.
+
+##### Tarea 3: Configurar una política de riesgo de sign-in.
+
+- Dentro de **Identity protection**, en la sección de _Protect_ nos vamos a _Sign-in risk policy_.
+- Configura _Sign-in risk remediation policy_ con estos valores:
+  - Clic _Users_ y en la pestaña de _Include_, asegúrate que la opción _All users_ está seleccionada.
+  - Clic en _Sign-in risk_, y en la pestaña que aparece selecciona **Medium and above**, luego dale a _Done_.
+  - Clic en _Access_, asegúrate que las opciones **Allow access** y **Require multi-factor authentication** están marcadas y dale a _Done_.
+  - Cambia **Enforce policy** a _On_ y dale a _Save_.
+
+##### Tarea 4: Simular eventos de riesgo contra las políticas de Azure AD Identity Protection .
+
+> Nota: antes de comenzar con esta tarea, asegúrate que el despliegue que comenzaste en el primer ejercicio se ha completado. Este despliegue incluye una máquina virtual llamada **az500-04-vm1**.
+
+- En el portal de Azure, 
+##### Tarea 5: Revisar los informes de Azure AD Identity Protection.
+
+#### Clean up resources
+
+> Necesitamos eliminar todos los recursos de identity protection que ya no usaremos.
+
+Utiliza los siguientes pasos para deshabilitar las políticas de identity protection en el nuevo tenant de Azure AD **AdatumLab500-04**.
+- En el portal de Azure, navega a la ventana de dicho tenant.
+- Una vez dentro, en la sección de _Manage_, ve a _Security.
+- Dentro de _Security_, en la sección de _Protect_, ve a _Identity Protection_.
+- Clic en _User risk policy_ y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
+- Clic en _ Sign-in risk policy_ y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
+
+Utiliza los siguientes pasos para detener la VM de Azure que provisionamos con anterioridad en el lab.
+- En el portal de Azure, en el filtro de **Directory + subscription**, selecciona el tenant asociado a la subscripción de Azure en la cual desplegamos la VM llamada **az500-04-vm1**.
+- Desde el portal de Azure, en el campo de texto **Search resources, services, and docs** de arriba, escribe **Virtual machines** y dale a Enter.
+- Dentro de la pestaña de _Virtual  machines_, selecciona la entrada relativa a la VM existente.
+- Presiona el botón de stop y cuando te pida confirmación le damos a _OK_.

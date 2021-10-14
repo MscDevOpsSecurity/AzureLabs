@@ -267,6 +267,7 @@ En esta tarea, revisaremos la configuración de las políticas de acceso condici
 - En la nueva pestaña, configuramos los siguientes valores.
   - En el nombre: **AZ500Policy1**
   - Clic **Users and groups**, incluye dentro de _Select users and groups_ el checkbox de _Users and groups_. Como nos pedirá un usuario, seleccionamos al usuario aaduser2.
+  
 ![ImagenMFAApp](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_NewPolicy.png)
   
   - Clic ahora en **Cloud apps or actions**, clic en _Select apps_, y en la pestaña que sale a la derecha escribe _Microsoft Azure Management_ y luego dale a _Select_.

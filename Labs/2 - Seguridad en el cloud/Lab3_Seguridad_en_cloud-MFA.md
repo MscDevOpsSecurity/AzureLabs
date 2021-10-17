@@ -367,14 +367,12 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 - Cuando te salga la ventana, intenta loguearte con la cuenta de usuario de aaduser3.
 
   > Nota: Te saldrá el mensaje **Your sign-in was blocked**. Esto es lo que se espera, dado que esta cuenta no está configurada con autenticación multi-factor, la cual se requiere dado al incremento en el riesgo asociado con el uso del navegador ToR.
-
-![ImagenLogBlocked](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogBlocked.png)
+  > ![ImagenLogBlocked](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogBlocked.png)
 
 - Cierra sesión con aaduser3 y vuelve a abrir sesión con aaduser1, el cual si está previamente configurado con MFA.
 
   > Nota: Ahora mismo, te aparecerá el mensaje de **Suspicious activity detected**. De nuevo, esto es lo que esperamos, ya que esta cuenta sí está configurada con MFA. Considerando el incremento en el riesgo de usar el navegador ToR para loguearse, te verás obligado a usar MFA.
-
-![ImagenSuspicious](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogSuspicious.png)
+  > ![ImagenSuspicious](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogSuspicious.png)
 
 - Utiliza la opcion de verificación y especifica si quieres usar el método via mensaje de texto o una llamada.
 - Completa la verificación y asegura que puedes loguearte satisfactoriamente en el **Application Access Panel**.
@@ -408,11 +406,36 @@ Utiliza los siguientes pasos para deshabilitar las políticas de identity protec
 - En el portal de Azure, navega a la ventana de dicho tenant.
 - Una vez dentro, en la sección de _Manage_, ve a _Security.
 - Dentro de _Security_, en la sección de _Protect_, ve a _Identity Protection_.
-- Clic en _User risk policy_ y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
-- Clic en _ Sign-in risk policy_ y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
+- Clic en **User risk policy** y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
+- Clic en **Sign-in risk policy** y una vez dentro, marca la opcion **Enforce policy** a _Off_ y dale a _Save_.
 
 Utiliza los siguientes pasos para detener la VM de Azure que provisionamos con anterioridad en el lab.
 - En el portal de Azure, en el filtro de **Directory + subscription**, selecciona el tenant asociado a la subscripción de Azure en la cual desplegamos la VM llamada **az500-04-vm1**.
-- Desde el portal de Azure, en el campo de texto **Search resources, services, and docs** de arriba, escribe **Virtual machines** y dale a Enter.
-- Dentro de la pestaña de _Virtual  machines_, selecciona la entrada relativa a la VM existente.
-- Presiona el botón de stop y cuando te pida confirmación le damos a _OK_.
+- Desde el portal de Azure, en el campo de texto **Search resources, services, and docs** de arriba, escribe **Resource groups** y dale a Enter.
+- Dentro de la pestaña de _Resource groups_, selecciona la entrada relativa al de este lab, con el nombre _AZ500LAB04_.
+- Ahora simplemente dale arriba al botón **Delete resource group** y cuando te lo pida en la ventana nueva emergente a su derecha, teclea el nombre del grupo de nuevo y confirma de nuevo en el botón **Delete**.
+  > Nota: de esta manera, no tendremos que preocuparnos por parar la VM o eliminar los elementos que la acompañaban, Azure hará todo ese trabajo por nosotros de una sola vez.
+
+Ahora es necesario deshacernos del nuevo tenant, y por consiguiente, del trial que hemos dejado activado relativo al **Azure AD Premium P2**. Son vinculantes, es decir, hasta no tener el trial eliminado, Azure no nos dejará eliminar el Tenant.
+
+- Accede a la web https://myapps.microsoft.com con el usuario aaduser1 y MFA.
+- Una vez en el panel principal, accede a **Admin**. Nos volverá a pedir el usuario con el que queremos acceder, y seleccionaremos de nuevo _aaduser1_ de la lista.
+- En el menú lateral de **Billing**, entramos en _Licenses_.
+- En la pestaña de **Subscriptions**, hacemos clic en _Azure AD Premium P2_.
+- Seleccionamos todos los usuarios y le damos a **Unassign licenses**.
+![ImagenUnassign](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_UnassignLicense.png)
+
+- Ahora en el menú lateral de **Your products**, selecciona el único que aparecerá de _Azure AD Premium P2 Trial_.
+- Pincha ahora en _Cancel subscription_, y nos saldrá una ventana lateral de **Cancel subscription** para dar feedback.
+- Selecciona _Moving to a different Office 365 product_ y dale al botón **Cancel subscription**. En la ventana emergente _Continue with cancellation_.
+
+![ImagenUnassign](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_SubcriptionCancelled.png)
+
+El proceso de cancelación puede durar hasta 72 horas. Durante ese periodo, la subscripción aparecerá con el estado **Deprovisioned**. Una vez transcurridas estas horas, procede con los siguientes pasos:
+
+- Desde el portal de Azure, accedemos con el tenant nuevo _AdatumLab500-04_ y nos vamos a _Users_.
+- Marcamos todos excepto el nuestro propio (aaduser1, aaduser2, y aaduser3) y le damos a **Delete user**.
+- Volvemos al portal de Azure, pero ahora selecciona el tenant asociado a la subscripción de Azure en la cual creamos el nuevo tenant.
+- Arriba pincha en el botón **Manage tenants**.
+- En la lista selecciona el nuevo tenant _AdatumLab500-04_ y clic en **Delete**. Nos pedirá un usuario para proseguir y elegimos el mismo en el que estábamos logueados.
+- Dentro de la ventana _Delete tenant 'AdatumLab500-04'?_ veremos que la columna status contiene todo iconos verdes. Clic abajo en **Delete** y listo.

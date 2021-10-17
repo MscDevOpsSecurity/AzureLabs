@@ -222,7 +222,7 @@ En esta tarea, configuraremos MFA y lo habilitaremos para el usuarios aaduser1.
   |Code to report fraud during initial greeting	|0|
 
 - Clic en _Save_.
-> Nota: en este punto, ya has habilitado MFA para el usuario aaduser1 y has configurado las alertas de fraude.
+  > Nota: en este punto, ya has habilitado MFA para el usuario aaduser1 y has configurado las alertas de fraude.
 - Vuelve a la pestaña del nuevo tenant _AdatumLab500-04_ en Azure AD, y en la sección de _Manage_, clic en properties.
 - Abajo verás un enlace que dice *Manage Security defaults*, el cual clicaremos.
 - Se desplegará una pestaña lateral, en la cual pondremos el valor **Enable Security defaults** a _NO_, y justo debajo aparecerán varias opciones, donde marcaremos **My Organization is using Conditonal Access** como razón, y clic en _Save_.
@@ -366,11 +366,15 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 - Cuando termine la instalación, abre el navegador ToR, utiliza la opción **Connect** de la página inicial, y busca el **Application Access Panel** en https://myapps.microsoft.com.
 - Cuando te salga la ventana, intenta loguearte con la cuenta de usuario de aaduser3.
 
-  > Nota: Te saldrá el mensaje _Your sign-in was blocked_. Esto es lo que se espera, dado que esta cuenta no está configurada con autenticación multi-factor, la cual se requiere dado al incremento en el riesgo asociado con el uso del navegador ToR.
+  > Nota: Te saldrá el mensaje **Your sign-in was blocked**. Esto es lo que se espera, dado que esta cuenta no está configurada con autenticación multi-factor, la cual se requiere dado al incremento en el riesgo asociado con el uso del navegador ToR.
+
+![ImagenLogBlocked](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogBlocked.png)
 
 - Cierra sesión con aaduser3 y vuelve a abrir sesión con aaduser1, el cual si está previamente configurado con MFA.
 
   > Nota: Ahora mismo, te aparecerá el mensaje de **Suspicious activity detected**. De nuevo, esto es lo que esperamos, ya que esta cuenta sí está configurada con MFA. Considerando el incremento en el riesgo de usar el navegador ToR para loguearse, te verás obligado a usar MFA.
+
+![ImagenSuspicious](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogSuspicious.png)
 
 - Utiliza la opcion de verificación y especifica si quieres usar el método via mensaje de texto o una llamada.
 - Completa la verificación y asegura que puedes loguearte satisfactoriamente en el **Application Access Panel**.

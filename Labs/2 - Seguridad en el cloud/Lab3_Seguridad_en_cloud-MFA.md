@@ -367,14 +367,12 @@ En esta tarea, veremos las distintas opciones dentro de Azure AD Identity Protec
 - Cuando te salga la ventana, intenta loguearte con la cuenta de usuario de aaduser3.
 
   > Nota: Te saldrá el mensaje **Your sign-in was blocked**. Esto es lo que se espera, dado que esta cuenta no está configurada con autenticación multi-factor, la cual se requiere dado al incremento en el riesgo asociado con el uso del navegador ToR.
-
-![ImagenLogBlocked](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogBlocked.png)
+  > ![ImagenLogBlocked](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogBlocked.png)
 
 - Cierra sesión con aaduser3 y vuelve a abrir sesión con aaduser1, el cual si está previamente configurado con MFA.
 
   > Nota: Ahora mismo, te aparecerá el mensaje de **Suspicious activity detected**. De nuevo, esto es lo que esperamos, ya que esta cuenta sí está configurada con MFA. Considerando el incremento en el riesgo de usar el navegador ToR para loguearse, te verás obligado a usar MFA.
-
-![ImagenSuspicious](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogSuspicious.png)
+  > ![ImagenSuspicious](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Lab3_Seguridad_en_cloud-MFA/lab3_module2_part3_LogSuspicious.png)
 
 - Utiliza la opcion de verificación y especifica si quieres usar el método via mensaje de texto o una llamada.
 - Completa la verificación y asegura que puedes loguearte satisfactoriamente en el **Application Access Panel**.

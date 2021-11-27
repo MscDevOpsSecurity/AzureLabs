@@ -103,4 +103,77 @@ La imagen Docker que contiene nuestra aplicación web, está ahora disponible en
 
 ### Ejercicio 2: Crear y desplegar una aplicación web desde una imagen de Docker.
 
+Azure App Service proporciona el entorno de hospedaje para una aplicación web basada en Azure. Podemos configurar un App Service para recuperar la imagen de la aplicación web desde un repositorio en ACR.
+
+En este ejemplo, el equipo ha cargado la imagen de la aplicación web en ACR y ahora está listo para implementar la aplicación web.
+
+En esta unidad, crearemos una nueva aplicación web mediante la imagen de Docker almacenada en Azure Container Registry. Utilizaremos el App Service con un plan de App Service predefinido para alojar la aplicación web.
+
+#### Enable Docker access to the Azure Container Registry
+
+Utilizaremos Docker para loguearnos en el registro, y descargaremos la imagen web que queremos desplegar. Docker necesita un usuario y una contraseña para realizar esta operación. El registro de contenedores nos proporciona la posibilidad de habilitar el nombre del registro como nombre de usuario y la _admin access key_ como la contraseña, para permitir a Docker loguearse en tu registro de contenedores.
+
+1.- Desde el portal de Azure, vamos a **All resources**.
+
+2.- Selecciona el registro que hemos creado en el primer ejercicio.
+
+3.- En el panel del menú izquierdo, bajo _Settings_, selecciona **Access keys**. Aparecerá el panel de nuestro registro de contenedores.
+
+4.- Cambia la opción **Admin user** a _Enabled_, cuyo cambio se guardará automáticamente.
+
+Ahora ya estamos listos para crear nuestra aplicación web.
+
+#### Create a web app
+
+1.- Regresamos a la página principal del portal, y bajo _Azure services_, seleccionamos **Create resource**. Aparecerá entonces el panel de para crear recursos.
+
+2.- En el menú izquierdo, selecciona **Web**, y bajo _Popular offers_, seleciona **Web App** (también lo podemos buscar en el cuadro superior directamente).
+
+![Crear webapp](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_WebApp.png)
+
+Aparecerá entonces el panel para crear una Web App.
+
+3.- En la pestaña de _basics_, entramos los siguientes valores:
+
+|Setting|Value|
+|---|---|
+|**Project Details**||
+|Subscription|Selecciona tu suscripción (si solo hay una, se marcará por defecto)|
+|Resource group|De la lista desplegable, seleccionamos el ya existente llamado `learn-deploy-container-acr-rg`|
+|**Instance Details**||
+|Name|Introduce un nombre único y recuérdalo para más adelante|
+|Publish|**Docker Container**|
+|Operating system|Linux|
+|Region||
+|**App Service Plan**||
+|App Service Plan| Utiliza el valor por defecto|
+
+4.- Seleciona **Next: Docker >**
+
+5.- En la pestaña de _Docker_, inserta los siguiente valores:
+
+|Setting|Value|
+|---|---|
+|Options|**Single Container**|
+|Image source|**Azure Container Registry**|
+|**Azure container registry options**||
+|Registry|Selecciona tu registro|
+|Image|`webimage`|
+|Tag|latest|
+|Startup command|Deja esta valor en blanco|
+
+6.- Selecciona **Review and create**, y después selecciona **Create**. Espera a que termine de desplegarse para continuar.
+
+#### Test the web app
+
+1.- Después de que finalice correctamente el despliegue, selecciona _Go to resource_ para ver la aplicación web que acabamos de crear. Nos aparecerá el panel del App Service para nuestra web.
+
+2.- En el menú superior, selecciona **Browse** o pincha en la _url_ que nos provee.
+
+3.- Después de unos segundos de retraso, mientras nuestra imagen de Docker se descarga desde el repositorio y se carga, veremos una página que se parece algo a esta.
+
+![Mostrar webapp](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_WebAppSample.png)
+
+El App Service está ahora hospedando la aplicación contenida en nuestra imagen de Docker.
+
 ### Ejercicio 3: Actualizar la imagen Docker y desplegar de nuevo la aplicación web.

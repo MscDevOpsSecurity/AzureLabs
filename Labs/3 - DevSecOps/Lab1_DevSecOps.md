@@ -69,19 +69,19 @@ Aparecerá el panel para crear el registro de contenedores.
 
 1.- Desde el shell de Azure dentro del portal (selecciona el primer icono en la barra de herramientas superior), ejecuta el siguiente comando para descargarte el código fuente de una web de ejemplo. Esta web es simple. Nos muestra una única página que contiene texto estático.
 
-```shell
+```bash
 git clone https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git
 ```
 
 2.- Muévete a la carpeta del código fuente:
 
-```shell
+```bash
 cd mslearn-deploy-run-container-app-service/dotnet
 ```
 
 3.- Ejecuta el siguiente comando.
 
-```shell
+```bash
 az acr build --registry <container_registry_name> --image webimage .
 ```
 
@@ -177,3 +177,38 @@ Aparecerá entonces el panel para crear una Web App.
 El App Service está ahora hospedando la aplicación contenida en nuestra imagen de Docker.
 
 ### Ejercicio 3: Actualizar la imagen Docker y desplegar de nuevo la aplicación web.
+
+En esta unidad, configuraremos la implementación continua para la aplicación web y crearemos un webhook que se vincule al registro que contiene la imagen de Docker. Luego, realizaremos un cambio en el código fuente de la aplicación web y reconstruiremos la imagen. Visitaremos el sitio web que aloja la aplicación web de muestra nuevamente y verificaremos que se esté ejecutando la versión más reciente.
+
+#### Configurar continuous deployment y crear un webhook
+
+1.- Desde el portal de Azyre, seleccionamos nuestra aplicación web. Se abrirá el panel de App Service para nuestra aplicación web.
+
+2.- En el panel izquierdo, bajo _Deployment_, seleccionamos **Deployment Center**. Esto hará que aparezca el panel _Deployment Center_ para nuestro App Service.
+
+3.- En la pestaña de **Settings**, bajo _Registry settings_, ponemos el valor de **Continuous deploument** a _On_, y en el menú superior le damos a _Save_. Esta opción configura un webhook automáticamente para nuestro registro de contenedores, que usará como alerta de nuestra aplicación web cuando se modifique nuestra imagen Docker.
+
+![Webhook acr](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_webhookacr.png)
+
+#### Modificar la aplicación web y testear el webhook
+
+1.- Desde el shell de Azure, nos vamos a la carpeta `dotnet/SampleWeb/Pages`. Esta carpeta contiene el código fuente de las páginas HTML que se muestran en la aplicación web.
+
+```bash
+cd ~/mslearn-deploy-run-container-app-service/dotnet/SampleWeb/Pages
+```
+
+2.- Ejecuta el siguiente comando para reemplazar la actual página de inicio por una nueva (index.cshtml).
+
+```bash
+mv Index.cshtml Index.cshtml.old
+mv Index.cshtml.new Index.cshtml
+```
+
+3.- Ejecuta el siguiente par de comandos para recompilar la imagen para la aplicación web, y después subirla al registro de contenedores. Reemplaza `<container_registry_name>`con el nombre de nuestro registro. No te olvides del `.` al final del segundo comando.
+
+```bash
+cd ~/mslearn-deploy-run-container-app-service/dotnet
+az acr build --registry <container_registry_name> --image webimage .
+```
+#### Testear la aplicación web de nuevo

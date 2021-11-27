@@ -31,7 +31,7 @@ Los objetivos de esta práctica será completar los siguientes escenarios:
 
 ### Duración
 
-Aproximadamente, el reparto de tiempos por ejericio es el siguiente:
+Aproximadamente, el reparto de tiempos por ejercicio es el siguiente:
  - Ejercicio 1 => 10 minutos
  - Ejercicio 2 => 30 minutos
  - Ejercicio 3 => 15 minutos

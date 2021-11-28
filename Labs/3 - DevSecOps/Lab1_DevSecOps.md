@@ -211,4 +211,15 @@ mv Index.cshtml.new Index.cshtml
 cd ~/mslearn-deploy-run-container-app-service/dotnet
 az acr build --registry <container_registry_name> --image webimage .
 ```
+
+4.- Volvemos al portal de Azure, y bajo **Recent resources** seleccionamos nuestro ya creado registro de contenedores. Debería aparecer nuestro panel del registro.
+
+5.- En el menú lateral izquierdo, bajo _Sevices_, seleccionamos **Webhooks** para ver el panel.
+
+6.- Selecciona el único webhook existente en la lista. Veremos cómo a la derecha aparece el panel con la información de dicho webhook.
+
+7.- Observa que ahora existe una entrada en la lista del webhook que se acaba de disparar en respuesta a la nueva compilación de la imagen y el push al registro.
+
+![Webhook acr](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_webhookacrpushed.png)
+
 #### Testear la aplicación web de nuevo

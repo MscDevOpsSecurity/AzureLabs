@@ -231,3 +231,16 @@ az acr build --registry <container_registry_name> --image webimage .
 ![WebApp Updated](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_WebAppUpdated.png)
 
 > Nota: La aplicación web ha sido desplegada de nuevo automáticamente basada en la nueva imagen. El servicio de webhook de nuestro registro, ha notificado a la aplicación web que la imagen del contenedor se había modificado, disparando la actualización correspondiente.
+
+
+### Limpieza de recursos :collision:
+
+En este módulo hemos creado recursos utilizando la subscripción de Azure. Es recomendable deshacerse de dichos recursos cuando no se usen mas, para evitar cargos adicionales en la cuenta no deseados.
+
+1.- En Azure, seleccionamos **Resource groups**.
+
+2.- Busca el grupo de recursos `learn-deploy-container-acr-rg`, o de la manera que lo llamases, en caso de tener otro nombre.
+
+3.- En el pestaña **Overview** del grupo de recursos, selecciona **Delete resource group**.
+
+4.- Aparecerá un cuadro de diálogo para confirmar la eliminación. Introduce el nombre del grupo de recursos a eliminar en la caja de texto y dale a **Delete**. Esto eliminará todos los recursos creados en este módulo.

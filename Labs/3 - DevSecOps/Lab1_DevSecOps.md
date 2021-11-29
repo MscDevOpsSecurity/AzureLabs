@@ -223,3 +223,11 @@ az acr build --registry <container_registry_name> --image webimage .
 ![Webhook acr](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_webhookacrpushed.png)
 
 #### Testear la aplicación web de nuevo
+
+1.- Regresamos a nuestra aplicación web en el navegador. Si cerraste la pestaña anteriormente, podemos ir de nuevo a la página de _Overwiew_ de la aplicación en el portal de Azure, y seleccionamos **Browse**. Volveremos a ver una especie de retraso en la carga mientras se descarga la imagen del contenedor.
+
+2.- Revisa los elementos de la web. Ahora verás que se han generado una serie de cambios como los que se muestras a continiación:
+
+![WebApp Updated](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_WebAppUpdated.png)
+
+> Nota: La aplicación web ha sido desplegada de nuevo automáticamente basada en la nueva imagen. El servicio de webhook de nuestro registro, ha notificado a la aplicación web que la imagen del contenedor se había modificado, disparando la actualización correspondiente.

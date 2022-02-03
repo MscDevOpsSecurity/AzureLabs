@@ -17,7 +17,7 @@ La contenedores actuales de la aplicación en nuestro ACI solo arrancarán una v
 
 Los contenedores de inicialización ACI son el mismo concepto que los _Kubernetes Init Containers_.
 
-![Imagen topologia parte 5](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part5.png)
+![Imagen topologia parte 5](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part5.png)
 
 ### Objetivos
 

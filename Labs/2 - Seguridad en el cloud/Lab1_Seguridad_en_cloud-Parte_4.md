@@ -15,7 +15,7 @@ Azure Private Link es una tecnología que se puede usar para asegurar la conecti
 
 El DNS desempeña un papel fundamental en la funcionalidad requerida, ya que el sistema que accede a la base de datos SQL (el ACI que aloja la aplicación) deberá resolver el nombre de dominio completo (FQDN) de Azure SQL a su IP privada, en lugar de a su IP pública. 
 
-![Imagen topologia parte 4](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4.png)
+![Imagen topologia parte 4](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4.png)
 
 ### Objetivos
 
@@ -61,7 +61,7 @@ sql_endpoint_ip=$(az network nic show --ids $sql_nic_id --query 'ipConfiguration
 ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "nslookup ${sql_server_name}.database.windows.net"
 ```
 
-![nslookup to Public IP](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4_nslookup.png)
+![nslookup to Public IP](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4_nslookup.png)
 
 
 #### DNS resolution
@@ -102,7 +102,7 @@ ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -ks https://$a
 
 4 - A través de la salida anterior en el Azure CLI, que la Azure SQL API ahora es capaz de ver que se las llamadas desde el ACI proceden de su dirección IP privada. Dado que el firewall de la base de datos de Azure SQL solo se usa para proteger el endpoint público, es por eso que no hemos tenido que cambiar o añadir ninguna regla al mismo.
 
-![nslookup to Public IP2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4_nslookup2.png)
+![nslookup to Public IP2](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part4_nslookup2.png)
 
 Ya podemos eliminar el contenedor y proceder a la siguiente parte del lab.
 

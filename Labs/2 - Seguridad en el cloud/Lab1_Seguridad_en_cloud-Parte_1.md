@@ -13,7 +13,7 @@ La aplicación consistirá en una API que accedera a una base de datos externa, 
 
 Esta será la topología de nuestro lab.
 
-![Topology lab 1](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1.png)
+![Topology lab 1](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1.png)
 
 ### Objetivos
 
@@ -39,7 +39,7 @@ Esta será la topología de nuestro lab.
 
 2 - Abrimos el Azure Cloud Shell desde el portal de Azure haciendo clic en el icono del Shell.
 
-![ShellIcon](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_shell.png)
+![ShellIcon](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_shell.png)
 
 3 - Vamos a definir una serie de variables en el shell ejecutando las siguientes líneas. Reemplaza el variable _location_ con la que corresponda en tu caso.
 
@@ -67,8 +67,8 @@ az vm create -n test-vm -g $rg -l $location --image ubuntuLTS --generate-ssh-key
     --vnet-address-prefix $vnet_prefix --subnet $vm_subnet_name --subnet-address-prefix $vm_subnet_prefix
 vm_pip=$(az network public-ip show -n test-vm-pip -g $rg --query ipAddress -o tsv) && echo $vm_pip
 ```
-![ResourceGroup](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_RGCreated.png)
-![VMCreated](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_VMCreated.png)
+![ResourceGroup](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_RGCreated.png)
+![VMCreated](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_VMCreated.png)
 
 Verifica ahora que puedes conectarte a la VM que acabamos de desplegar por ssh.
 
@@ -80,7 +80,7 @@ exit
 
 Nos preguntará si queremos incluir el fingerprint de esta VM como válida para que la próxima vez acceda directamente, le decimos "_yes_" y enter.
 
-![VMssh](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_VMssh.png)
+![VMssh](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_VMssh.png)
 
 5 - Creamos la base de datos a la que se conectará la aplicación. Vamos a utilizar el SKU (básico) mas reducido de Azure SQL Database para reducir costes, pero ten en cuenta que este tamaño no es recomendable para entornos de producción.
 
@@ -125,9 +125,9 @@ aci_ip=$(az container show -n $aci_name -g $rg --query 'ipAddress.ip' -o tsv) &&
 ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -s http://$aci_ip:8080/api/healthcheck"
 ```
 
-![Test first part](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_TestACI.png)
+![Test first part](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_TestACI.png)
 
-![Test first part OK](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_TestACI_OK.png)
+![Test first part OK](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_TestACI_OK.png)
 
 > Nota: las opciones sugeridad en el comando ssh anterior (-n -o BatchMode=yes -o StrictHostKeyChecking=no) no son importantes para esta parte, pero son de bastante ayuda para enviar varios comandosa una VM remota mediante ssh.
 
@@ -147,9 +147,9 @@ ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -s http://$aci
 ssh -n -o BatchMode=yes -o StrictHostKeyChecking=no $vm_pip "curl -s http://$aci_ip:8080/api/sqlsrcip"
 ```
 
-![SQL Firewall](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLFirewall.png)
+![SQL Firewall](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLFirewall.png)
 
-|![SQL Firewall sin regla](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLSinRules.png)|![SQL Firewall con regla](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLConRules.png)|
+|![SQL Firewall sin regla](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLSinRules.png)|![SQL Firewall con regla](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part1_SQLConRules.png)|
 | --  | -- |
 | Azure SQL Firewall sin regla | Azure SQL Firewall con regla |
 

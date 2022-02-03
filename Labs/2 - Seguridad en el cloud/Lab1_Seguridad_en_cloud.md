@@ -13,7 +13,7 @@ Vamos a suponer que trabajamos para un proveedor de red, y nosotros somos los re
 
 Un requerimiento crítico será que ninguna de estas API esté expuesta públicamente a Internet, y que solo dicho cliente tiene el poder de acceder a ella.
 
-![Final picture](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/Mod2_Lab1_MainPicture.png)
+![Final picture](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/Mod2_Lab1_MainPicture.png)
 
 ### Objetivos
 En este lab aprenderemos algunas herramientas avanzadas con las cuales podremos crear Azure Container Instances.

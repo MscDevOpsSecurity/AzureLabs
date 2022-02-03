@@ -116,7 +116,7 @@ az container export -n $aci_name -g $rg -f /tmp/aci2.yaml
 more /tmp/aci2.yaml
 ```
 
-![Secure password yaml](../..//Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part2_SecurePass.png)
+![Secure password yaml](../..//Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part2_SecurePass.png)
 
 4 - Como siguiente paso, podemos eliminar de nuevo el contenedor creado en esta parte, de manera que podamos movernos a la siguiente parte.
 

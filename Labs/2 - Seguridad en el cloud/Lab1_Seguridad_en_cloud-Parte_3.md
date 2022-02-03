@@ -13,7 +13,7 @@ Podemos mejorar el código de la aplicación para que admita HTTPS, pero no tene
 
 En esta parte, utilizaremos **NGINX**, un servidor web que se puede utilizar como proxy inverso frente a una aplicación web, para proporcionar la funcionalidad de descarga SSL. El tráfico cifrado accederá al grupo de contenedores ACI a través del contenedor NGINX, y NGINX redirigirá el tráfico descifrado al contenedor de la aplicación real.
 
-![Imagen topologia parte 3](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3.png)
+![Imagen topologia parte 3](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3.png)
 
 El patrón Sidecar es un concepto poderoso en arquitecturas basadas en contenedores. Te permite descomponer la funcionalidad de la aplicación en diferentes imágenes de contenedores que se ejecutarán juntas en el mismo grupo de contenedores.
 
@@ -185,18 +185,18 @@ az container create -g $rg --file $aci_yaml_file
 
 > Nota: si no lo borraste primero en el paso anterior, ejecuta el comando: **az container delete -n $aci_name -g $rg -y**
 
-![Close look at sidecar container](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_Azure_sidecar_pattern_closeLookAt.png)
+![Close look at sidecar container](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_Azure_sidecar_pattern_closeLookAt.png)
 
 
 Si nos vamos a la UI del portal de Azure, podremos ver cómo se ha creado esta configuración dentro cada contenedor. Para ello nos vamos al _resouce group_ que hemos creado para este lab, y accedemos al recurso llamado **learnaci**. Una vez dentro, en la parte izquierda, pinchamos en el submenú "_Settings/Containers_".
 
 | NGINX container|
 |--|
-|![nginx container](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_NGINXView.png)|
+|![nginx container](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_NGINXView.png)|
 
 | API container|
 |--|
-|![sqlapi container](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_SQLAPIView.png)|
+|![sqlapi container](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab1_module2_part3_SQLAPIView.png)|
 
 4 - Ahora ya podemos extraer la dirección IP del ACI (debería ser una IP privada) y acceder via HTTPS desde la VM. Deberías utilizar el flag _-k_ con curl para deshabilitar la validación del certificado, ya que tenemos uno self-signed. El endpoint `/api/healthecheck` de la API debería responder **OK**.
 

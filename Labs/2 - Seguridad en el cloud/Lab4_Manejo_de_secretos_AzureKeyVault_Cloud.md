@@ -28,7 +28,7 @@ Para la preparación de este lab, os vamos a proveer de todo lo necesario para q
 
 La estructura que vamos a crear, responde al siguiente diseño. Puede parecer muy complejo, pero es lo más sencillo que nos vamos a encontrar en el manejo de secretos dentro de Azure.
 
-![Module4Lab1_general_view_cloud](images/Module4Lab1_general_view_cloud.png)
+![Module4Lab1_general_view_cloud](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_general_view_cloud.png)
 
 ### Tarea 1 : Vamos a cargar los ARM templates en vuestra cuenta de Azure.
 1 - Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo).
@@ -49,7 +49,7 @@ az deployment group create --resource-group AzureLabsModulo4Lab2 --template-file
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
   
-  ![AzureShellWarning](images/AzureShellWarning.png)
+  ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
   
   - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 3 recursos que necesitamos: Azure KeyVault, CosmosDb y el App Service (Web App) sin más intervención.
 4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
@@ -65,7 +65,7 @@ Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish d
 
 1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú **View/Command Palette** y se nos desplegará una barra superior para escribir comandos.
 
-![VSCode_CommandPalette](images/VSCode_CommandPalette.png)
+![VSCode_CommandPalette](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_CommandPalette.png)
   
 2 - Escribimos:
 
@@ -75,9 +75,9 @@ Sign in to Azure Cloud
 
 3 - De aquí saltaremos a la web de Azure para hacer log in, seleccionamos nuestra cuenta y metemos las credenciales que nos pida. A partir de aquí, ya estaremos logueados en Azure dentro de VSCode.
 
-![VSCode_CommandPalette_login](images/VSCode_CommandPalette_login.png)
+![VSCode_CommandPalette_login](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_CommandPalette_login.png)
 
-![VSCode_CommandPalette_logged](images/VSCode_CommandPalette_logged.png)
+![VSCode_CommandPalette_logged](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_CommandPalette_logged.png)
 
 4 - Cerramos la pestaña del navegador y nos volvemos al VSCode.
 
@@ -89,20 +89,20 @@ dotnet publish --configuration Release
 
 6 - Hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\netcoreapp3.1\publish) y seleccionamos **Deploy to Web App..**.
 
-![VSCode_DeployMenu](images/VSCode_DeployMenu.png)
+![VSCode_DeployMenu](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_DeployMenu.png)
 
 7 - Seleccionamos el App Service de la lista(*). 
 
-![VSCode_Deploy_Choose](images/VSCode_Deploy_Choose.png)
+![VSCode_Deploy_Choose](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Choose.png)
 
 8 - Visual Studio Code te preguntará si quieres sobreescribir el contenido existente de la Web App. Le damos a **Deploy** para indicar una respuesta afirmativa.
 
-![VSCode_Deploy_Warning](images/VSCode_Deploy_Warning.png)
-![VSCode_Deploy_Deploying](images/VSCode_Deploy_Deploying.png)
+![VSCode_Deploy_Warning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Warning.png)
+![VSCode_Deploy_Deploying](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Deploying.png)
 
 9 - Al final del proceso veremos una opción como esta, donde podremos lanzar la web directamente.
 
-![VSCode_Deploy_Browse](images/VSCode_Deploy_Browse.png)
+![VSCode_Deploy_Browse](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Browse.png)
 
 Finalmente, cuando la web se lance, el certificado se instalará automáticamente desde Azure en la máquina que despliega, con lo que no tendremos que preocuparnos de los permisos de Azure KeyVault, ya estarán concedidos.
 

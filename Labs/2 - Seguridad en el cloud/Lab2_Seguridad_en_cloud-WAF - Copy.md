@@ -9,7 +9,7 @@
 ### Lab overview
 Una de las mejores razones para utilizar Azure con tus aplicaciones y servicios, es la de aprovecharse del amplio rango de herramientas de seguridad que incluye. Estas herramientas ayudan a hacer posible la creación de soluciones seguras en la plataforma de Azure.
 
-![WAF Picture](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture.jpg)
+![WAF Picture](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture.jpg)
 
 ### Objetivos
 En este lab aprenderemos algunas herramientas de Azure con las cuales podremos asegurar nuestras aplicaciones web. Existen varias como Azure Application Gateway, Azure Front Door, Azure Web Application Firewall (WAF), etcétera. Nosotros nos vamos a centrar en estas 2 últimas.
@@ -38,7 +38,7 @@ Lo primero que vamos a necesitar es crear un App service donde alojaremos nuestr
 - Nos vamos al menú lateral izquierdo, y le damos a la opción _+ Create resource_ (Crear recurso).
 - En la siguiente ventana, en la barra de búsqueda, escribimos **Web App + SQL** y seleccionamos la opción que no sale con dicho nombre (intenta no dejar espacios porque sino tendrás problemas para encontrarlo).
 
-![Web+SQL](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL.jpg)
+![Web+SQL](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL.jpg)
 
 - Le damos a _Create_ y en los campos que nos pide a continiación le damos los valores siguiente:
 
@@ -48,7 +48,7 @@ Lo primero que vamos a necesitar es crear un App service donde alojaremos nuestr
 | Subcription | <La vuestra seguramente estará para elegir de una lista> |
 | Resource Group | afdoor-rg |
 
-![WebSQL_plan](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_plan.png)
+![WebSQL_plan](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_plan.png)
 
 - Ahora todavía necesitamos seleccionar un plan, que no es otra cosa que la forma en la que nos van a facturar el uso de dicha aplicación web. Pinchamos en dicha opción y se nos abrirá otra ventana.
 
@@ -57,7 +57,7 @@ Lo primero que vamos a necesitar es crear un App service donde alojaremos nuestr
   - Pricing tier lo dejamos como está por defecto.
   - Clic 'OK'.
 
-![WebSQL_DB](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_db.png)
+![WebSQL_DB](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_db.png)
 
 - Lo siguiente es crear la base de datos SQL Server. Lo primero que nos pide es el nombre de la base de datos, el cual será **afdoordatabase**. El siguiente campo es el servidor bajo el cual se alojará dicha base de datos, pero como nunca hemos creado ninguno, tendremos que hacerlo en el siguiente paso, pinchando en _Select server_.
   - En el nombre le ponemos **afdoorsqlserver** 
@@ -67,17 +67,17 @@ Lo primero que vamos a necesitar es crear un App service donde alojaremos nuestr
 
 Hemos vuelto atrás, y solo nos queda elegir el _Pricing tier_ y el _collation_. Ambos los dejaremos por defecto y haremos clic sobre 'Select'. Con todo configurado, solo nos queda darle a 'Create' para que arranque el proceso de creación de todo lo que hemos seleccionado.
 
-![WebSQL_Deploy](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_deploying.png)
+![WebSQL_Deploy](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_deploying.png)
 
 Puede tardar varios minutos en levantarse toda la infraestructura, pero cuando todo esté listo, dentro del grupo de recursos que acabamos de crear, deberíamos tener todos los recursos que se muestran a continuación.
 
-![WebSQL_DeploymentCompleto](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_deployed.png)
+![WebSQL_DeploymentCompleto](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappSQL_deployed.png)
 
 #### 2 - Publicar el contenido web que necesitamos para el laboratorio.
 
 Vamos a comprobar que efecticamente podemos navegar hacia la web que acabamos de desplegar. Para ello, dentro del grupo de recursos, seleccionamos el del App Service. Una vez dentro, en la parte superior vamos a encontrar la **URL** que contendrá la web desplegada. La copiamos y la pegamos en el navegador (o pinchamos sobre la propia url en azul) donde veremos algo así.
 
-![WebSQL_DeploymentCompleto](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_DummyWeb.png)
+![WebSQL_DeploymentCompleto](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_DummyWeb.png)
 
 Esto significa que el desplegado ha funcionado como esperábamos, pero claro, esta no es la web que necesitaremos para poder explotar ciertos agujeros de seguridad. Vamos a necesitar una que esté preparada.
 
@@ -88,17 +88,17 @@ En la carpeta de [recursos](../../Recursos/) vais a encontrar un archivo zip lla
 - Ahora 'Archivo > Abrir carpeta' y mostramos dicha carpeta de nuestro local con la web descomprimida.
 - El siguiente paso será publicar el contenido de la carpeta actual en el App Service que creamos dentro de nuestro grupo de recursos de Azure. Para ello, pinchamos en el icono de Azure de la barra lateral izquieda y se nos mostrarán las suscripciones activas.
 
-![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure.png)
+![WebSQL_VSCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure.png)
 
 - A continuación, con botón derecho sobre la suscripción, seleccionamos la opción **Deploy to Web App**.
 
-![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure2.png)
+![WebSQL_VSCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure2.png)
 
 - En la parte superior de VS Code, nos pedirá la ruta donde está el contenido web a desplegar. Lo seleccionamos y automáticamente nos preguntará si queremos hacer el despliegue, y confirmamos en **Deploy**.
 
-![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure4_Overwrite.png)
+![WebSQL_VSCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure4_Overwrite.png)
 
-![WebSQL_VSCode](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure5_Deploy.png)
+![WebSQL_VSCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_VSCode_Azure5_Deploy.png)
 
 Cuando acabe de desplegar, le podemos dar a _Browse Website_ para ver el resultado. Puede tardar un poco porque tenga que cachear la web primero, pero ya deberíamos ver 'Contoso clinic' abierto en el navegador como nuestra web de uso.
 
@@ -106,11 +106,11 @@ Cuando acabe de desplegar, le podemos dar a _Browse Website_ para ver el resulta
 
 Ahora mismo, el dibujo inicial está así:
 
-![WAF Picture2](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture_b.png)
+![WAF Picture2](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_mainPicture_b.png)
 
 Necesitaremos definir todo el sistema de seguridad que da acceso a nuestra web, para lo cual empezaremos por el AFD. Además, cuando vayamos a crear el WAF, en uno de los pasos nos pedirá que seleccionemos el _frontend host_, que no es otra cosa que esto que vamos a definir a continuación.
 
-![AzureFD_create](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor.png)
+![AzureFD_create](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor.png)
 
 - Vamos a la barra de búsquedas y escribimos 'front door' y seleccionamos el recurso del mismo nombre. Le damos a **Create**.
 - Una vez dentro del menú _basics_, le damos estos valores a los campos y seleccionamos '> Next: Configuration':
@@ -121,7 +121,7 @@ Necesitaremos definir todo el sistema de seguridad que da acceso a nuestra web, 
 | Resource group | afdoor-rg |
 | Resource group location | Cogerá automáticamente la del resource group |
 
-![FrontDoor_FE](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_diagram.png)
+![FrontDoor_FE](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_diagram.png)
 
 - Aquí vamos a definir nuestro **FrontEnd**, **BackEnd** y las **reglas de enrutado**. 
   - Hacemos clic sobre el botón para añadir el frontEnd primero.Le damos el valor 'frontenddomainub' al _Host name_ y dejamos el resto de campos como están. Clic Add.  
@@ -146,7 +146,7 @@ Una vez el front door está levantado, solo nos queda definir el AFD que se asoc
 - Podemos acceder de dos maneras, bien nos vamos al buscador de arriba o al menu lateral izquierdo y seleccionamos la opción _Create a resource_.
 - Escribimos **Web Application** y seleccionamos la que tiene el nombre completo "Web Application Firewall (WAF)" (no confundir con el recurso 'Azure Web Application Firewall (WAF)'). Le damos a botón crear.
 
-![WAF_create](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_waf_create.png)
+![WAF_create](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_waf_create.png)
 
 - Ahora nos aparecen varios campos para rellenar, a los cuales les daremos los valores siguientes:
 
@@ -179,7 +179,7 @@ Ahora mismo, la única manera en la que los usuarios deben ser capaces de accede
 - Para bloquear este acceso, vamos a dirigirnos al App Service que tenemos creado dentro del grupo de recursos.
 - Ahora en el menú lateral izquierdo, dentro de **Settings**, pinchamos en _Networking_.
 
-![BlockAccess](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_blockaccess.png)
+![BlockAccess](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_blockaccess.png)
 
 - Vamos abajo donde dice _Access restrictions/Configure Access Restrictions_.
 - Crearemos una regla nueva, le damos estos valores y a continuación hacemos clic en _Add Rule_.
@@ -204,11 +204,11 @@ Ahora mismo, solo deberíamos ser capaces de acceder al contenido de la web a tr
 
 - Ahora, en la barra de búsqueda vamos a introducir el siguiente texto, el cuál va a simular una inyección SQL en toda regla.
 
-![lab2_module2_webappTestAttack](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappTestAttack.png)
+![lab2_module2_webappTestAttack](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_webappTestAttack.png)
 
 - Hacemos click en buscar, y si todo está bien configurado, veremos el mensaje previamente definido en el bloque 4.
 
-![ErrorAtaque](../../Recursos/3%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_alert.png)
+![ErrorAtaque](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab2_module2_frontdoor_alert.png)
   
 
 ### Ejercicios relacionados

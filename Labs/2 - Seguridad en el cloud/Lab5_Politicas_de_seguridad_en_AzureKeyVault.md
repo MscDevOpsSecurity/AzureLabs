@@ -96,9 +96,33 @@ Vamos a intentar replicar la siguiente infraestructura, que contiene un problema
 
 ### Tarea 3 : Jugaremos con 2 bases de datos y 2 VMs, arreglando el problema con RBAC.
 
-Vamos a intentar replicar la siguiente infraestructura, que soluciona el issue visto en el punto anterior.
+Vamos a intentar replicar la siguiente infraestructura, que soluciona el problema de seguridad visto en el punto anterior.
 
 ![2_db_2_vms_rbac](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab5_2_db_2_vms_rbac.png)
+
+1 - Primero necesitamos cambiar el **Permission model** de _Vault Access Policy_ a _Azure Role Base Access Control_.
+
+> **NOTA**: recuerda que para cambiar este modo, el grupo de recursos donde se encuentre tu Azure KeyVault debe tener permisos de **Azure KeyVault Administrator** o **Owner** para el usuario con el que accedes al portal.
+
+2 - Ahora, la parte que va a eliminar el riesgo de que otra VM acceda a nuestros secretos, es la posibilidad de asignar a cada uno de ellos, los permisos de la VM que corresponde. Podemos ir uno a uno por los secretos, o ejecutar los siguientes comandos en el **Cloud Shell**.
+
+```bash
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM1>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/usernamedb0"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM1>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/passworddb0"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM1>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/sourcenamedb0"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM1>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/initialcatalogdb0"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM2>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/usernamedb1"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM2>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/passworddb1"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM2>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/sourcenamedb1"
+az role assignment create --role "Key Vault Secrets User" --assignee-object-id "<principal object id from VM2>" --scope "/subscriptions/<suscriptionId>/resourceGroups/<ResourceGroupName>/providers/Microsoft.KeyVault/vaults/<keyvault_name>/secrets/initialcatalogdb1"
+```
+> **NOTA**: cambia las variables correspondientes por tus propios valores.
+
+3 - Abre de nuevo la primera VM y ejecuta la segunda aplicación que hemos copiado anteriormente.
+
+4 - Ejecuta la primera opción, que nos permite leer nuestros propios secretos. Comprueba que se leen sin problema.
+
+5 - Ejecuta la segunda opción, que nos permite leer los secretos asociados a la otra base de datos y a la VM2. Comprueba que te lanza un error **Forbidden**.
 
 
 ### Tarea Final : Eliminar todos los recursos creados.

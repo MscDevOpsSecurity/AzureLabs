@@ -42,6 +42,28 @@ Vamos a intentar replicar la siguiente infraestructura.
 
 ![1_db_1_vm](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab5_1_db_1_vm.png)
 
+1 - Desplegamos la primera VM e [Instalamos net Core 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-5.0.15-windows-x64-installer) (_virtual_machine_win10_template_)
+
+2 - Desde el portal de Azure, dentro de la ventana de la VM, habilitamos "System assigned" Identity.
+
+3 - Desplegamos el Azure KeyVault (_azure_keyvault_template_)
+
+4 - Desplegamos un servidor SQL y una base de datos de ejemplo. Después, desde la ventana de la base de datos, en **Propiedades**, guardamos los valores del _connectionString_ 
+  
+> Server=tcp:masterub-sqlserver.database.windows.net,1433;Initial Catalog=masterub-db;Persist Security Info=False;User ID={your_username};Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+5 - Vamos a la ventana del Azure KeyVault y creamos los secretos correspondientes a la connectionString que acabamos de guardar (user, pass, ...)
+
+6 - Abrimos la VM y copiamos la aplicación .NET en el escritorio (_AccessAzKeyVault_OneDatabase.zip_).
+
+7 - Ejecuta la opción del menú que nos permite leer los secretos del Az KeyVault, (sin haber configurado las **Access policies**) y comprueba que te da un error de permisos.
+
+![lab5_console_onedatabase](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab5_console_onedatabase.png)
+
+8 - Define las **Access policies** correspondientes para que la VM pueda leer del Az KeyVault (Get).
+
+9 - Ejecuta de nuevo y comprueba que realmente puedes leer los secretos.
+
 
 ### Tarea 2 : Jugaremos con 2 bases de datos y 2 VMs, para reproducir el problema de las "Vault Access Policy".
 

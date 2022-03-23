@@ -1,0 +1,153 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "collation": {
+            "value": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "databaseName": {
+            "value": "masterub-db2"
+        },
+        "tier": {
+            "value": "GeneralPurpose"
+        },
+        "skuName": {
+            "value": "GP_Gen5_2"
+        },
+        "maxSizeBytes": {
+            "value": 34359738368
+        },
+        "sampleName": {
+            "value": "AdventureWorksLT"
+        },
+        "serverLocation": {
+            "value": "eastus"
+        },
+        "serverName": {
+            "value": "masterub-sqlserver"
+        },
+        "zoneRedundant": {
+            "value": false
+        },
+        "licenseType": {
+            "value": "LicenseIncluded"
+        },
+        "readScaleOut": {
+            "value": "Disabled"
+        },
+        "numberOfReplicas": {
+            "value": 0
+        },
+        "databaseTags": {
+            "value": {}
+        },
+        "enableADS": {
+            "value": false
+        },
+        "enableVA": {
+            "value": false
+        },
+        "enableSqlLedger": {
+            "value": false
+        },
+        "enableDigestStorage": {
+            "value": "Disabled"
+        },
+        "digestStorageOption": {
+            "value": ""
+        },
+        "digestStorageName": {
+            "value": ""
+        },
+        "blobStorageContainerName": {
+            "value": ""
+        },
+        "retentionDays": {
+            "value": ""
+        },
+        "retentionPolicy": {
+            "value": false
+        },
+        "digestAccountResourceGroup": {
+            "value": ""
+        },
+        "isNewDigestLocation": {
+            "value": false
+        },
+        "digestRegion": {
+            "value": ""
+        },
+        "storageAccountdigestRegion": {
+            "value": ""
+        },
+        "sqlLedgerTemplateLink": {
+            "value": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.01900219/DeploymentTemplates/SqlLedger.json"
+        },
+        "useVAManagedIdentity": {
+            "value": false
+        },
+        "enablePrivateEndpoint": {
+            "value": false
+        },
+        "privateEndpointNestedTemplateId": {
+            "value": "pe-561aa598-e397-4336-b3fa-ece97f8c700e"
+        },
+        "privateEndpointSubscriptionId": {
+            "value": ""
+        },
+        "privateEndpointResourceGroup": {
+            "value": ""
+        },
+        "privateEndpointName": {
+            "value": ""
+        },
+        "privateEndpointLocation": {
+            "value": ""
+        },
+        "privateEndpointSubnetId": {
+            "value": ""
+        },
+        "privateLinkServiceName": {
+            "value": ""
+        },
+        "privateLinkServiceServiceId": {
+            "value": ""
+        },
+        "privateEndpointVnetSubscriptionId": {
+            "value": ""
+        },
+        "privateEndpointVnetResourceGroup": {
+            "value": ""
+        },
+        "privateEndpointVnetName": {
+            "value": ""
+        },
+        "privateEndpointSubnetName": {
+            "value": ""
+        },
+        "enablePrivateDnsZone": {
+            "value": true
+        },
+        "privateLinkPrivateDnsZoneFQDN": {
+            "value": "privatelink.database.windows.net"
+        },
+        "privateEndpointDnsRecordUniqueId": {
+            "value": "561aa598-e397-4336-b3fa-ece97f8c700f"
+        },
+        "privateEndpointTemplateLink": {
+            "value": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.01900219/DeploymentTemplates/PrivateEndpoint.json"
+        },
+        "privateDnsForPrivateEndpointTemplateLink": {
+            "value": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.01900219/DeploymentTemplates/PrivateDnsForPrivateEndpoint.json"
+        },
+        "privateDnsForPrivateEndpointNicTemplateLink": {
+            "value": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.01900219/DeploymentTemplates/PrivateDnsForPrivateEndpointNic.json"
+        },
+        "privateDnsForPrivateEndpointIpConfigTemplateLink": {
+            "value": "https://sqlazureextension.hosting.portal.azure.net/sqlazureextension/Content/2.1.01900219/DeploymentTemplates/PrivateDnsForPrivateEndpointIpConfig.json"
+        },
+        "requestedBackupStorageRedundancy": {
+            "value": "Local"
+        }
+    }
+}

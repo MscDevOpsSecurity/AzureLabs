@@ -52,7 +52,7 @@ Vamos a intentar replicar la siguiente infraestructura.
   
 > Server=tcp:masterub-sqlserver.database.windows.net,1433;Initial Catalog=masterub-db;Persist Security Info=False;User ID={your_username};Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
-5 - Vamos a la ventana del Azure KeyVault y creamos los secretos correspondientes a la connectionString que acabamos de guardar (user, pass, ...)
+5 - Vamos a la ventana del Azure KeyVault y creamos los secretos correspondientes a la connectionString que acabamos de guardar (usuario, contraseña, ...)
 
 6 - Abrimos la VM y copiamos la aplicación .NET en el escritorio (_AccessAzKeyVault_OneDatabase.zip_).
 
@@ -70,6 +70,29 @@ Vamos a intentar replicar la siguiente infraestructura.
 Vamos a intentar replicar la siguiente infraestructura, que contiene un problema de seguridad evidente.
 
 ![2_db_2_vms_issue](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab5_2_db_2_vms_issue.png)
+
+> Dejamos las **Access Policies** de la primera VM como están.
+
+1 - Desplegamos la segunda VM e [Instalamos net Core 5.0 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-5.0.15-windows-x64-installer) (_virtual_machine_win10_template_2_)
+	
+2	- Desde el portal de Azure, dentro de la ventana de la VM, habilitamos "System assigned" Identity.
+
+3 - Configuramos las **Access policies** para que la segunda VM pueda acceder al Azure KeyVault.
+
+4 - Creamos la segunda base de datos de ejemplo dentro del mismo servidor SQL. Después, desde la ventana de la base de datos, en **Propiedades**, guardamos los valores del _connectionString_ 
+  
+> Server=tcp:masterub-sqlserver.database.windows.net,1433;Initial Catalog=masterub-db;Persist Security Info=False;User ID={your_username};Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+5 - Vamos a la ventana del Azure KeyVault y creamos los secretos correspondientes a la connectionString que acabamos de guardar (usuario, contraseña, ...)
+
+6 - Accedemos a la primera VM de nuevo, y copiamos la aplicación de .NET en el escritorio (_AccessAzKeyVault_TwoDatabases.zip_).
+
+7 - Intentamos leer los secretos relativos a la primera base de datos (aquí no hay problema de seguridad).
+
+8 - Intentamos leer los secretos relativos a la segunda base de datos, y comprobamos que funciona y tenemos permisos (aquí si está el problema de seguridad).
+
+![lab5_console_twodatabases](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab5_console_twodatabases.png)
+
 
 ### Tarea 3 : Jugaremos con 2 bases de datos y 2 VMs, arreglando el problema con RBAC.
 

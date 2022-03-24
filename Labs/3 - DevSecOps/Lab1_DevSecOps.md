@@ -44,7 +44,9 @@ En este módulo, utilizaremos el portal de Azure para crear un nuevo registro en
 #### Create a registry in Azure Container Registry
 
 1.- Logueate en el portal de Azure con tu subscripción.
-2.- En la página de inicio del portal de Azure, bajo **Azure Services** selecciona _Create a resource_. Aparecerá el panel de _Create a resource_.
+
+2.- En la página de inicio del portal de Azure, en el menú lateral selecciona _Create a resource_. Aparecerá el panel de _Create a resource_.
+
 3.- En el panel izquierdo, selecciona **Containers** y bajo el listado de productos más populares, selecciona **Container Registry** (también podemos buscarlo en el cuadro de texto superior).
 
 ![ContainerRegistry](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_ContainerRegistry.png)
@@ -109,7 +111,7 @@ En este ejemplo, el equipo ha cargado la imagen de la aplicación web en ACR y a
 
 En esta unidad, crearemos una nueva aplicación web mediante la imagen de Docker almacenada en Azure Container Registry. Utilizaremos el App Service con un plan de App Service predefinido para alojar la aplicación web.
 
-#### Enable Docker access to the Azure Container Registry
+#### Habilitar acceso de Docker sobre el _Azure Container Registry_
 
 Utilizaremos Docker para loguearnos en el registro, y descargaremos la imagen web que queremos desplegar. Docker necesita un usuario y una contraseña para realizar esta operación. El registro de contenedores nos proporciona la posibilidad de habilitar el nombre del registro como nombre de usuario y la _admin access key_ como la contraseña, para permitir a Docker loguearse en tu registro de contenedores.
 
@@ -123,7 +125,7 @@ Utilizaremos Docker para loguearnos en el registro, y descargaremos la imagen we
 
 Ahora ya estamos listos para crear nuestra aplicación web.
 
-#### Create a web app
+#### Crear una aplicación web 
 
 1.- Regresamos a la página principal del portal, y bajo _Azure services_, seleccionamos **Create resource**. Aparecerá entonces el panel de para crear recursos.
 
@@ -164,7 +166,7 @@ Aparecerá entonces el panel para crear una Web App.
 
 6.- Selecciona **Review and create**, y después selecciona **Create**. Espera a que termine de desplegarse para continuar.
 
-#### Test the web app
+#### Testear la aplicación web
 
 1.- Después de que finalice correctamente el despliegue, selecciona _Go to resource_ para ver la aplicación web que acabamos de crear. Nos aparecerá el panel del App Service para nuestra web.
 

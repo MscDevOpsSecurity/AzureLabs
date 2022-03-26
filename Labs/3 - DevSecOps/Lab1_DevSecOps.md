@@ -184,11 +184,11 @@ En esta unidad, configuraremos la implementación continua para la aplicación w
 
 #### Configurar continuous deployment y crear un webhook
 
-1.- Desde el portal de Azyre, seleccionamos nuestra aplicación web. Se abrirá el panel de App Service para nuestra aplicación web.
+1.- Desde el portal de Azure, seleccionamos nuestra aplicación web. Se abrirá el panel de App Service para nuestra aplicación web.
 
 2.- En el panel izquierdo, bajo _Deployment_, seleccionamos **Deployment Center**. Esto hará que aparezca el panel _Deployment Center_ para nuestro App Service.
 
-3.- En la pestaña de **Settings**, bajo _Registry settings_, ponemos el valor de **Continuous deploument** a _On_, y en el menú superior le damos a _Save_. Esta opción configura un webhook automáticamente para nuestro registro de contenedores, que usará como alerta de nuestra aplicación web cuando se modifique nuestra imagen Docker.
+3.- En la pestaña de **Settings**, bajo _Registry settings_, ponemos el valor de **Continuous deployment** a _On_, y en el menú superior le damos a _Save_. Esta opción configura un webhook automáticamente para nuestro registro de contenedores, que usará como alerta de nuestra aplicación web cuando se modifique nuestra imagen Docker.
 
 ![Webhook acr](../../Recursos/3%20-%20DevSecOps/lab1_modulo3_Part2_webhookacr.png)
 

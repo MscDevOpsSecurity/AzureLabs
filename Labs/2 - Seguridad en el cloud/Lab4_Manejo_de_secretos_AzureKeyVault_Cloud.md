@@ -34,7 +34,7 @@ La estructura que vamos a crear, responde al siguiente diseño. Puede parecer mu
 1 - Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo).
 2 - Nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
 3 - Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
-  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁 Recursos/4 - Manejo de secretos, tokens y certificados/Lab2_AzureKeyVault_Cloud/ARM_templates/
+  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁 Recursos/2 - Seguridad en Cloud/lab4/2_AzureKeyVault_Cloud/ARM_templates/
   - Desde el shell del portal de Azure, los cargamos mediante el botón _Upload/Download files_ (uno cada vez).
   - Ahora tendremos los archivos cargados en nuestra raíz del shell de bash, con lo que podemos ejecutar el primer comando para desplegar el ResourceGroup:    
 

@@ -35,7 +35,7 @@ La estructura que vamos a crear, responde al siguiente diseño. Puede parecer mu
 2 - Nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
 
 3 - Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
-  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁 Recursos/2 - Seguridad en Cloud/1_AzureKeyVault_localhost/ARM_templates/
+  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/ARM_templates/
   - Desde el shell del portal de Azure, los cargamos mediante el botón _Upload/Download files_ (uno cada vez).
   - Ahora tendremos los archivos cargados en nuestra raíz del shell de bash, con lo que podemos ejecutar el primer comando para desplegar el ResourceGroup:    
 
@@ -52,13 +52,15 @@ az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file
   
   ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
   
+  > **Tip 2:** Algunas veces puede fallar la ejecución de algún comando debido a problemas en la región donde lo estemos creando. Cambiad la región en el template y volved a ejecutarlo. 
+  
   - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 2 recursos que necesitamos: Azure KeyVault y la base de datos CosmosDb sin más intervención.
   
 4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
 
 ### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.
 
-1 - Al clonar este repositorio, nos hemos descargado el código fuente necesario en la ruta "AzureLabs/Recursos/4 - Manejo de secretos, tokens y certificados/source/initial/". Solo tenemos que abrir la solución con VS Code/Visual Studio 2019 Community o el editor gráfico que queráis. 
+1 - Al clonar este repositorio, nos hemos descargado el código fuente necesario en la ruta "AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/source/initial/". Solo tenemos que abrir la solución con VS Code/Visual Studio 2019 Community o el editor gráfico que queráis. 
 
 2 - Compilamos el código para asegurarnos de que todo está correctamente preparado.
 
@@ -84,7 +86,7 @@ az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file
 ![Remove_SSL_validation_postman](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Remove_SSL_validation_postman.png)
 
   - Operación: **GET**
-  - Barra de direcciones: _http://localhost:puerto/api/Items_, donde \<puerto\> será un valor numérico especificado en vuestro archivo _launchSettings.json_ dentro del código.
+  - Barra de direcciones: _http://localhost:puerto/api/Items_, donde \<puerto\> será un valor numérico especificado en vuestro archivo _launchSettings.json_ dentro del código, en el profile que no es **IIS** (normalmente será 5001).
   - Pinchamos en "Send/Enviar"
 
 ![postman_get_items_localhost](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/postman_get_items_localhost.png)

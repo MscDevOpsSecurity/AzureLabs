@@ -106,7 +106,7 @@ netsh interface ipv4 show excludedportrange protocol=tcp
 
 Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.
 
-1 - Abrimos una consola de WLS ([Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
+1 - Abrimos una consola de WSL ([Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)).
 
 2 - Ejecutamos el siguiente comando:
 
@@ -118,7 +118,7 @@ openssl req -newkey rsa:2048 -nodes -keyout privateKey.pem -x509 -days 365 -out 
 4 - Ahora con estas claves, vamos a generar el archivo \*.pfx, el cual es definitivamente el certificado que necesitamos. Para ellos ejecutamos en la misma consola el siguiente comando:
 
 ```Bash
-openssl pkcs12 -inkey privateKey.pem -in publicKey -export -out certificate.pfx
+openssl pkcs12 -inkey privateKey.pem -in publicKey.pem -export -out certificate.pfx
 ```
 
 5 - A continuación nos pedirá una contraseña, y mucho ojo con lo que ponemos, porque no quedará registro de ella en ningún otro sitio, es decir, necesitamos guardarla o recordarla para más adelante.
@@ -275,13 +275,17 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 ![InstallCertificateLocalhost_done](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/InstallCertificateLocalhost_done.png)
 
-7 - Ejecuta ahora la aplicación de C# y automáticamente se lanzará un navegador web, que no es otra cosa que el recurso web esperando peticiones REST. No lo cierres hasta que no termines de jugar con la app.
+7 - Ejecuta ahora la aplicación de C# y automáticamente se lanzará un navegador web con el contenido de la base de datos. Al mismo tiempo verás una consola, que no es otra cosa que el recurso web esperando peticiones REST. No lo cierres hasta que no termines de jugar con la app.
+  
+  ![RunAppWaiting](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/runappwaiting_localhost.png)
 
 8 - Abrimos nuestro cliente REST y volvemos a ejecutar los mismos comandos que hicimos al inicio, cuando todavía teníamos la contraseña en texto plano.
 
 9 - El resultado debería ser el mismo, es decir, deberíamos recibir la información de la base de datos Azure CosmosDB, pero ahora teniendo en cuenta que la contraseña se recupera de Azure KeyVault, gracias al certificado que tenemos instalado en nuestra máquina.
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
+  
+> ℹ️ **NOTA**: tenéis la versión final en una carpeta junto al código fuente inicial de la práctica.
 
 ### Tarea 7: Eliminar todos los recursos creados.
 

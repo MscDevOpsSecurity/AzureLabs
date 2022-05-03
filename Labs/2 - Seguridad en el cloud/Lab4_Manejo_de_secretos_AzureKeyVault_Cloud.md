@@ -117,15 +117,11 @@ Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia pa
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
-2 - Listamos todos los resource groups creados a lo largo del lab de este módulo, ejecutando el siguiente comando:
+
+2 - Eliminamos el resource group creado en el lab, ejecutando el siguiente comando:
 
 ```bash
-az group list --query "[?starts_with(name,'AzureLabsModulo4Lab2')].name" --output tsv
-```
-3 - A continuación eliminamos todos los resource groups creados en el lab, ejecutando el siguiente comando:
-
-```bash
-az group list --query "[?starts_with(name,'AzureLabsModulo4Lab2')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+az group delete --name <your_resource_group_name> --no-wait --yes
 ```
 
-4 - En este caso no es necesario eliminar ningún certificado porque al estar instalado dentro de la máquina que ejecuta el App Service, se eliminará automáticamente con el ResourceGroup.
+3 - En este caso no es necesario eliminar ningún certificado porque al estar instalado dentro de la máquina que ejecuta el App Service, se eliminará automáticamente con el ResourceGroup.

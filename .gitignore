@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -7,3 +7,5 @@
 /Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/source/final/obj/Debug/netcoreapp3.1
 /Recursos/4 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/source/final/obj/Release/netcoreapp3.1
 /Recursos/00 - Manejo de secretos, tokens y certificados/Lab1_AzureKeyVault_localhost/source/final/obj
+Recursos/2 - Seguridad en el cloud/lab4/1_AzureKeyVault_localhost/source/final/obj/Debug/netcoreapp3.1/Module4Lab5.GeneratedMSBuildEditorConfig.editorconfig
+Recursos/2 - Seguridad en el cloud/lab4/1_AzureKeyVault_localhost/source/final/obj/Debug/netcoreapp3.1/project.razor.json

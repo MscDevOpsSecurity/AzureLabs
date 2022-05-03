@@ -293,6 +293,7 @@ Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia pa
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
+  
 2 - Listamos todos los resource groups creados a lo largo del lab de este módulo, ejecutando el siguiente comando:
 ```bash
 az group list --query "[?starts_with(name,'AzureLabsModulo4Lab1')].name" --output tsv

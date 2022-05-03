@@ -294,16 +294,12 @@ Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
   
-2 - Listamos todos los resource groups creados a lo largo del lab de este módulo, ejecutando el siguiente comando:
+2 - Eliminamos el resource groups creado en el lab, ejecutando el siguiente comando:
 ```bash
-az group list --query "[?starts_with(name,'AzureLabsModulo4Lab1')].name" --output tsv
-```
-3 - A continuación eliminamos todos los resource groups creados en el lab, ejecutando el siguiente comando:
-```bash
-az group list --query "[?starts_with(name,'AzureLabsModulo4Lab1')].[name]" --output tsv | xargs -L1 bash -c 'az group delete --name $0 --no-wait --yes'
+az group delete --name <your_resource_group_name> --no-wait --yes
 ```
 
-4 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+3 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
   - Tecla "Windows" + "R" para sacar la aplicación de ejecución.
   - Escribimos el comando **certmgr.exe** y le damos a _OK_.
   - Dentro de la ventana del gestor de certificados, vamos al menú **Add/Remove Snap-in**, seleccionamos _Certificates_ en la parte izquierda y lo añadimos al listado de la derecha, luego selecciona _My User Account_ y _Finish_.

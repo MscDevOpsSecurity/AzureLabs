@@ -277,7 +277,7 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 7 - Ejecuta ahora la aplicación de C# y automáticamente se lanzará un navegador web con el contenido de la base de datos. Al mismo tiempo verás una consola, que no es otra cosa que el recurso web esperando peticiones REST. No lo cierres hasta que no termines de jugar con la app.
   
-  ![RunAppWaiting](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/runappwaiting_localhost.png)
+  ![RunAppWaiting](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/runappwaiting_localhost.PNG)
 
 8 - Abrimos nuestro cliente REST y volvemos a ejecutar los mismos comandos que hicimos al inicio, cuando todavía teníamos la contraseña en texto plano.
 

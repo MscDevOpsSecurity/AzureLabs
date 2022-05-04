@@ -248,7 +248,8 @@ var vaultName = root["KeyVault:Vault"];
 ```
   
 ```csharp
-  // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 (El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
+  // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 
+  // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
   GetCertificate(root["KeyVault:Thumbprint"]) 
 ```
   

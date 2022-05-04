@@ -12,7 +12,7 @@
 El objetivo de esta práctica es entender la responsabilidad que delegamos en Azure keyVault para almacenar datos sensibles, que nadie será capaz de ver o usar, a menos que nosotros lo diseñemos de esa manera.
 
 ## Duración
-90 min aprox.
+60 min aprox.
 
 ## Instrucciones
 
@@ -61,8 +61,29 @@ az deployment group create --resource-group AzureLabsModulo4Lab2 --template-file
 
 Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 6.
 
+### Tarea 3: Configurar certificado para el app service.
 
-### Tarea 3: Comprobemos de nuevo la aplicación
+Vamos a necesitar que el app service actue como un cliente, es decir, que nada más arrancar, instale el certificado privado que generamos previamente. De esta manera, tendrá permisos para leer del Azure Key Vault.
+
+1 - Vamos al portal de Azure y entramos en el App Service que tenemos creado.
+
+2 - Bajo el menú de **settings**, nos vamos a _TLS/SSL settings_.
+
+3 - Ahora pinchamos en la pestaña **Private Key Certificates (pfx)** y subimos nuestro certificado _pfx_ que hemos generado antes. Por supuesto nos pedirá la contraseña que le dimos cuando lo creamos. Esta será la única vez que tengamos que usar las contraseñas.
+
+4 - Ahora necesitamos que el App Service instale este certificado nada más arrancar. Para ello, en el propio menú **Settings**, nos vamos a _Configuration_.
+
+5 - Añadimos una nueva **Application setting**
+
+| Campo | Valor |
+|---|---|
+|Name|WEBSITE_LOAD_CERTIFICATES|
+|Value| * |
+
+6 - Hacemos clic en OK => Save => Continue.
+
+
+### Tarea 4: Comprobemos de nuevo la aplicación
 
 Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish desde nuestro entorno de desarrollo al App Service que hemos creado en Azure.
 
@@ -111,7 +132,7 @@ Finalmente, cuando la web se lance, el certificado se instalará automáticament
 
   > ℹ️ (*) Si no somos capaces de ver nuestro AppService en la lista desplegable al hacer el _Deploy to Web App.._ del paso 6, tendremos que reiniciar el terminal de VSCode y ya aparecerá. Suele pasar cuando hacemos log-in con nuestra cuenta de Azure, no encuentra todos los recursos de forma inmediata.
 
-### Tarea 4: Eliminar todos los recursos creados.
+### Tarea 5: Eliminar todos los recursos creados.
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:

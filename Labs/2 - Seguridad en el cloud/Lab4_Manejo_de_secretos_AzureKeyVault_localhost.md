@@ -235,18 +235,63 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 var vaultName = root["KeyVault:Vault"];
 ```
 
-   - La siguiente línea conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
-      - Url en Azure del KeyVault: la obtenemos desde el portal de Azure, dentro de nuestro keyvault resource.
+   - La siguiente llamada, conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
+  
+```csharp
+  // Url en Azure del KeyVault: la obtenemos desde el portal de Azure, dentro de nuestro keyvault resource.
+  $"https://{vaultName}.vault.azure.net/" 
+```
 
-![AzKeyVault_Uri](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_Uri.png)
+```csharp
+  // El ClientId: este es el Id que hemos copiado al hacer el registro de la WebApp en Azure AD.
+  root["KeyVault:ClientId"] 
+```
+  
+```csharp
+  // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 (El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
+  GetCertificate(root["KeyVault:Thumbprint"]) 
+```
+  
+```csharp  
+  // Nuestro propio IKeyVaultSecretManager, en nuestro caso, _PrefixKeyVaultExample_.
+  new PrefixKeyVaultExample("Module4Lab1") 
+```
+  
+8 - El código relativo al Secret Manager va en una clase aparte, que tendremos que crear en la raíz del proyecto. Como podemos observar en el trozo de código anterior, se debe llamar _PrefixKeyVaultExample.cs_ y el código que contiene es este:
 
-      - El ClientId: este es el ClientId que hemos copiado al hacer el registro de la WebApp en Azure AD.
-      - El certificado self-signed instalado en nuestra computadora, creado en la tarea 4.
-      - Nuestro propio IKeyVaultSecretManager, en nuestro caso, _PrefixKeyVaultExample_.
+```csharp
+using Microsoft.Azure.KeyVault.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
+
+namespace Module4Lab5
+{
+    public class PrefixKeyVaultExample :IKeyVaultSecretManager
+    {
+
+        private readonly string _prefix;
+        public PrefixKeyVaultExample(string prefix)
+        {
+            this._prefix = $"{prefix}-";
+        }
+
+        public bool Load(SecretItem secret)
+        {
+            return secret.Identifier.Name.StartsWith(this._prefix);
+        }
+
+        public string GetKey(SecretBundle secret)
+        {
+            return secret.SecretIdentifier.Name.Substring(this._prefix.Length)
+                .Replace("--", ConfigurationPath.KeyDelimiter);
+        }
+    }
+}
+```
 
 > ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-5.0#use-a-key-name-prefix).
 
-8 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
+9 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
 
 Algunos pensaréis: la contraseña no está en texto plano en la configuración, pero ahora tenemos la URL + ClientId + thumbprint, ¿podríamos acceder nosotros también usando esos mismos datos, si encontrásemos la manera de acceder al código? La respuesta es no, porque necesitas tener el certificado instalado en tu propia máquina, y eso no lo tiene cualquiera, solo nosotros.
 
@@ -285,9 +330,7 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
   
-> ℹ️ **NOTA**: tenéis la versión final en una carpeta junto al código fuente inicial de la práctica.
-
-### Tarea 7: Eliminar todos los recursos creados.
+### Tarea 7: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:

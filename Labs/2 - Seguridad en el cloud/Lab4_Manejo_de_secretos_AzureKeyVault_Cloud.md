@@ -73,7 +73,7 @@ Vamos a necesitar que el app service actue como un cliente, es decir, que nada m
 
 4 - Ahora necesitamos que el App Service instale este certificado nada más arrancar. Para ello, en el propio menú **Settings**, nos vamos a _Configuration_.
 
-5 - Añadimos una nueva **Application setting**
+5 - Añadimos una nueva **Application setting**, que no es otra cosa que una variable de entorno.
 
 | Campo | Valor |
 |---|---|

@@ -331,6 +331,50 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
   
+| :zap:        Disclaimer!   |
+|-----------------------------------------|
+  
+Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado productivo en nuestro pc local para comprobar cómo funciona esta funcionalidad, lo cual es totalmente desaconsejable. ¿Y cómo accedemos al KeyVault? Pues bien, lo que haremos será hacer un bypass de Azure Key Vault, y guardar directamente la contraseña de CosmosDB en local, que en definitiva era el valor que intentábamos obtener del KeyVault.
+  
+11 - No la vamos a guardar en el appsettings.json en plano, eso se queda igual. Abrimos un terminal de powershell y ejecutamos el siguiente código, que inicializará secretos de usuario de dotnet (como un vault local). El id de este vault local de dotnet se verá reflejado en el csproj de la app.
+  
+ ```shell
+  dotnet user-secrets init
+ ```
+  
+ 12 - A continuación, vamos a crear nuestro secreto con la contraseña de CosmosDb, ejecutando el siguiente comando que sigue la estructura de los valores del appsetting.json:
+ 
+  ```shell
+  dotnet user-secrets set "CosmosDb:Key" "<put your CosmoDb key>"
+ ```
+
+  13 - Ahora para comprobar que funciona, vamos a borrar el nombre del keyvault del appsetting.json, y en el código de **Program.cs** introduciremos el segundo código:
+  
+```json
+  "KeyVault": {
+    "Vault": "",
+    "ClientId": "<your_clientId>",
+    "Thumbprint": "<your_thumbprint>"
+  }
+```
+  
+```csharp
+  ...
+  .ConfigureAppConfiguration(builder =>
+  {
+      var root = builder.Build();
+      var vaultName = root["KeyVault:Vault"];
+
+      if (!string.IsNullOrEmpty(vaultName)) // <--- aquí está lo importante
+      {
+          builder.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
+          root["KeyVault:ClientId"],
+          GetCertificate(root["KeyVault:Thumbprint"]), new PrefixKeyVaultExample("Modulo8test1"));
+      }
+  })
+  ...
+```
+  
 ### Tarea 7: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.

@@ -20,10 +20,8 @@ El objetivo de esta práctica es entender la responsabilidad que delegamos en Az
 Para poder empezar con la práctica, vamos a necesitar:
 - Azure KeyVault creado en un Azure ResourceGroup (RG).
 - Base de datos CosmosDB creada en el mismo Azure RG.
-- Cliente Rest para su uso desde vuestro pc personal. Puede ser un cliente online, como por ejemplo [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related) de Google Chrome.
+- Cliente Rest para su uso desde vuestro pc personal. Puede ser un cliente online, como por ejemplo [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo/related) de Google Chrome o [PostMan](https://www.postman.com/).
 - [Visual Studio Code](https://code.visualstudio.com/download) instalado en vuestro pc.
-
-Para la preparación de este lab, os vamos a proveer de todo lo necesario para que podáis levantar la infraestructura en Azure de forma automática, mediante la ejecución de ARM templates. Esto nos permitirá tener funcionando el Azure KeyVault y la base de datos Azure CosmosDB.
 
 La estructura que vamos a crear, responde al siguiente diseño. Puede parecer muy complejo, pero es lo más sencillo que nos vamos a encontrar en el manejo de secretos dentro de Azure.
 
@@ -49,13 +47,13 @@ az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file
 ```
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
-  
+
   ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
-  
+
   > **Tip 2:** Algunas veces puede fallar la ejecución de algún comando debido a problemas en la región donde lo estemos creando. Cambiad la región en el template y volved a ejecutarlo. 
-  
+
   - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 2 recursos que necesitamos: Azure KeyVault y la base de datos CosmosDb sin más intervención.
-  
+
 4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
 
 ### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.
@@ -140,7 +138,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 3 - En el menú superior, pinchamos en **+ New Registration** y nos abrirá una nueva ventana, donde pondremos los siguiente valores, dejando el resto por defecto:
   - Name: cualquier nombre que queramos, y del cual nos acordemos después.
- 
+
 4 - Pinchamos en _Register_ y listo, ya tenemos nuestra entidad registrada.
 
 5 - Antes de salir, vamos a tratar de guardar en algún sitio el _ClientId_, que nos va a hacer falta más adelante.
@@ -160,7 +158,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 10 - Dentro del menú izquierdo, pinchamos en **Access policies** y luego al link _+ Add Access Policy_.
 
   > ℹ️ Lo que vamos a hacer ahora, es darle permisos a esa entidad que acabamos de registrar en AD, para leer de nuestro Azure KeyVault.
-  
+
 11 - Lo único que vamos a necesitar configurar son los **Secret permissions**. Desmarcaremos todos excepto _Get_ and _List_, lo que corresponde al principio de  [_least privilege_](https://www.cyberark.com/what-is/least-privilege/).
 
 ![AzKeyVault_AcessPolicies](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_AcessPolicies.png)
@@ -190,7 +188,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
   > ℹ️ Nota: es importante mantener la estructura en el nombre, porque así nos será mucho más fácil recuperarla desde C#, ya que utilizaremos un proveedor de credenciales. Si nos fijamos detenidamente, los valores corresponden al nombre de la aplicación de C#, luego viene el nombre de la sección dentro del archivo de configuración, y finalmente el nombre de la propiedad a recuperar.
 
 3 - Para que tenga sentido todo lo que estamos haciendo, es necesario también, que eliminemos la contraseña del código fuente. En su lugar podemos poner algo así _<Set-by-Keyvault>_ como se muestra a continuación.
-  
+
 ![AzKeyVault_RemoveKeyFromCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_RemoveKeyFromCode.png)
 
 4 - Antes de empezar con el código, es necesario instalar un paquete NuGet en nuestra aplicación:
@@ -224,9 +222,9 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
                     webBuilder.UseStartup<Startup>();
                 });
 ```
- 
+
  7 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
- 
+
    - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
     
    - Le indicamos cuál es el nombre del secreto:
@@ -236,7 +234,7 @@ var vaultName = root["KeyVault:Vault"];
 ```
 
    - La siguiente llamada, conecta directamente con nuestro Az KeyVault, haciendo uso de varias cosas:
-  
+
 ```csharp
   // Url en Azure del KeyVault: la obtenemos desde el portal de Azure, dentro de nuestro keyvault resource.
   $"https://{vaultName}.vault.azure.net/" 
@@ -246,18 +244,18 @@ var vaultName = root["KeyVault:Vault"];
   // El ClientId: este es el Id que hemos copiado al hacer el registro de la WebApp en Azure AD.
   root["KeyVault:ClientId"] 
 ```
-  
+
 ```csharp
   // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 
   // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
   GetCertificate(root["KeyVault:Thumbprint"]) 
 ```
-  
+
 ```csharp  
   // Nuestro propio IKeyVaultSecretManager, en nuestro caso, _PrefixKeyVaultExample_.
   new PrefixKeyVaultExample("Module4Lab1") 
 ```
-  
+
 8 - El código relativo al Secret Manager va en una clase aparte, que tendremos que crear en la raíz del proyecto. Como podemos observar en el trozo de código anterior, se debe llamar _PrefixKeyVaultExample.cs_ y el código que contiene es este:
 
 ```csharp
@@ -322,7 +320,7 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 ![InstallCertificateLocalhost_done](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/InstallCertificateLocalhost_done.png)
 
 7 - Ejecuta ahora la aplicación de C# y automáticamente se lanzará un navegador web con el contenido de la base de datos. Al mismo tiempo verás una consola, que no es otra cosa que el recurso web esperando peticiones REST. No lo cierres hasta que no termines de jugar con la app.
-  
+
   ![RunAppWaiting](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/runappwaiting_localhost.PNG)
 
 8 - Abrimos nuestro cliente REST y volvemos a ejecutar los mismos comandos que hicimos al inicio, cuando todavía teníamos la contraseña en texto plano.
@@ -330,26 +328,26 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 9 - El resultado debería ser el mismo, es decir, deberíamos recibir la información de la base de datos Azure CosmosDB, pero ahora teniendo en cuenta que la contraseña se recupera de Azure KeyVault, gracias al certificado que tenemos instalado en nuestra máquina.
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
-  
+
 | :zap:        Disclaimer!   |
 |-----------------------------------------|
-  
+
 Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado productivo en nuestro pc local para comprobar cómo funciona esta funcionalidad, lo cual es totalmente desaconsejable. ¿Y cómo accedemos al KeyVault? Pues bien, lo que haremos será hacer un bypass de Azure Key Vault, y guardar directamente la contraseña de CosmosDB en local, que en definitiva era el valor que intentábamos obtener del KeyVault.
-  
+
 11 - No la vamos a guardar en el appsettings.json en plano, eso se queda igual. Abrimos un terminal de powershell y ejecutamos el siguiente código, que inicializará secretos de usuario de dotnet (como un vault local). El id de este vault local de dotnet se verá reflejado en el csproj de la app.
-  
+
  ```shell
   dotnet user-secrets init
  ```
-  
+
  12 - A continuación, vamos a crear nuestro secreto con la contraseña de CosmosDb, ejecutando el siguiente comando que sigue la estructura de los valores del appsetting.json:
- 
+
   ```shell
   dotnet user-secrets set "CosmosDb:Key" "<put your CosmoDb key>"
- ```
+  ```
 
   13 - Ahora para comprobar que funciona, vamos a borrar el nombre del keyvault del appsetting.json, y en el código de **Program.cs** introduciremos el segundo código:
-  
+
 ```json
   "KeyVault": {
     "Vault": "",
@@ -357,7 +355,7 @@ Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado produ
     "Thumbprint": "<your_thumbprint>"
   }
 ```
-  
+
 ```csharp
   ...
   .ConfigureAppConfiguration(builder =>
@@ -374,14 +372,14 @@ Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado produ
   })
   ...
 ```
-  
+
 ### Tarea 7: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
-  
+
 2 - Eliminamos el resource groups creado en el lab, ejecutando el siguiente comando:
 ```bash
 az group delete --name <your_resource_group_name> --no-wait --yes
@@ -391,7 +389,7 @@ az group delete --name <your_resource_group_name> --no-wait --yes
   - Tecla "Windows" + "R" para sacar la aplicación de ejecución.
   - Escribimos el comando **certmgr.exe** y le damos a _OK_.
   - Dentro de la ventana del gestor de certificados, vamos al menú **Add/Remove Snap-in**, seleccionamos _Certificates_ en la parte izquierda y lo añadimos al listado de la derecha, luego selecciona _My User Account_ y _Finish_.
-  
+
 ![Certificate_localhost_Delete](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Certificate_localhost_Delete.png)
 
   - Clic _OK_ y ya veremos el listado de certificados en el árbol -> Console Root/Certificates - Current User/Personal/Certificates

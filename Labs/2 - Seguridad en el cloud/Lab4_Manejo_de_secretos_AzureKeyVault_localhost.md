@@ -27,34 +27,29 @@ La estructura que vamos a crear, responde al siguiente diseño. Puede parecer mu
 
 ![Module4Lab1_general_view_localhost](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_general_view_localhost.png)
 
-### Tarea 1 : Vamos a cargar los ARM templates en vuestra cuenta de Azure.
-1 - Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo).
+### Tarea 1 : Creación de los recursos en Azure.
+Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo) y nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
 
-2 - Nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
+#### Creación del Resource Group
 
-3 - Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
-  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/ARM_templates/
-  - Desde el shell del portal de Azure, los cargamos mediante el botón _Upload/Download files_ (uno cada vez).
-  - Ahora tendremos los archivos cargados en nuestra raíz del shell de bash, con lo que podemos ejecutar el primer comando para desplegar el ResourceGroup:    
+Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
 
-```sh
-az deployment sub create --location westeurope --template-file template-rg.json
-```
-  - Ahora solo nos queda ejecutar el siguiente comando para crear los demás recursos dentro:
+  - En el portal de Azure nos dirigimos a la [pagina de creacion de resourse groups](https://portal.azure.com/#create/Microsoft.ResourceGroup)
 
-```sh
-az deployment group create --resource-group AzureLabsModulo4Lab1 --template-file template.json
-```
+  ![Module4Lab1_Resource_group_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_Resource_group_creation.png)
 
-  > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
+  - Junto a la selecion de la Subscription y de la region, definiremos el nombre ***AzureLabsModulo4Lab1*** por el resource group
+  -  Después de haber revisado la configuración, podremos crear el resource group
 
-  ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
+#### Creación del Azure Key Vault
 
-  > **Tip 2:** Algunas veces puede fallar la ejecución de algún comando debido a problemas en la región donde lo estemos creando. Cambiad la región en el template y volved a ejecutarlo. 
+Vamos haora a crear un Key Vault dentro del resource group que acabamo de definir. 
 
-  - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 2 recursos que necesitamos: Azure KeyVault y la base de datos CosmosDb sin más intervención.
+#### Creación del Azure Cosmos DB
 
-4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
+Como ultimo paso de esta tarea creeremos el Azure Cosmos DB cui credenciales de acceso protegeremos en el Azure Key Vault, el obejctivo de esta practica.
+
+Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 
 ### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.
 
@@ -125,8 +120,13 @@ openssl pkcs12 -inkey privateKey.pem -in publicKey.pem -export -out certificate.
 
 6 - Comprueba que se han generado estos 3 elementos en la carpeta donde ejecutaste los comandos, y con los mismos nombres que le proporcionaste.
 
-
 ### Tarea 5: Crear un App Registration en Azure Active Directory (AD)
+
+  > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
+
+  ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
+
+
 
 Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azure, es decir, vamos a crear una entidad dentro de Azure Active Directory, a la cual concederemos permisos de lectura sobre los secretos de Azure KeyVault, asumiendo que esta entidad posee el certificado creado en la tarea anterior.
 

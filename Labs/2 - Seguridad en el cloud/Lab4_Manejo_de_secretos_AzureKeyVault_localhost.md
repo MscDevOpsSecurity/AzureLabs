@@ -47,7 +47,7 @@ Vamos haora a crear un key vault dentro del resource group que acabamo de defini
 
   - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Key Vault](https://portal.azure.com/#create/Microsoft.KeyVault)
 
-  ![Module4Lab1_Resource_group_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_key_vault_creation.png)
+  ![Module4Lab1_key_vault_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_key_vault_creation.png)
 
   - Junto a la selecion de la Subscription, de la Region y del Pricing Tier, definiremos el nombre ***Modulo4Lab1-key-vault*** por el key vault
 
@@ -58,6 +58,12 @@ Vamos haora a crear un key vault dentro del resource group que acabamo de defini
 #### Creación del Azure Cosmos DB
 
 Como ultimo paso de esta tarea creeremos el Azure Cosmos DB cui credenciales de acceso protegeremos en el Azure Key Vault, el obejctivo de esta practica.
+
+  - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Cosmos DB](https://portal.azure.com/#create/Microsoft.DocumentDB)
+  - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
+  - Junto a la selecion de la Subscription y de la Region, definiremos el nombre de account ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
+
+- Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 
 Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 

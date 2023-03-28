@@ -67,7 +67,9 @@ Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales 
 
 Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 
-### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.
+### Tarea 2: Acceder al Cosmos DB de un entorno local.
+
+A lo largo de esta tarea conseguiremos leer y actualizar la instancia del Cosmos DB desde nuestra máquina de desarrollo. En esta tarea todavía no utilizaremos una solución óptima desde el punto de vista de seguridad. Pero nos permitirá averiguar el funcionamiento y entender los puntos débiles.
 
 1 - Al clonar este repositorio, nos hemos descargado el código fuente necesario en la ruta "AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/source/initial/". Solo tenemos que abrir la solución con VS Code/Visual Studio 2019 Community o el editor gráfico que queráis. 
 

@@ -32,9 +32,9 @@ Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una person
 
 #### Creación del Resource Group
 
-Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
+Vamos a crear un Resource Group nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
 
-  - En el portal de Azure nos dirigimos a la [pagina de creacion de resourse groups](https://portal.azure.com/#create/Microsoft.ResourceGroup)
+  - En el portal de Azure nos dirigimos a la [pagina de creacion de resource group](https://portal.azure.com/#create/Microsoft.ResourceGroup)
 
   ![Module4Lab1_Resource_group_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_Resource_group_creation.png)
 
@@ -43,25 +43,25 @@ Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos lo
 
 #### Creación del Azure Key Vault
 
-Vamos haora a crear un key vault dentro del resource group que acabamo de definir. 
+Vamos ahora a crear un key vault dentro del resource group que acabamos de definir.
 
   - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Key Vault](https://portal.azure.com/#create/Microsoft.KeyVault)
 
   ![Module4Lab1_key_vault_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_key_vault_creation.png)
 
-  - Junto a la selecion de la Subscription, de la Region y del Pricing Tier, definiremos el nombre ***Modulo4Lab1-key-vault*** por el key vault
+  - Junto a la selección de la Subscription, de la Región y del Pricing Tier, definiremos el nombre **Modulo4Lab1-key-vault** por el key vault
 
-  > **Tip:** Los Azure Key Vaults son unívocos globalmente. Además, Azure habilita de default soft deletion para ellos. Como consecuencia podría occurrir que el nombre escogido para el Key Vault sea ya en utilizo. En este caso la UI mostrerá el error *"The name 'Modulo4Lab1-key-vault' is already in use, or is still being reserved by a vault which was previously soft deleted. Please use a different name."*. Puedes solucionar el error utilizando un nombre de key vault no en uso o haciendo un *purge* del key vault en el apartado ***Managed Deleted Vaults***.
+  > **Tip:** Los Azure Key Vaults son unívocos globalmente. Además, Azure habilita de default soft deletion para ellos. Como consecuencia podría ocurrir que el nombre escogido para el Keyvault sea ya en utilizo. En este caso la UI mostrará el error *"The name 'Modulo4Lab1-key-vault' is already in use, or is still being reserved by a vault which was previously soft deleted. Please use a different name."*. Puedes solucionar el error utilizando un nombre de key vault no en uso o haciendo un *purge* del key vault en el apartado **Managed Deleted Vaults**.
 
   -  Después de haber revisado la configuración, podremos crear el Azure Key Vault.
 
 #### Creación del Azure Cosmos DB
 
-Como ultimo paso de esta tarea creeremos el Azure Cosmos DB cui credenciales de acceso protegeremos en el Azure Key Vault, el obejctivo de esta practica.
+Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales de acceso protegeremos en el Azure Key Vault, el objetivo de esta práctica.
 
   - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Cosmos DB](https://portal.azure.com/#create/Microsoft.DocumentDB)
   - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
-  - Junto a la selecion de la Subscription y de la Region, definiremos el nombre de account ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
+  - Junto a la selección de la Suscription y de la Región, definiremos el nombre de account  ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
 
 - Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 

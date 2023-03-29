@@ -63,13 +63,15 @@ Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales 
   - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
   - Junto a la selección de la Suscription y de la Región, definiremos el nombre de account  ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
 
+  > **Tip:** También las instancias de Cosmos Db son unívocas globalmente, al igual que los Azure Key Vaults. Asegurarse entonces de utilizar un nombre que no sea ya un uso.
+
 - Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 
 Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 
-### Tarea 2: Acceder al Cosmos DB de un entorno local.
+### Tarea 2: Acceder al Cosmos DB desde un entorno local.
 
-A lo largo de esta tarea conseguiremos leer y actualizar la instancia del Cosmos DB desde nuestra máquina de desarrollo. En esta tarea todavía no utilizaremos una solución óptima desde el punto de vista de seguridad. Pero nos permitirá averiguar el funcionamiento y entender los puntos débiles.
+A lo largo de esta tarea conseguiremos leer y actualizar la instancia del Cosmos DB desde nuestra máquina de desarrollo. En esta tarea todavía no utilizaremos una solución óptima desde el punto de vista de seguridad. Pero nos permitirá averiguar el funcionamiento de la conexión y entender los puntos débiles.
 
 1 - Al clonar este repositorio, nos hemos descargado el código fuente necesario en la ruta "AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/source/initial/". Solo tenemos que abrir la solución con VS Code/Visual Studio 2019 Community o el editor gráfico que queráis. 
 

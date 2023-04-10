@@ -63,7 +63,7 @@ Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales 
   - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
   - Junto a la selección de la Suscription y de la Región, definiremos el nombre de account  ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
 
-  > **Tip:** También las instancias de Cosmos Db son unívocas globalmente, al igual que los Azure Key Vaults. Asegurarse entonces de utilizar un nombre que no sea ya un uso.
+  > **Tip:** También las instancias de Cosmos Db son unívocas globalmente, al igual que los Azure Key Vaults. Asegurarse entonces de utilizar un nombre que no sea ya en uso.
 
 - Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 
@@ -173,7 +173,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 #### Tarea 4b: Crear un App Registration en Azure Active Directory (AD) con Azure Cloud Shell
 
-Esta tarea no es necesaria si la App ya ha estado registrada por UI como explicado en la Tarea4a.
+Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea4a.
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 

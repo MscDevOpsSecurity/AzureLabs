@@ -115,7 +115,7 @@ A lo largo de esta tarea conseguiremos leer y actualizar la instancia del Cosmos
 netsh interface ipv4 show excludedportrange protocol=tcp
 ```
 
-### Tarea 4: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
+### Tarea 3: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
 
 Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.
 
@@ -140,7 +140,7 @@ openssl pkcs12 -inkey privateKey.pem -in publicKey.pem -export -out certificate.
 
 6 - Comprueba que se han generado estos 3 elementos en la carpeta donde ejecutaste los comandos, y con los mismos nombres que le proporcionaste.
 
-### Tarea 5: Crear un App Registration en Azure Active Directory (AD)
+### Tarea 4: Crear un App Registration en Azure Active Directory (AD)
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 
@@ -194,7 +194,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 14 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
 
 
-### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
+### Tarea 5: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
 1 - Desde el propio [portal de Azure](https://portal.azure.com/), nos dirigirnos al resource group que hemos creado al principio, para poder ver las propiedades del KeyVault _Modulo4Lab1-akv_.
 

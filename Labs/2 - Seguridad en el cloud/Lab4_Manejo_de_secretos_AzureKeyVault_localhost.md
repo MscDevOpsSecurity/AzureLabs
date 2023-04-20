@@ -448,6 +448,8 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
 
+### Tarea 8: Almacenamiento seguro de secretos en .NET
+
 | :zap:        Disclaimer!   |
 |-----------------------------------------|
 
@@ -492,7 +494,7 @@ Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado produ
   ...
 ```
 
-### Tarea 8: Eliminar todos los recursos creados :bomb:
+### Tarea 9: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
@@ -500,11 +502,20 @@ Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
 
 2 - Eliminamos el resource groups creado en el lab, ejecutando el siguiente comando:
+
 ```bash
 az group delete --name <your_resource_group_name> --no-wait --yes
 ```
 
-3 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+3 - Eliminar la registración de la app en Azure AD 
+`az ad app delete --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea`
+
+8 - Eliminar el Service Principal creado en Azure AD
+
+`az ad sp delete --id 942b7c34-1bdc-45fe-ab1d-b7650c9a1cf0`
+
+4 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+
   - Tecla "Windows" + "R" para sacar la aplicación de ejecución.
   - Escribimos el comando **certmgr.exe** y le damos a _OK_.
   - Dentro de la ventana del gestor de certificados, vamos al menú **Add/Remove Snap-in**, seleccionamos _Certificates_ en la parte izquierda y lo añadimos al listado de la derecha, luego selecciona _My User Account_ y _Finish_.

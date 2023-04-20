@@ -173,7 +173,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 #### Tarea 4b: Crear un App Registration en Azure Active Directory (AD) con Azure Cloud Shell
 
-Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea4a.
+Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea 4a.
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 
@@ -186,22 +186,45 @@ Esta tarea no es necesaria si la App ya está registrada por UI como explicado e
 2 - Para obtener el appId de la app registrada, su puede utilizar el comando de list 
 `az ad app list --display-name Module4Lab1App`
 
-3 - Para configurar un nuevo certificado por CLI, se puede subir la public key con la opcion de Upload/download de cloud bash y utilizar el comando
+alternativamente 
+
+`az ad app list --show-mine`
+
+3 - Ahora que tenemos una applicacion de AD, podemos crear un Service Principal associado a ella
+
+`az ad sp create-for-rbac --name Module4Lab1App \
+                         --role Reader \
+                         --scopes /subscriptions/f1393387-5b44-4758-971a-257690e1f5d5/resourceGroups/AzureLabsModulo4Lab1 \
+                         --cert "@~/publicKey.pem"`
+
+Asegurando de haber informado y sustituido correctamente el nombre de la aplicación `Module4Lab1App`, el ID de la subscripcion `f1393387-5b44-4758-971a-257690e1f5d5`, el nombre del Resource Group `AzureLabsModulo4Lab1` y de haber cargado en la shell la clave publica del certificado `publicKey.pem` 
+
+4 - Para configurar un nuevo certificado por CLI, se puede subir la public key con la opcion de Upload/download de cloud bash y utilizar el comando
 `az ad app credential reset --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert "@~/publicKey.pem" --append`
 
-el id de app se puede obtener como definido en el punto anterior.
+el id de app se puede obtener como definido en los puntos anteriores.
 
-4 - Para averiguar la lista de certificados configurados
+5 - Para averiguar la lista de certificados configurados
 `az ad app credential list --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert`
 
 el thumbprint del certificado es mostrado en la sección customKeyIdentifier  
 
-5 - Para borrar la registración de la app 
+6 - Para averiguar la lista de Service Principal
+
+`az ad sp list --show-mine`
+
+7 - Para borrar la registración de la app 
 `az ad app delete --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea`
 
-Este comando se debe lanzar solo al finalizar la practica.
+Este comandos se debe lanzar solo al finalizar la practica.
 
-#### Tarea 4c: Configurar Access Policies del Key Vault
+8 - Para borrar el Service Principal creado
+
+`az ad sp delete --id 942b7c34-1bdc-45fe-ab1d-b7650c9a1cf0`
+
+### Tarea 5: Configurar Access Policies del Key Vault
+
+Ahora que tenemos un Service Principal associado a una aplicación registrada en Azure AD, podemos finalmente configurar el acceso al KeyVault con unas Access Policies. 
 
 1 - Volvemos a nuestro resource group, y desde ahí al KeyVault.
 
@@ -224,7 +247,7 @@ Este comando se debe lanzar solo al finalizar la practica.
 6 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
 
 
-### Tarea 5: Conectar nuestra aplicación web con Azure KeyVault mediante código.
+### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
 1 - Desde el propio [portal de Azure](https://portal.azure.com/), nos dirigirnos al resource group que hemos creado al principio, para poder ver las propiedades del KeyVault _Modulo4Lab1-akv_.
 
@@ -347,7 +370,7 @@ Algunos pensaréis: la contraseña no está en texto plano en la configuración,
 ![CertificadoNoEncontrado](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/CertificadoNoEncontrado.png)
 
 
-### Tarea 6: Comprobemos de nuevo la aplicación
+### Tarea 7: Comprobemos de nuevo la aplicación
 
 Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que contenga el código, vamos a necesitar instalar el certificado que creamos.
 
@@ -423,7 +446,7 @@ Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado produ
   ...
 ```
 
-### Tarea 7: Eliminar todos los recursos creados :bomb:
+### Tarea 8: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:

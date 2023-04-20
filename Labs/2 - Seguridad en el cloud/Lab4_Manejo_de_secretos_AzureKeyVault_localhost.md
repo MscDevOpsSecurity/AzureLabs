@@ -63,11 +63,15 @@ Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales 
   - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
   - Junto a la selección de la Suscription y de la Región, definiremos el nombre de account  ***modulo4lab1-cosmosdb*** ![Module4Lab1_cosmos_db_creation](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_cosmos_db_creation.png)
 
+  > **Tip:** También las instancias de Cosmos Db son unívocas globalmente, al igual que los Azure Key Vaults. Asegurarse entonces de utilizar un nombre que no sea ya en uso.
+
 - Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 
 Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 
-### Tarea 2: Vamos a preparar el código para ejecutar en nuestro visual studio code.
+### Tarea 2: Acceder al Cosmos DB desde un entorno local.
+
+A lo largo de esta tarea conseguiremos leer y actualizar la instancia del Cosmos DB desde nuestra máquina de desarrollo. En esta tarea todavía no utilizaremos una solución óptima desde el punto de vista de seguridad. Pero nos permitirá averiguar el funcionamiento de la conexión y entender los puntos débiles.
 
 1 - Al clonar este repositorio, nos hemos descargado el código fuente necesario en la ruta "AzureLabs/Recursos/2 - Seguridad en Cloud/lab4/1_AzureKeyVault_localhost/source/initial/". Solo tenemos que abrir la solución con VS Code/Visual Studio 2019 Community o el editor gráfico que queráis. 
 
@@ -111,7 +115,7 @@ Finalmente accedemos al resource group *AzureLabsModulo4Lab1* para asegurarnos d
 netsh interface ipv4 show excludedportrange protocol=tcp
 ```
 
-### Tarea 4: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
+### Tarea 3: Crear certificados de seguridad en la máquina donde se ejecutará al aplicación
 
 Necesitamos crear un certificado digital (self-signed en este caso), que más adelante utilizaremos para conectar Azure KeyVault y nuestra aplicación web.
 
@@ -136,17 +140,15 @@ openssl pkcs12 -inkey privateKey.pem -in publicKey.pem -export -out certificate.
 
 6 - Comprueba que se han generado estos 3 elementos en la carpeta donde ejecutaste los comandos, y con los mismos nombres que le proporcionaste.
 
-### Tarea 5: Crear un App Registration en Azure Active Directory (AD)
-
-  > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
-
-  ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
-
-
+### Tarea 4: Crear un App Registration en Azure Active Directory (AD)
 
 Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azure, es decir, vamos a crear una entidad dentro de Azure Active Directory, a la cual concederemos permisos de lectura sobre los secretos de Azure KeyVault, asumiendo que esta entidad posee el certificado creado en la tarea anterior.
 
+#### Tarea 4a: Crear un App Registration en Azure Active Directory (AD) con Azure UI
+
 1 - Desde el portal de Azure, nos vamos al buscador de arriba y buscamos **Azure Active Directory**. Al pinchar sobre el link, nos llevará al propio AD.
+
+  > **Tip:** El administrador de la suscripción de Azure podría haber restringido el acceso a la UI de Azure Active Directory a solo los usuarios administradores. Por ejemplo, la suscrición por estudiantes suelen ser configurada con esta tipo de restricción. En este caso, es posible registrar  la App utilizando el Cloud Shell como comentado en la Tarea 4b.
 
 2 - En el menú de la izquierda, pinchamos sobre **App registrations**.
 
@@ -169,28 +171,60 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 8 - Como podemos observar en la imagen anterior, al proporcionar la clave pública, se nos muestra el _thumbprint_ del propio certificado, que vamos a necesitar guardar para incrustarlo en nuestro código de C#. Este thumbprint nos servirá para obtener el certificado instalado en nuestro equipo local que contenga ese mismo thumbprint.
 
-9 - Volvemos a nuestro resource group, y desde ahí al KeyVault.
+#### Tarea 4b: Crear un App Registration en Azure Active Directory (AD) con Azure Cloud Shell
 
-10 - Dentro del menú izquierdo, pinchamos en **Access policies** y luego al link _+ Add Access Policy_.
+Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea4a.
+
+  > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
+
+  ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
+
+1 - Registrar una nueva app in Azure AD.
+
+`az ad app create --display-name Module4Lab1App`
+
+2 - Para obtener el appId de la app registrada, su puede utilizar el comando de list 
+`az ad app list --display-name Module4Lab1App`
+
+3 - Para configurar un nuevo certificado por CLI, se puede subir la public key con la opcion de Upload/download de cloud bash y utilizar el comando
+`az ad app credential reset --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert "@~/publicKey.pem" --append`
+
+el id de app se puede obtener como definido en el punto anterior.
+
+4 - Para averiguar la lista de certificados configurados
+`az ad app credential list --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert`
+
+el thumbprint del certificado es mostrado en la sección customKeyIdentifier  
+
+5 - Para borrar la registración de la app 
+`az ad app delete --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea`
+
+Este comando se debe lanzar solo al finalizar la practica.
+
+#### Tarea 4c: Configurar Access Policies del Key Vault
+
+1 - Volvemos a nuestro resource group, y desde ahí al KeyVault.
+
+2 - Dentro del menú izquierdo, pinchamos en **Access policies** y luego al link _+ Add Access Policy_.
 
   > ℹ️ Lo que vamos a hacer ahora, es darle permisos a esa entidad que acabamos de registrar en AD, para leer de nuestro Azure KeyVault.
 
-11 - Lo único que vamos a necesitar configurar son los **Secret permissions**. Desmarcaremos todos excepto _Get_ and _List_, lo que corresponde al principio de  [_least privilege_](https://www.cyberark.com/what-is/least-privilege/).
+3 - Lo único que vamos a necesitar configurar son los **Secret permissions**. Desmarcaremos todos excepto _Get_ and _List_, lo que corresponde al principio de  [_least privilege_](https://www.cyberark.com/what-is/least-privilege/).
 
 ![AzKeyVault_AcessPolicies](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_AcessPolicies.png)
 
-12 - Ahora en la parte de **Select principal**, vamos a buscar por el nombre que le dimos a la entidad cuando la registramos anteriormente en Azure AD.
+4 - Ahora en la parte de **Select principal**, vamos a buscar por el nombre que le dimos a la entidad cuando la registramos anteriormente en Azure AD.
 
 ![AzKeyVault_AcessPolicies_Principal](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_AcessPolicies_Principal.png)
 
-13 - Clicamos en _Select_ y luego en _Add_. Esto nos llevará de nuevo a la ventana principal del keyVault, donde no tendremos que olvidarnos de clicar en **Save**, o todos nuestros cambios anteriores se perderán, aunque estemos viendo aparecer nuestra nueva entidad en la sección de _APPLICATION_.
+5 - Clicamos en _Select_ y luego en _Add_. Esto nos llevará de nuevo a la ventana principal del keyVault, donde no tendremos que olvidarnos de clicar en **Save**, o todos nuestros cambios anteriores se perderán, aunque estemos viendo aparecer nuestra nueva entidad en la sección de _APPLICATION_.
 
 ![AzKeyVault_AcessPolicies_Principal_registered](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_AcessPolicies_Principal_registered.png)
 
-14 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
+6 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
 
 
-### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
+### Tarea 5: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
 1 - Desde el propio [portal de Azure](https://portal.azure.com/), nos dirigirnos al resource group que hemos creado al principio, para poder ver las propiedades del KeyVault _Modulo4Lab1-akv_.
 

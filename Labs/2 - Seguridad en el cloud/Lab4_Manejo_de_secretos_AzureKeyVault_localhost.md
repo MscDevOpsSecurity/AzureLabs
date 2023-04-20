@@ -264,31 +264,52 @@ Ahora que tenemos un Service Principal associado a una aplicación registrada en
 
 ![AzKeyVault_RemoveKeyFromCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_RemoveKeyFromCode.png)
 
-4 - Antes de empezar con el código, es necesario instalar un paquete NuGet en nuestra aplicación:
-  - Microsoft.Extensions.Configuration.AzureKeyVault
+4 - Antes de empezar con el código, es necesario instalar los paquetes NuGet en nuestra aplicación:
+
+  - Azure.Extensions.AspNetCore.Configuration.Secrets
+  - Azure.Identity
 
 5 - Ahora tendremos que introducir en el archivo de configuracion _appsettings.json_ un nuevo grupo de variables, como se muestra a continuación (no importa si al principio o al final).
 
 ```json
   "KeyVault": {
-    "Vault": "Modulo4Lab1-akv",
-    "ClientId": "cccce832-8950-4f87-a713-5ffa9f37e0fa",
-    "Thumbprint": "601F872ADCEECB4C496891044BB07D6C351EAC5E"
+    "Vault": "Modulo4Lab1-key-vault",
+    "TenantId": "a2313cab-b1c3-4f3a-bb11-2157447ddbb4",
+    "ClientId": "5af07d1e-76fb-482c-a433-2c363768091b",
+    "Thumbprint": "1AB60775BA8E0B4B6D306198CF2F27BCF21626BB"
   }
 ```
 
 6 - Ahora llega el momento de introducir nuevo código para que nuestra aplicación se conecte automáticamente con Azure al arrancar. Por eso nos vamos al código en el editor, y abrimos el archivo _Program.cs_. Ahora pegamos el siguiente código donde corresponde:
 
 ```csharp
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
+public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(builder =>
                 {
                     var root = builder.Build();
+
+                    // El nombre del KeyVault creato an Azure, por ejemplo: Modulo4Lab1-key-vault
                     var vaultName = root["KeyVault:Vault"];
-                    builder.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/", 
-                        root["KeyVault:ClientId"],
-                        GetCertificate(root["KeyVault:Thumbprint"]), new PrefixKeyVaultExample("Module4Lab1"));
+
+                    // El Id del tenant de Azure Active Directory donde se ha creado el service principal.
+                    // Para encontrar el tenant id en Azure: 'az account tenant list'
+                    string tenantID = root["KeyVault:TenantId"];
+
+                    // El ClientId: este es el Id del Service Principal que hemos copiado al hacer el registro de la WebApp en Azure AD.
+                    string clientId = root["KeyVault:ClientId"];
+
+                    // El certificado self-signed instalado en nuestra computadora, creado en la tarea anterior 
+                    // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
+                    string thumbprint = root["KeyVault:Thumbprint"];
+
+                    X509Certificate2 cert = GetCertificate(thumbprint);
+
+                    var secretClient = new SecretClient(
+                        new Uri($"https://{vaultName}.vault.azure.net/"),
+                        new ClientCertificateCredential(tenantID, clientId, cert));
+
+                    builder.AddAzureKeyVault(secretClient, new PrefixKeyVaultExample("Module4Lab1"));
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -298,7 +319,7 @@ Ahora que tenemos un Service Principal associado a una aplicación registrada en
 
  7 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
 
-   - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
+   - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-7.0), con el que construiremos la configuración de Az KeyVault.
     
    - Le indicamos cuál es el nombre del secreto:
 
@@ -314,12 +335,18 @@ var vaultName = root["KeyVault:Vault"];
 ```
 
 ```csharp
+ // El Id del tenant de Azure Active Directory donde se ha creado el service principal.
+ // Para encontrar el tenant id en Azure: 'az account tenant list'
+ string tenantID = root["KeyVault:TenantId"];
+```
+
+```csharp
   // El ClientId: este es el Id que hemos copiado al hacer el registro de la WebApp en Azure AD.
   root["KeyVault:ClientId"] 
 ```
 
 ```csharp
-  // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 
+  // El certificado self-signed instalado en nuestra computadora, creado en la tarea anterior 
   // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
   GetCertificate(root["KeyVault:Thumbprint"]) 
 ```
@@ -332,40 +359,59 @@ var vaultName = root["KeyVault:Vault"];
 8 - El código relativo al Secret Manager va en una clase aparte, que tendremos que crear en la raíz del proyecto. Como podemos observar en el trozo de código anterior, se debe llamar _PrefixKeyVaultExample.cs_ y el código que contiene es este:
 
 ```csharp
-using Microsoft.Azure.KeyVault.Models;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 
-namespace Module4Lab5
+namespace Module4Lab5;
+
+public class PrefixKeyVaultExample : KeyVaultSecretManager
 {
-    public class PrefixKeyVaultExample :IKeyVaultSecretManager
+    private readonly string _prefix;
+    public PrefixKeyVaultExample(string prefix)
     {
+        this._prefix = $"{prefix}-";
+    }
 
-        private readonly string _prefix;
-        public PrefixKeyVaultExample(string prefix)
-        {
-            this._prefix = $"{prefix}-";
-        }
+    public override bool Load(SecretProperties secret)
+    {
+        return secret.Name.StartsWith(this._prefix);
+    }
 
-        public bool Load(SecretItem secret)
-        {
-            return secret.Identifier.Name.StartsWith(this._prefix);
-        }
-
-        public string GetKey(SecretBundle secret)
-        {
-            return secret.SecretIdentifier.Name.Substring(this._prefix.Length)
-                .Replace("--", ConfigurationPath.KeyDelimiter);
-        }
+    public override string GetKey(KeyVaultSecret secret)
+    {
+        return secret.Name.Substring(this._prefix.Length)
+            .Replace("--", ConfigurationPath.KeyDelimiter);
     }
 }
 ```
 
-> ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-5.0#use-a-key-name-prefix).
+> ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-7.0#use-a-key-name-prefix).
 
 9 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
 
 Algunos pensaréis: la contraseña no está en texto plano en la configuración, pero ahora tenemos la URL + ClientId + thumbprint, ¿podríamos acceder nosotros también usando esos mismos datos, si encontrásemos la manera de acceder al código? La respuesta es no, porque necesitas tener el certificado instalado en tu propia máquina, y eso no lo tiene cualquiera, solo nosotros.
+
+
+```csharp
+  ...
+	private static X509Certificate2 GetCertificate(string thumbprint)
+	{
+		using var certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+
+		certStore.Open(OpenFlags.ReadOnly);
+		var cerCollection = certStore.Certificates.Find(
+			X509FindType.FindByThumbprint, thumbprint, false);
+
+		if (cerCollection.Count == 0)
+		{
+			throw new InvalidOperationException("Certificate is not installed");
+		}
+
+		return cerCollection[0];
+	}
+  ...
+```
 
 ![CertificadoNoEncontrado](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/CertificadoNoEncontrado.png)
 

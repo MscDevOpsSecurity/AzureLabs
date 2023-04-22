@@ -173,7 +173,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 #### Tarea 4b: Crear un App Registration en Azure Active Directory (AD) con Azure Cloud Shell
 
-Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea4a.
+Esta tarea no es necesaria si la App ya está registrada por UI como explicado en la Tarea 4a.
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 
@@ -186,22 +186,45 @@ Esta tarea no es necesaria si la App ya está registrada por UI como explicado e
 2 - Para obtener el appId de la app registrada, su puede utilizar el comando de list 
 `az ad app list --display-name Module4Lab1App`
 
-3 - Para configurar un nuevo certificado por CLI, se puede subir la public key con la opcion de Upload/download de cloud bash y utilizar el comando
+alternativamente 
+
+`az ad app list --show-mine`
+
+3 - Ahora que tenemos una applicacion de AD, podemos crear un Service Principal associado a ella
+
+`az ad sp create-for-rbac --name Module4Lab1App \
+                         --role Reader \
+                         --scopes /subscriptions/f1393387-5b44-4758-971a-257690e1f5d5/resourceGroups/AzureLabsModulo4Lab1 \
+                         --cert "@~/publicKey.pem"`
+
+Asegurando de haber informado y sustituido correctamente el nombre de la aplicación `Module4Lab1App`, el ID de la subscripcion `f1393387-5b44-4758-971a-257690e1f5d5`, el nombre del Resource Group `AzureLabsModulo4Lab1` y de haber cargado en la shell la clave publica del certificado `publicKey.pem` 
+
+4 - Para configurar un nuevo certificado por CLI, se puede subir la public key con la opcion de Upload/download de cloud bash y utilizar el comando
 `az ad app credential reset --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert "@~/publicKey.pem" --append`
 
-el id de app se puede obtener como definido en el punto anterior.
+el id de app se puede obtener como definido en los puntos anteriores.
 
-4 - Para averiguar la lista de certificados configurados
+5 - Para averiguar la lista de certificados configurados
 `az ad app credential list --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea --cert`
 
 el thumbprint del certificado es mostrado en la sección customKeyIdentifier  
 
-5 - Para borrar la registración de la app 
+6 - Para averiguar la lista de Service Principal
+
+`az ad sp list --show-mine`
+
+7 - Para borrar la registración de la app 
 `az ad app delete --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea`
 
-Este comando se debe lanzar solo al finalizar la practica.
+Este comandos se debe lanzar solo al finalizar la practica.
 
-#### Tarea 4c: Configurar Access Policies del Key Vault
+8 - Para borrar el Service Principal creado
+
+`az ad sp delete --id 942b7c34-1bdc-45fe-ab1d-b7650c9a1cf0`
+
+### Tarea 5: Configurar Access Policies del Key Vault
+
+Ahora que tenemos un Service Principal associado a una aplicación registrada en Azure AD, podemos finalmente configurar el acceso al KeyVault con unas Access Policies. 
 
 1 - Volvemos a nuestro resource group, y desde ahí al KeyVault.
 
@@ -224,7 +247,7 @@ Este comando se debe lanzar solo al finalizar la practica.
 6 - Lo que hemos conseguido hasta el momento, es que cualquiera que tenga instalado el certificado anterior (con el thumbprint generado), tendrá permisos para leer y listar secretos de este keyVault.
 
 
-### Tarea 5: Conectar nuestra aplicación web con Azure KeyVault mediante código.
+### Tarea 6: Conectar nuestra aplicación web con Azure KeyVault mediante código.
 
 1 - Desde el propio [portal de Azure](https://portal.azure.com/), nos dirigirnos al resource group que hemos creado al principio, para poder ver las propiedades del KeyVault _Modulo4Lab1-akv_.
 
@@ -241,31 +264,52 @@ Este comando se debe lanzar solo al finalizar la practica.
 
 ![AzKeyVault_RemoveKeyFromCode](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzKeyVault_RemoveKeyFromCode.png)
 
-4 - Antes de empezar con el código, es necesario instalar un paquete NuGet en nuestra aplicación:
-  - Microsoft.Extensions.Configuration.AzureKeyVault
+4 - Antes de empezar con el código, es necesario instalar los paquetes NuGet en nuestra aplicación:
+
+  - Azure.Extensions.AspNetCore.Configuration.Secrets
+  - Azure.Identity
 
 5 - Ahora tendremos que introducir en el archivo de configuracion _appsettings.json_ un nuevo grupo de variables, como se muestra a continuación (no importa si al principio o al final).
 
 ```json
   "KeyVault": {
-    "Vault": "Modulo4Lab1-akv",
-    "ClientId": "cccce832-8950-4f87-a713-5ffa9f37e0fa",
-    "Thumbprint": "601F872ADCEECB4C496891044BB07D6C351EAC5E"
+    "Vault": "Modulo4Lab1-key-vault",
+    "TenantId": "a2313cab-b1c3-4f3a-bb11-2157447ddbb4",
+    "ClientId": "5af07d1e-76fb-482c-a433-2c363768091b",
+    "Thumbprint": "1AB60775BA8E0B4B6D306198CF2F27BCF21626BB"
   }
 ```
 
 6 - Ahora llega el momento de introducir nuevo código para que nuestra aplicación se conecte automáticamente con Azure al arrancar. Por eso nos vamos al código en el editor, y abrimos el archivo _Program.cs_. Ahora pegamos el siguiente código donde corresponde:
 
 ```csharp
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
+public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(builder =>
                 {
                     var root = builder.Build();
+
+                    // El nombre del KeyVault creato an Azure, por ejemplo: Modulo4Lab1-key-vault
                     var vaultName = root["KeyVault:Vault"];
-                    builder.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/", 
-                        root["KeyVault:ClientId"],
-                        GetCertificate(root["KeyVault:Thumbprint"]), new PrefixKeyVaultExample("Module4Lab1"));
+
+                    // El Id del tenant de Azure Active Directory donde se ha creado el service principal.
+                    // Para encontrar el tenant id en Azure: 'az account tenant list'
+                    string tenantID = root["KeyVault:TenantId"];
+
+                    // El ClientId: este es el Id del Service Principal que hemos copiado al hacer el registro de la WebApp en Azure AD.
+                    string clientId = root["KeyVault:ClientId"];
+
+                    // El certificado self-signed instalado en nuestra computadora, creado en la tarea anterior 
+                    // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
+                    string thumbprint = root["KeyVault:Thumbprint"];
+
+                    X509Certificate2 cert = GetCertificate(thumbprint);
+
+                    var secretClient = new SecretClient(
+                        new Uri($"https://{vaultName}.vault.azure.net/"),
+                        new ClientCertificateCredential(tenantID, clientId, cert));
+
+                    builder.AddAzureKeyVault(secretClient, new PrefixKeyVaultExample("Module4Lab1"));
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -275,7 +319,7 @@ Este comando se debe lanzar solo al finalizar la practica.
 
  7 - Como se puede observar, hay una nueva configuración creada, aparte de la que teníamos por defecto en la aplicación REST. Esto es lo que nos permitirá conectarnos automáticamente con nuestro Azure KeyVault, y ¿cómo lo hace?, pues vamos a verlo.
 
-   - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-5.0), con el que construiremos la configuración de Az KeyVault.
+   - Lo primero es crear una nueva [AppConfiguration](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.ihostbuilder.configureappconfiguration?view=dotnet-plat-ext-7.0), con el que construiremos la configuración de Az KeyVault.
     
    - Le indicamos cuál es el nombre del secreto:
 
@@ -291,12 +335,18 @@ var vaultName = root["KeyVault:Vault"];
 ```
 
 ```csharp
+ // El Id del tenant de Azure Active Directory donde se ha creado el service principal.
+ // Para encontrar el tenant id en Azure: 'az account tenant list'
+ string tenantID = root["KeyVault:TenantId"];
+```
+
+```csharp
   // El ClientId: este es el Id que hemos copiado al hacer el registro de la WebApp en Azure AD.
   root["KeyVault:ClientId"] 
 ```
 
 ```csharp
-  // El certificado self-signed instalado en nuestra computadora, creado en la tarea 4 
+  // El certificado self-signed instalado en nuestra computadora, creado en la tarea anterior 
   // El código relativo a este método, lo encontraréis en punto 9 y lo podéis copiar al final de la clase **Program.cs**.
   GetCertificate(root["KeyVault:Thumbprint"]) 
 ```
@@ -309,45 +359,64 @@ var vaultName = root["KeyVault:Vault"];
 8 - El código relativo al Secret Manager va en una clase aparte, que tendremos que crear en la raíz del proyecto. Como podemos observar en el trozo de código anterior, se debe llamar _PrefixKeyVaultExample.cs_ y el código que contiene es este:
 
 ```csharp
-using Microsoft.Azure.KeyVault.Models;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureKeyVault;
 
-namespace Module4Lab5
+namespace Module4Lab5;
+
+public class PrefixKeyVaultExample : KeyVaultSecretManager
 {
-    public class PrefixKeyVaultExample :IKeyVaultSecretManager
+    private readonly string _prefix;
+    public PrefixKeyVaultExample(string prefix)
     {
+        this._prefix = $"{prefix}-";
+    }
 
-        private readonly string _prefix;
-        public PrefixKeyVaultExample(string prefix)
-        {
-            this._prefix = $"{prefix}-";
-        }
+    public override bool Load(SecretProperties secret)
+    {
+        return secret.Name.StartsWith(this._prefix);
+    }
 
-        public bool Load(SecretItem secret)
-        {
-            return secret.Identifier.Name.StartsWith(this._prefix);
-        }
-
-        public string GetKey(SecretBundle secret)
-        {
-            return secret.SecretIdentifier.Name.Substring(this._prefix.Length)
-                .Replace("--", ConfigurationPath.KeyDelimiter);
-        }
+    public override string GetKey(KeyVaultSecret secret)
+    {
+        return secret.Name.Substring(this._prefix.Length)
+            .Replace("--", ConfigurationPath.KeyDelimiter);
     }
 }
 ```
 
-> ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-5.0#use-a-key-name-prefix).
+> ℹ️ Para más información acerca del _Secret Manager_ podéis acceder a este [enlace](https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-7.0#use-a-key-name-prefix).
 
 9 - Ahora ya tenemos todo lo necesario para poder conectarnos desde nuestra aplicación a Azure CosmosDB, haciendo uso del secreto almacenado en nuestra cuenta de Azure KeyVault, de forma automática y segura. Nadie que tenga acceso a nuestro código fuente en C# será capaz de saber la contraseña de la base de datos.
 
 Algunos pensaréis: la contraseña no está en texto plano en la configuración, pero ahora tenemos la URL + ClientId + thumbprint, ¿podríamos acceder nosotros también usando esos mismos datos, si encontrásemos la manera de acceder al código? La respuesta es no, porque necesitas tener el certificado instalado en tu propia máquina, y eso no lo tiene cualquiera, solo nosotros.
 
+
+```csharp
+  ...
+	private static X509Certificate2 GetCertificate(string thumbprint)
+	{
+		using var certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+
+		certStore.Open(OpenFlags.ReadOnly);
+		var cerCollection = certStore.Certificates.Find(
+			X509FindType.FindByThumbprint, thumbprint, false);
+
+		if (cerCollection.Count == 0)
+		{
+			throw new InvalidOperationException("Certificate is not installed");
+		}
+
+		return cerCollection[0];
+	}
+  ...
+```
+
 ![CertificadoNoEncontrado](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/CertificadoNoEncontrado.png)
 
 
-### Tarea 6: Comprobemos de nuevo la aplicación
+### Tarea 7: Comprobemos de nuevo la aplicación
 
 Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que contenga el código, vamos a necesitar instalar el certificado que creamos.
 
@@ -378,6 +447,8 @@ Para poder ejecutar la aplicación desde nuestro pc u otro pc cualquier que cont
 9 - El resultado debería ser el mismo, es decir, deberíamos recibir la información de la base de datos Azure CosmosDB, pero ahora teniendo en cuenta que la contraseña se recupera de Azure KeyVault, gracias al certificado que tenemos instalado en nuestra máquina.
 
 10 - Si quieres, intenta ejecutar algún comando PUT o DELETE para que veas que funciona correctamente.
+
+### Tarea 8: Almacenamiento seguro de secretos en .NET
 
 | :zap:        Disclaimer!   |
 |-----------------------------------------|
@@ -423,7 +494,7 @@ Ojo con lo que acabamos de hacer, es decir, hemos instalado un certificado produ
   ...
 ```
 
-### Tarea 7: Eliminar todos los recursos creados :bomb:
+### Tarea 9: Eliminar todos los recursos creados :bomb:
 
 Al final de cada ejercicio es importante dejar nuestra cuenta de Azure limpia para evitar sobrecostes nos esperados por parte de Microsoft.
 Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
@@ -431,11 +502,20 @@ Para eliminar todos los recursos del ejercicio, vamos a hacer lo siguiente:
 1 - En el portal de Azure, abrimos sesión de **Bash** dentro del panel de Cloud Shell.
 
 2 - Eliminamos el resource groups creado en el lab, ejecutando el siguiente comando:
+
 ```bash
 az group delete --name <your_resource_group_name> --no-wait --yes
 ```
 
-3 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+3 - Eliminar la registración de la app en Azure AD 
+`az ad app delete --id edcd0a4a-734e-46d4-bbf9-c5a2eb5542ea`
+
+8 - Eliminar el Service Principal creado en Azure AD
+
+`az ad sp delete --id 942b7c34-1bdc-45fe-ab1d-b7650c9a1cf0`
+
+4 - No olvidemos eliminar también el resto de recursos, como el certificado en local. No es necesario porque tiene fecha de expiración, pero es bueno no dejar basura.
+
   - Tecla "Windows" + "R" para sacar la aplicación de ejecución.
   - Escribimos el comando **certmgr.exe** y le damos a _OK_.
   - Dentro de la ventana del gestor de certificados, vamos al menú **Add/Remove Snap-in**, seleccionamos _Certificates_ en la parte izquierda y lo añadimos al listado de la derecha, luego selecciona _My User Account_ y _Finish_.

@@ -146,10 +146,11 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 #### Tarea 4a: Crear un App Registration en Azure Active Directory (AD) con Azure UI
 
+> **Warning:** El administrador de la suscripción de Azure podría haber restringido el acceso a la UI de Azure Active Directory a solo los usuarios administradores. Por ejemplo, la suscrición por estudiantes suelen ser configurada con esta tipo de restricción. En este caso, es posible registrar  la App utilizando el Cloud Shell como comentado en la Tarea 4b.
+
 1 - Desde el portal de Azure, nos vamos al buscador de arriba y buscamos **Azure Active Directory**. Al pinchar sobre el link, nos llevará al propio AD.
 
-  > **Tip:** El administrador de la suscripción de Azure podría haber restringido el acceso a la UI de Azure Active Directory a solo los usuarios administradores. Por ejemplo, la suscrición por estudiantes suelen ser configurada con esta tipo de restricción. En este caso, es posible registrar  la App utilizando el Cloud Shell como comentado en la Tarea 4b.
-
+  
 2 - En el menú de la izquierda, pinchamos sobre **App registrations**.
 
 ![Azure_AD_AppRegistration](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Azure_AD_AppRegistration.png)

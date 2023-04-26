@@ -79,6 +79,8 @@ az deployment group create --resource-group AzureLabsModulo4Lab2 --template-file
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 
+  > **Tip:** Los Azure websites son unívocos globalmente. En el caso que el nombre modulo4lab2 es ya en uso adaptar el template con un nuevo nombre.
+  
   ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
 
   - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente el recurso que necesitamos: el App Service (Web App) sin más intervención.
@@ -87,7 +89,7 @@ Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos
 
 ### Tarea 2: Vamos a preparar el entorno.
 
-Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 7.
+Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 7 adaptando los nombres de los recursos.
 
 ### Tarea 3: Configurar certificado para el app service.
 

@@ -30,36 +30,66 @@ La estructura que vamos a crear, responde al siguiente diseño. Puede parecer mu
 
 ![Module4Lab1_general_view_cloud](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Module4Lab1_general_view_cloud.png)
 
-### Tarea 1 : Vamos a cargar los ARM templates en vuestra cuenta de Azure.
-1 - Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo).
+### Tarea 1 : Creación de los recursos en Azure.
+Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una persona del grupo, en caso de serlo) y nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
 
-2 - Nos dirigimos al [portal de Azure](https://portal.azure.com/#home).
+#### Creación del Resource Group
 
-3 - Vamos a crear un ResourceGroup nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
-  - Primero necesitamos los templates, que podremos encontrar en la ruta 📁 Recursos/2 - Seguridad en Cloud/lab4/2_AzureKeyVault_Cloud/ARM_templates/
-  - Desde el shell del portal de Azure, los cargamos mediante el botón _Upload/Download files_ (uno cada vez).
-  - Ahora tendremos los archivos cargados en nuestra raíz del shell de bash, con lo que podemos ejecutar el primer comando para desplegar el ResourceGroup:    
+Vamos a crear un Resource Group nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
 
-```sh
-az deployment sub create --location westeurope --template-file template-rg.json
-```
-  - Ahora solo nos queda ejecutar el siguiente comando para crear los demás recursos dentro:
+  - En el portal de Azure nos dirigimos a la [pagina de creacion de resource group](https://portal.azure.com/#create/Microsoft.ResourceGroup)
+  - Junto a la selecion de la Subscription y de la region, definiremos el nombre ***AzureLabsModulo4Lab2*** por el resource group
+  - Después de haber revisado la configuración, podremos crear el resource group
+
+#### Creación del Azure Key Vault
+
+Vamos ahora a crear un key vault dentro del resource group que acabamos de definir.
+
+  - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Key Vault](https://portal.azure.com/#create/Microsoft.KeyVault)
+  - Junto a la selección de la Subscription, de la Región y del Pricing Tier, definiremos el nombre **Modulo4Lab2-key-vault** por el key vault
+
+  > **Tip:** Los Azure Key Vaults son unívocos globalmente. Además, Azure habilita de default soft deletion para ellos. Como consecuencia podría ocurrir que el nombre escogido para el Keyvault sea ya en utilizo. En este caso la UI mostrará el error *"The name 'Modulo4Lab2-key-vault' is already in use, or is still being reserved by a vault which was previously soft deleted. Please use a different name."*. Puedes solucionar el error utilizando un nombre de key vault no en uso o haciendo un *purge* del key vault en el apartado **Managed Deleted Vaults**.
+
+  -  Después de haber revisado la configuración, podremos crear el Azure Key Vault.
+
+#### Creación del Azure Cosmos DB
+
+Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales de acceso protegeremos en el Azure Key Vault, el objetivo de esta práctica.
+
+  - En el portal de Azure nos dirigimos a la [pagina de creación de Azure Cosmos DB](https://portal.azure.com/#create/Microsoft.DocumentDB)
+  - Seleccionamos la creación de un **Azure Cosmos DB for NoSQL**
+  - Junto a la selección de la Suscription y de la Región, definiremos el nombre de account  ***modulo4lab2-cosmosdb***
+  > **Tip:** También las instancias de Cosmos Db son unívocas globalmente, al igual que los Azure Key Vaults. Asegurarse entonces de utilizar un nombre que no sea ya en uso.
+
+- Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
+
+Finalmente accedemos al resource group *AzureLabsModulo4Lab2* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
+
+#### Creación del App Service
+
+Para simplificar la creación de la web app vamos a cargar un ARM template ya preparado en nuestra cuenta de Azure.
+
+  - Primero necesitamos el template, que podremos encontrar en la ruta 📁 Recursos/2 - Seguridad en Cloud/lab4/2_AzureKeyVault_Cloud/ARM_templates/template.json
+  - Desde el shell del portal de Azure, lo cargamo mediante el botón _Upload/Download files_ (uno cada vez).
+  - Ahora tendremos el archivo cargado en nuestra raíz del shell de bash, con lo que podemos ejecutar el comando para desplegar los recursos:
 
 ```sh
 az deployment group create --resource-group AzureLabsModulo4Lab2 --template-file template.json
 ```
 
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
+
+  > **Tip:** Los Azure websites son unívocos globalmente. En el caso que el nombre modulo4lab2 es ya en uso adaptar el template con un nuevo nombre.
   
   ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
-  
-  - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente los 3 recursos que necesitamos: Azure KeyVault, CosmosDb y el App Service (Web App) sin más intervención.
 
-4 - Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
+  - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente el recurso que necesitamos: el App Service (Web App) sin más intervención.
+
+Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
 
 ### Tarea 2: Vamos a preparar el entorno.
 
-Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 6.
+Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 7 adaptando los nombres de los recursos.
 
 ### Tarea 3: Configurar certificado para el app service.
 
@@ -90,7 +120,7 @@ Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish d
 1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú **View/Command Palette** y se nos desplegará una barra superior para escribir comandos.
 
 ![VSCode_CommandPalette](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_CommandPalette.png)
-  
+
 2 - Escribimos:
 
 ```bash

@@ -275,7 +275,7 @@ Ahora que tenemos un Service Principal associado a una aplicación registrada en
 ```json
   "KeyVault": {
     "Vault": "Modulo4Lab1-key-vault",
-    "TenantId": "a2313cab-b1c3-4f3a-bb11-2157447ddbb4",
+    "TenantId": "a5624cab-b1c3-4f3a-bb11-2157447ddbb4",
     "ClientId": "5af07d1e-76fb-482c-a433-2c363768091b",
     "Thumbprint": "1AB60775BA8E0B4B6D306198CF2F27BCF21626BB"
   }
@@ -297,7 +297,7 @@ public static IHostBuilder CreateHostBuilder(string[] args) =>
                     // Para encontrar el tenant id en Azure: 'az account tenant list'
                     string tenantID = root["KeyVault:TenantId"];
 
-                    // El ClientId: este es el Id del Service Principal que hemos copiado al hacer el registro de la WebApp en Azure AD.
+                    // El ClientId: este es el Id de la app asociada al Service Principal que hemos creado en Azure AD.
                     string clientId = root["KeyVault:ClientId"];
 
                     // El certificado self-signed instalado en nuestra computadora, creado en la tarea anterior 

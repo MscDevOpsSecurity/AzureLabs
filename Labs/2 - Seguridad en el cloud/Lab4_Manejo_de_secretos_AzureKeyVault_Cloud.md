@@ -37,9 +37,9 @@ Hacemos log in en nuestra cuenta personal de Azure (o en la cuenta de una person
 
 Vamos a crear un Resource Group nuevo, dentro del cuál se irán creando todos los demás componentes. Esto facilitará al final de la práctica, la eliminación de todos los recursos de forma conjunta.
 
-  - En el portal de Azure nos dirigimos a la [pagina de creacion de resource group](https://portal.azure.com/#create/Microsoft.ResourceGroup)
-  - Junto a la selecion de la Subscription y de la region, definiremos el nombre ***AzureLabsModulo4Lab2*** por el resource group
-  - Después de haber revisado la configuración, podremos crear el resource group
+  - En el portal de Azure nos dirigimos a la [pagina de creacion de resource group](https://portal.azure.com/#create/Microsoft.ResourceGroup) para crear un nuevo *Resource Group*
+  - Junto a la selecion de la Subscription y de la region, definiremos el nombre ***AzureLabsModulo4Lab2*** por el *resource group*
+  - Después de haber revisado la configuración, podremos crear el *resource group*
 
 #### Creación del Azure Key Vault
 
@@ -63,7 +63,7 @@ Como último paso de esta tarea crearemos el Azure Cosmos DB cuyos credenciales 
 
 - Después de haber revisado la configuración, podremos crear el Azure Cosmos DB.
 
-Finalmente accedemos al resource group *AzureLabsModulo4Lab2* para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
+Finalmente accedemos al *resource group* ***AzureLabsModulo4Lab2*** para asegurarnos de que el Azure Key Vault y el Azure Cosmos DB están ahí.
 
 #### Creación del App Service
 
@@ -80,16 +80,17 @@ az deployment group create --resource-group AzureLabsModulo4Lab2 --template-file
   > **Tip:** Si no tenemos el recurso creado para el shell de Azure, nos aparecerá una ventana como la siguiente, que nos pedirá que elijamos la subscripción de Azure donde poder montar el storage account para el shell. Si solo tenemos una subscripción, estará seleccionada por defecto, solo nos queda pinchar en _Create storage_.
 
   > **Tip:** Los Azure websites son unívocos globalmente. En el caso que el nombre modulo4lab2 es ya en uso adaptar el template con un nuevo nombre.
-  
+
   ![AzureShellWarning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/AzureShellWarning.png)
 
   - Tardará un rato en completarse la tarea, pero lo que nos queda claro, es que cuando termine, este template que acabamos de ejecutar nos creará automáticamente el recurso que necesitamos: el App Service (Web App) sin más intervención.
+  > **Warning:** El App Service se ha creado con el *Pricing Plan* y ***Basic B1***. Hay disponible también un plan gratis, el ***Free F1***, para ahorrar créditos de Azure, pero el plan free no permite la gestión de certificados. Por esta practica es necesario por lo meno el plan Basic B1 a partir de la Tarea 3. 
 
 Accedemos al Resource group que acabamos de crear, para asegurarnos de que todos los recursos previamente mencionados están ahí.
 
 ### Tarea 2: Vamos a preparar el entorno.
 
-Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 2 hasta la tarea 7 adaptando los nombres de los recursos.
+Para esto, vamos a seguir los mismos pasos del Lab1 desde la tarea 4 hasta la tarea 7 adaptando los nombres de los recursos.
 
 ### Tarea 3: Configurar certificado para el app service.
 
@@ -97,9 +98,9 @@ Vamos a necesitar que el app service actue como un cliente, es decir, que nada m
 
 1 - Vamos al portal de Azure y entramos en el App Service que tenemos creado.
 
-2 - Bajo el menú de **settings**, nos vamos a _TLS/SSL settings_.
+2 - Bajo el menú de **settings**, nos vamos a _Certificates_.
 
-3 - Ahora pinchamos en la pestaña **Private Key Certificates (pfx)** y subimos nuestro certificado _pfx_ que hemos generado antes. Por supuesto nos pedirá la contraseña que le dimos cuando lo creamos. Esta será la única vez que tengamos que usar las contraseñas.
+3 - Ahora pinchamos en la pestaña **Bring your own certificates (.pfx)** y subimos nuestro certificado _pfx_ que hemos generado antes. Por supuesto nos pedirá la contraseña que le dimos cuando lo creamos. Esta será la única vez que tengamos que usar las contraseñas.
 
 4 - Ahora necesitamos que el App Service instale este certificado nada más arrancar. Para ello, en el propio menú **Settings**, nos vamos a _Configuration_.
 
@@ -117,7 +118,7 @@ Vamos a necesitar que el app service actue como un cliente, es decir, que nada m
 
 Para poder ejecutar la aplicación, vamos a necesitar primero hacer un publish desde nuestro entorno de desarrollo al App Service que hemos creado en Azure.
 
-1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure. Para esto nos vamos al menú **View/Command Palette** y se nos desplegará una barra superior para escribir comandos.
+1 - Teniendo el código en Visual Studio Code listo para usarse, nos conectarnos con Azure con la extension ***Azure Account*** que sera instalada previamente en VS Code. Nos vamos ahora al menú **View/Command Palette** y se nos desplegará una barra superior para escribir comandos.
 
 ![VSCode_CommandPalette](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_CommandPalette.png)
 
@@ -141,7 +142,7 @@ Sign in to Azure Cloud
 dotnet publish --configuration Release
 ```
 
-6 - Hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\netcoreapp3.1\publish) y seleccionamos **Deploy to Web App..**.
+6 - Gracias a la extension ***Azure App Service*** de VS Code, hacemos clic con botón derecho sobre la carpeta donde se han publicado los binarios (generalmente \bin\Release\net7.0\publish) y seleccionamos **Deploy to Web App..**.
 
 ![VSCode_DeployMenu](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_DeployMenu.png)
 
@@ -149,7 +150,7 @@ dotnet publish --configuration Release
 
 ![VSCode_Deploy_Choose](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Choose.png)
 
-8 - Visual Studio Code te preguntará si quieres sobreescribir el contenido existente de la Web App. Le damos a **Deploy** para indicar una respuesta afirmativa.
+8 - VS Code te preguntará si quieres sobreescribir el contenido existente de la Web App. Le damos a **Deploy** para indicar una respuesta afirmativa.
 
 ![VSCode_Deploy_Warning](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Warning.png)
 ![VSCode_Deploy_Deploying](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/VSCode_Deploy_Deploying.png)

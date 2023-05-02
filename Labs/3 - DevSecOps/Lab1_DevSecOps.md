@@ -84,7 +84,7 @@ cd mslearn-deploy-run-container-app-service/dotnet
 3.- Ejecuta el siguiente comando.
 
 ```bash
-az acr build --registry <container_registry_name> --image webimage .
+az acr build --registry <container_registry_name> --resource-group learn-deploy-container-acr-rg --image webimage .
 ```
 
 Este comando envía el contenido de la carpeta al registro de contenedores, el cual utiliza las instrucciones del Dockerfile para compilar la imagen y almacenarla. Reemplaza `<container_registry_name>` con el nombre del registro que hemos creado previamente. No te olvides del `.` al final de la línea.

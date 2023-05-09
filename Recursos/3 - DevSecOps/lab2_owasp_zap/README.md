@@ -1,4 +1,4 @@
-# Guia Práctica. (to-do)
+# Guia Práctica.
 
 1.- Crear un proyecto de Azure DevOps
 

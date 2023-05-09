@@ -25,7 +25,7 @@
 ```
 Pedir acceso gratuito mediante el siguiente formulario: https://aka.ms/azpipelines-parallelism-request
 
-2. Las ultimas versiones del OWASP ZAP Scanner han introducido un error en la generación del reporte. Como consecuencia, la análisis  se ejecutan correctamente como visualizado en la tarea de ***Scan***  
+2. Las ultimas versiones del OWASP ZAP Scanner han introducido un error en la generación del reporte. Como consecuencia, las análisis  se ejecutan correctamente como visualizado en la tarea de ***Scan***  
 
    ![](./docs/DAST_analysis.png)
 

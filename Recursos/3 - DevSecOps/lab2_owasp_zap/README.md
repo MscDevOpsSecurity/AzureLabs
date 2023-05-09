@@ -16,3 +16,10 @@
   azureSubscriptionValue: 'myARMConnection'
 ```
 
+## Errores conocidos
+
+Al ejecutar la pipeline, puede devolver el siguiente error.
+```
+##[error]No hosted parallelism has been purchased or granted. To request a free parallelism grant, please fill out the following form https://aka.ms/azpipelines-parallelism-request
+```
+Pedir acceso gratuito mediante el siguiente formulario: https://aka.ms/azpipelines-parallelism-request

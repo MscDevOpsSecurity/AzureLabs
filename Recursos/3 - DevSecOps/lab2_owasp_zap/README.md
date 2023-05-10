@@ -7,6 +7,7 @@
 3.- Importar archivo adjunto zip
 
 4.- Añadir extension a AzureDevOps: OWASP ZAP
+https://marketplace.visualstudio.com/items?itemName=CSE-DevOps.zap-scanner&targetId=318e8bcf-5e58-4f0c-a09c-14dfa5f9c1ce&utm_source=vstsproduct&utm_medium=ExtHubManageList
 
 5.- Azure DevOps -> Proyect Settings -> Pipelines -> Server Connection --> Añadir Subscripcion Azure:
 * Create service connection -> Azure Resource Manager -> Name: myARMConnection

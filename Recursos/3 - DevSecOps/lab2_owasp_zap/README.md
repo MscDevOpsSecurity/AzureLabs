@@ -15,9 +15,9 @@ https://marketplace.visualstudio.com/items?itemName=CSE-DevOps.zap-scanner&targe
 
 2.- Create service connection -> Azure Resource Manager -> Name: myARMConnection
 
-<img width="1136" alt="Screenshot 2023-05-10 at 09 50 36" src="https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/40577955-027e-4800-9cfd-8e3db44b4105">
-<img width="1069" alt="Screenshot 2023-05-10 at 09 52 40" src="https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/0197d5c2-517a-4a62-b936-7620307383b4">
-![image](https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/6b94220c-f46f-4adb-b606-c4a7abc72754)
+<img width="1136" alt="DevOps Project Settings" src="https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/40577955-027e-4800-9cfd-8e3db44b4105">
+<img width="1069" alt="Pipelines - Server Connections" src="https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/0197d5c2-517a-4a62-b936-7620307383b4">
+<img width="1069" alt="Server connections details" src="https://github.com/MscDevOpsSecurity/AzureLabs/assets/1581524/6b94220c-f46f-4adb-b606-c4a7abc72754">
 
 
 

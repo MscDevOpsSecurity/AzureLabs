@@ -36,11 +36,3 @@ https://marketplace.visualstudio.com/items?itemName=CSE-DevOps.zap-scanner&targe
 ##[error]No hosted parallelism has been purchased or granted. To request a free parallelism grant, please fill out the following form https://aka.ms/azpipelines-parallelism-request
 ```
 Pedir acceso gratuito mediante el siguiente formulario: https://aka.ms/azpipelines-parallelism-request
-
-## 2 - Las ultimas versiones del OWASP ZAP Scanner han introducido un error en la generación del reporte. Como consecuencia, las análisis  se ejecutan correctamente como visualizado en la tarea de ***Scan***  
-
-   ![](./docs/DAST_analysis.png)
-
-Pero, el reporte que se genera resulta vacío y de consecuencia los test-results.xml no se ven reflejado en la pipeline. 
-
-![](./docs/zap_report.png)

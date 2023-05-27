@@ -150,7 +150,7 @@ Esta tarea tratará de configurar un nuevo registro de aplicación dentro de Azu
 
 1 - Desde el portal de Azure, nos vamos al buscador de arriba y buscamos **Azure Active Directory**. Al pinchar sobre el link, nos llevará al propio AD.
 
-  
+
 2 - En el menú de la izquierda, pinchamos sobre **App registrations**.
 
 ![Azure_AD_AppRegistration](../../Recursos/2%20-%20Seguridad%20en%20el%20cloud/lab4/Azure_AD_AppRegistration.png)
@@ -183,6 +183,8 @@ Esta tarea no es necesaria si la App ya está registrada por UI como explicado e
 1 - Registrar una nueva app in Azure AD.
 
 `az ad app create --display-name Module4Lab1App`
+
+  > **Warning:** El nombre de la app a registrar tiene que ser unívoco globalmente. Podría ocurrir que el nombre escogido para la app (i.e: Module4Lab1App) sea ya en utilizo. En este caso la cloud shell mostrará el error *"Found an existing application instance: (id) a504aea5-9d1e-4bab-8bca-7922f2f42aa8. We will patch it. Insufficient privileges to complete the operation.*. Puedes solucionar el error utilizando un nombre de app diferente y adaptando los pasos siguientes.
 
 2 - Para obtener el appId de la app registrada, su puede utilizar el comando de list 
 `az ad app list --display-name Module4Lab1App`
